@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TOX AI : محمد الشمري | المساعد الذكي المتطور</title>
+<title>TOX AI : محمد الشمري | المساعد الذكي الموسع</title>
 
 <style>
 :root{--bg-base:#030712;--bg-card:#0b1329;--border-color:#1e3a8a;--accent-glow:#00d4ff;--text-main:#e2ecff;--text-sub:#8ab4f8}
 *{box-sizing:border-box;margin:0;padding:0}
 body{min-height:100vh;background:var(--bg-base);color:var(--text-main);font-family:system-ui,-apple-system,sans-serif;display:flex;justify-content:center;align-items:center;padding:10px}
-main{width:100%;max-width:520px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:20px;padding:16px;box-shadow:0 25px 60px rgba(0,102,255,0.2);display:flex;flex-direction:column;height:92vh}
+main{width:100%;max-width:540px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:20px;padding:16px;box-shadow:0 25px 60px rgba(0,102,255,0.25);display:flex;flex-direction:column;height:92vh}
 
 .header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #152d56;padding-bottom:12px;margin-bottom:12px;flex-shrink:0}
 .title-area h1{color:var(--accent-glow);font-size:18px;font-weight:900;letter-spacing:.5px}
@@ -18,7 +18,7 @@ main{width:100%;max-width:520px;background:var(--bg-card);border:1px solid var(-
 .status-dot{width:6px;height:6px;background:#00d4ff;border-radius:50%;box-shadow:0 0 8px #00d4ff}
 
 #chatContainer{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;margin-bottom:12px;padding:6px;scroll-behavior:smooth}
-.message{padding:12px 14px;border-radius:14px;font-size:13px;line-height:1.6;max-width:88%;word-break:break-word;box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+.message{padding:12px 14px;border-radius:14px;font-size:13px;line-height:1.7;max-width:88%;word-break:break-word;box-shadow:0 4px 15px rgba(0,0,0,0.2)}
 .message.user{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
 .message.ai{background:#06112a;border:1px solid #1d4ed8;color:#f1f5f9;align-self:flex-start;border-bottom-left-radius:4px}
 
@@ -40,27 +40,27 @@ footer{color:#64748b;text-align:center;font:10px monospace;padding-top:8px;borde
   <div class="header">
     <div class="title-area">
       <h1>TOX AI 🤖</h1>
-      <p>المساعد الذكي المطور بواسطة محمد الشمري</p>
+      <p>المساعد الذكي الموسع - بإشراف محمد الشمري</p>
     </div>
     <div class="status-badge">
       <div class="status-dot"></div>
-      متصل ونشط
+      قاعدة معرفة موسعة
     </div>
   </div>
 
   <div id="chatContainer">
-    <div class="message ai">أهلاً بك يا أسطورة! أنا **TOX AI** بحلتي الكاملة والمحدثة. اسألني عن أي شيء تريده وسأقوم بالإجابة عليك فوراً وبدقة عالية! 🚀</div>
+    <div class="message ai">أهلاً بك يا أسطورة! أنا **TOX AI** بقاعدتي الموسعة بالكامل. اسألني عن الفضاء، التاريخ، البرمجة، العلوم، أو أي استفسار خطر على بالك وسأجيبك فوراً! 🚀</div>
   </div>
 
   <div class="examples" id="examplesBox">
     <span style="color:#64748b">جرب:</span>
-    <span class="ex-tag" onclick="sendDirect('كيف أتعلم البرمجة من الصفر؟')">تعلم البرمجة</span>
-    <span class="ex-tag" onclick="sendDirect('عطني فكرة مشروع تقني مبتكر')">فكرة مشروع</span>
-    <span class="ex-tag" onclick="sendDirect('من أنت وماذا تستطيع أن تفعل؟')">من أنت؟</span>
+    <span class="ex-tag" onclick="sendDirect('حدثني عن تاريخ الذكاء الاصطناعي')">تاريخ AI</span>
+    <span class="ex-tag" onclick="sendDirect('عطني نصائح لتطوير الذات والإنتاجية')">تطوير الذات</span>
+    <span class="ex-tag" onclick="sendDirect('كيف تعمل الثقوب السوداء في الفضاء؟')">الفضاء</span>
   </div>
 
   <form id="chatForm" onsubmit="handleFormSubmit(event)">
-    <input id="targetInput" placeholder="اكتب سؤالك أو استفسارك هنا..." autocomplete="off">
+    <input id="targetInput" placeholder="اسأل عن أي شيء في الكون..." autocomplete="off">
     <button id="goBtn" class="submit-btn" type="submit">إرسال</button>
   </form>
 
@@ -87,23 +87,19 @@ function processMessage() {
   const query = targetInput.value.trim();
   if (!query) return;
 
-  // 1. عرض رسالة المستخدم في الشات فوراً
   appendMessage(query, 'user');
   targetInput.value = '';
 
-  // 2. إظهار مؤشر "جاري التحليل..."
   const loadId = 'load-' + Date.now();
-  appendMessage(getLoadingHtml(), 'ai', loadId);
+  appendMessage('<span style="display:flex; align-items:center; gap:6px;">🌌 جاري البحث في قاعدة المعرفة الشاملة...</span>', 'ai', loadId);
 
-  // 3. محاكاة الرد الذكي بعد ثانية واحدة لضمان سلاسة التجربة
   setTimeout(() => {
     const loadingElement = document.getElementById(loadId);
-    if (loadingElement) {
-      loadingElement.remove();
-    }
-    const reply = generateUniversalReply(query);
+    if (loadingElement) loadingElement.remove();
+    
+    const reply = generateMegaReply(query);
     appendMessage(reply, 'ai');
-  }, 1000);
+  }, 900);
 }
 
 function appendMessage(text, sender, customId = null) {
@@ -121,27 +117,26 @@ function appendMessage(text, sender, customId = null) {
   return customId;
 }
 
-function getLoadingHtml() {
-  return '<span style="display:flex; align-items:center; gap:6px;">⚡ جاري تحليل الطلب وصياغة الرد...</span>';
-}
-
-function generateUniversalReply(query) {
+function generateMegaReply(query) {
   const q = query.toLowerCase();
-  
-  if (q.includes('برمجة') || q.includes('كود') || q.includes('تطوير') || q.includes('بايثون') || q.includes('جافا')) {
-    return `💻 **الرد التقني من TOX AI:**\nمجال البرمجة والتطوير واسع جداً وممتع! بناءً على طلبك حول ("${query}")، أنصحك بالتركيز على كتابة كود نظيف، وتقسيم مشروعك، واستخدام التقنيات الحديثة. هل تحتاج كود بلغة معينة لأساعدك في كتابته الآن؟`;
-  } 
-  else if (q.includes('مشروع') || q.includes('فكرة') || q.includes('ابتكار')) {
-    return `💡 **فكرة مقترحة من TOX AI:**\nما دام أنك تبحث عن التميز، أنصحك بتطوير منصات رقمية وأدوات ذكية تعتمد على الـ Web لحل المشاكل اليومية للمستخدمين. هل تحب أن نفصل في خطة عمل فكرة معينة؟`;
+
+  if (q.includes('فضاء') || q.includes('نجوم') || q.includes('كواكب') || q.includes('ثقب') || q.includes('مجرة')) {
+    return `🌌 **استكشاف الفضاء مع TOX AI:**\nالكون مليء بالأسرار العظيمة! فيما يخص ("${query}")، الفضاء الخارجي يحتوي على مليارات المجرات والثقوب السوداء التي تحني الزمن والجاذبية. هل ترغب في معرفة المزيد عن ظاهرة كونية معينة أو رحلات استكشاف الفضاء؟`;
   }
-  else if (q.includes('من أنت') || q.includes('مين انت') || q.includes('اسمك') || q.includes('ماذا تستطيع')) {
-    return `🤖 أنا **TOX AI**، مساعدك الذكي المتطور والمبرمج خصيصاً لمساعدتك في الإجابة على كافة الأسئلة، كتابة الأكواد، وطرح الأفكار، بإشراف المطور الإستثنائي **محمد الشمري**!`;
+  else if (q.includes('تاريخ') || q.includes('زمان') || q.includes('قصة') || q.includes('حرب') || q.includes('ماضي')) {
+    return `📜 **الأرشيف التاريخي من TOX AI:**\nالتاريخ هو مرآة الشعوب! استفسارك عن ("${query}") يعكس أهمية الأحداث الكبرى التي صاغت حاضرنا اليوم. هل تحب أن نستعرض تفاصيل حقبة تاريخية معينة أو شخصية أثرت في التاريخ؟`;
   }
-  else if (q.includes('السلام') || q.includes('أهلاً') || q.includes('مرحبا') || q.includes('هلا')) {
-    return `وعليكم السلام ورحمة الله وبركاته يا أسطورة! كيف أقدر أساعدك اليوم؟ اسألني عن أي شيء وسأكون عند حسن ظنك.`;
+  else if (q.includes('تطوير') || q.includes('نجاح') || q.includes('مهارات') || q.includes('إدارة') || q.includes('وقت')) {
+    return `🎯 **دليل الإنتاجية وتطوير الذات:**\nالوصول للقمة يتطلب استراتيجية وعمل مستمر. بخصوص ("${query}")، أهم مفاتيح النجاح هي التركيز العالي، تجنب التسويف، وتنظيم المهام بذكاء. هل تحتاج لخطط تنظيم يومية أو نصائح قيادية؟`;
+  }
+  else if (q.includes('برمجة') || q.includes('كود') || q.includes('تطوير') || q.includes('بايثون') || q.includes('موقع')) {
+    return `💻 **القسم التقني الموسع:**\nالبرمجة هي أداة المستقبل وصناعة الحلول! حول ("${query}")، تذكر دائماً أن التخطيط لهيكل الكود قبل كتابته يوفر 50% من الوقت. هل تحتاج إلى سكريبت برمجي أو فكرة خوارزمية لأكتبها لك فوراً؟`;
+  }
+  else if (q.includes('رياضة') || q.includes('لياقة') || q.includes('صحة') || q.includes('تغذية')) {
+    return `💪 **الصحة واللياقة مع TOX AI:**\nالعقل السليم في الجسم السليم! بالنسبة لـ ("${query}")، الالتزام بنظام غذائي متوازن وممارسة الرياضة بانتظام يصنعان الفارق الكبير في طاقتك اليومية. هل تحتاج لنصائح تخص التمارين أو الغذاء الصحي؟`;
   }
   else {
-    return `✨ **إجابة ذكية لـ TOX AI:**\nلقد استلمت استفسارك بعناية حول: *"${query}"*.\nبصفتي مساعدك الذكي الشامل، أؤكد لك أن هذا الموضوع مهم ويمكن التعامل معه بأفضل الطرق التقنية والعملية. هل ترغب في تفاصيل أكثر أو إضافة فكرة جديدة لنطورها معاً؟`;
+    return `🚀 **تحليل موسع من TOX AI:**\nلقد استقبلت سؤالك المميز: *"${query}"*.\nبناءً على قاعدة المعرفة الشاملة، هذا الموضوع يرتبط بعوامل متعددة تساهم في تقديم رؤية عميقة وحلول مبتكرة. هل ترغب بأن نتعمق في نقطة محددة داخل هذا الموضوع لنطورها بشكل احترافي؟`;
   }
 }
 </script>
