@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TOX AI : محمد الشمري | المساعد الذكي الموسع</title>
+<title>TOX AI : محمد الشمري | المساعد الذكي الاحترافي</title>
 
 <style>
 :root{--bg-base:#030712;--bg-card:#0b1329;--border-color:#1e3a8a;--accent-glow:#00d4ff;--text-main:#e2ecff;--text-sub:#8ab4f8}
 *{box-sizing:border-box;margin:0;padding:0}
 body{min-height:100vh;background:var(--bg-base);color:var(--text-main);font-family:system-ui,-apple-system,sans-serif;display:flex;justify-content:center;align-items:center;padding:10px}
-main{width:100%;max-width:540px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:20px;padding:16px;box-shadow:0 25px 60px rgba(0,102,255,0.25);display:flex;flex-direction:column;height:92vh}
+main{width:100%;max-width:580px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:20px;padding:16px;box-shadow:0 25px 60px rgba(0,102,255,0.25);display:flex;flex-direction:column;height:92vh}
 
 .header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #152d56;padding-bottom:12px;margin-bottom:12px;flex-shrink:0}
 .title-area h1{color:var(--accent-glow);font-size:18px;font-weight:900;letter-spacing:.5px}
@@ -17,8 +17,8 @@ main{width:100%;max-width:540px;background:var(--bg-card);border:1px solid var(-
 .status-badge{background:#052248;border:1px solid #00d4ff;color:#00d4ff;font-size:10px;padding:4px 8px;border-radius:20px;display:flex;align-items:center;gap:5px}
 .status-dot{width:6px;height:6px;background:#00d4ff;border-radius:50%;box-shadow:0 0 8px #00d4ff}
 
-#chatContainer{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;margin-bottom:12px;padding:6px;scroll-behavior:smooth}
-.message{padding:12px 14px;border-radius:14px;font-size:13px;line-height:1.7;max-width:88%;word-break:break-word;box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+#chatContainer{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;margin-bottom:12px;padding:6px;scroll-behavior:smooth}
+.message{padding:14px 16px;border-radius:16px;font-size:13.5px;line-height:1.8;max-width:92%;word-break:break-word;box-shadow:0 4px 15px rgba(0,0,0,0.25)}
 .message.user{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
 .message.ai{background:#06112a;border:1px solid #1d4ed8;color:#f1f5f9;align-self:flex-start;border-bottom-left-radius:4px}
 
@@ -30,7 +30,7 @@ form{display:flex;gap:8px;flex-shrink:0;background:#020614;border:1px solid #1d4
 input{flex:1;background:transparent;border:0;color:#fff;padding:8px 10px;font-size:13px;outline:none;text-align:right}
 input::placeholder{color:#64748b}
 button.submit-btn{border:0;border-radius:10px;background:linear-gradient(135deg,#0052D4,#4364F7);color:#fff;padding:0 18px;font-weight:bold;cursor:pointer;font-size:13px;box-shadow:0 4px 12px rgba(0,82,212,0.4);transition:.2s}
-button.submit-btn:hover{opacity:.9;transform:scale(1.02)}
+button.submit-end:hover{opacity:.9;transform:scale(1.02)}
 
 footer{color:#64748b;text-align:center;font:10px monospace;padding-top:8px;border-top:1px solid #112240;flex-shrink:0;margin-top:auto}
 </style>
@@ -40,27 +40,27 @@ footer{color:#64748b;text-align:center;font:10px monospace;padding-top:8px;borde
   <div class="header">
     <div class="title-area">
       <h1>TOX AI 🤖</h1>
-      <p>المساعد الذكي الموسع - بإشراف محمد الشمري</p>
+      <p>المساعد الذكي الاحترافي - بإشراف محمد الشمري</p>
     </div>
     <div class="status-badge">
       <div class="status-dot"></div>
-      قاعدة معرفة موسعة
+      تحليل موسع ومفصل
     </div>
   </div>
 
   <div id="chatContainer">
-    <div class="message ai">أهلاً بك يا أسطورة! أنا **TOX AI** بقاعدتي الموسعة بالكامل. اسألني عن الفضاء، التاريخ، البرمجة، العلوم، أو أي استفسار خطر على بالك وسأجيبك فوراً! 🚀</div>
+    <div class="message ai">يا هلا والله ومية هلا يا أسطورة! أنا **TOX AI** بحلتي الجديدة كلياً. من اليوم ورايح، مافي إجابات مختصرة أو ناقصة؛ اسألني عن أي موضوع في بالك (علوم، برمجة، تاريخ، مشاريع، أو حتى تفكير عميق)، وراح أعطيك إجابة وافية، مفصلة، ومليانة أفكار تفتح النفس وتفيدك بكل قوة. تفضل، وش عندك اليوم؟ 🚀🔥</div>
   </div>
 
   <div class="examples" id="examplesBox">
     <span style="color:#64748b">جرب:</span>
-    <span class="ex-tag" onclick="sendDirect('حدثني عن تاريخ الذكاء الاصطناعي')">تاريخ AI</span>
-    <span class="ex-tag" onclick="sendDirect('عطني نصائح لتطوير الذات والإنتاجية')">تطوير الذات</span>
-    <span class="ex-tag" onclick="sendDirect('كيف تعمل الثقوب السوداء في الفضاء؟')">الفضاء</span>
+    <span class="ex-tag" onclick="sendDirect('كيف أبني مشروع تقني ناجح من الصفر؟')">بناء مشروع</span>
+    <span class="ex-tag" onclick="sendDirect('اشرح لي كيف يشتغل الذكاء الاصطناعي بعمق')">شرح الذكاء الاصطناعي</span>
+    <span class="ex-tag" onclick="sendDirect('عطني نصائح ذهبية لزيادة التركيز والانتاجية')">زيادة الإنتاجية</span>
   </div>
 
   <form id="chatForm" onsubmit="handleFormSubmit(event)">
-    <input id="targetInput" placeholder="اسأل عن أي شيء في الكون..." autocomplete="off">
+    <input id="targetInput" placeholder="اسأل أي سؤال وخذ إجابة مفصلة وفخمة..." autocomplete="off">
     <button id="goBtn" class="submit-btn" type="submit">إرسال</button>
   </form>
 
@@ -91,15 +91,15 @@ function processMessage() {
   targetInput.value = '';
 
   const loadId = 'load-' + Date.now();
-  appendMessage('<span style="display:flex; align-items:center; gap:6px;">🌌 جاري البحث في قاعدة المعرفة الشاملة...</span>', 'ai', loadId);
+  appendMessage('<span style="display:flex; align-items:center; gap:6px;">⚡ جاري الغوص في التفاصيل وصياغة إجابة وافية وفخمة...</span>', 'ai', loadId);
 
   setTimeout(() => {
     const loadingElement = document.getElementById(loadId);
     if (loadingElement) loadingElement.remove();
     
-    const reply = generateMegaReply(query);
+    const reply = generateDetailedReply(query);
     appendMessage(reply, 'ai');
-  }, 900);
+  }, 1100);
 }
 
 function appendMessage(text, sender, customId = null) {
@@ -117,26 +117,45 @@ function appendMessage(text, sender, customId = null) {
   return customId;
 }
 
-function generateMegaReply(query) {
+function generateDetailedReply(query) {
   const q = query.toLowerCase();
 
-  if (q.includes('فضاء') || q.includes('نجوم') || q.includes('كواكب') || q.includes('ثقب') || q.includes('مجرة')) {
-    return `🌌 **استكشاف الفضاء مع TOX AI:**\nالكون مليء بالأسرار العظيمة! فيما يخص ("${query}")، الفضاء الخارجي يحتوي على مليارات المجرات والثقوب السوداء التي تحني الزمن والجاذبية. هل ترغب في معرفة المزيد عن ظاهرة كونية معينة أو رحلات استكشاف الفضاء؟`;
+  if (q.includes('مشروع') || q.includes('تطبيق') || q.includes('منصة') || q.includes('تأسيس')) {
+    return `🎯 **دليل تأسيس وإدارة المشاريع الاحترافية من TOX AI:**<br><br>` +
+           `يا أسطورة، بناء مشروع ناجح (مثل مشاريعك الفخمة) لا يأتي صدفة، بل يخضع لمنهجية دقيقة تتكون من عدة مراحل رئيسية:<br>` +
+           `1. **تحديد المشكلة والحل:** ابدأ دائماً بالبحث عن ثغرة أو حاجة حقيقية بالسوق وقدم لها حلاً تقنياً أو خدمياً مبتكراً وسلساً.<br>` +
+           `2. **التخطيط وهندسة المنتج (MVP):** لا تنتظر حتى يكون كل شيء مثالياً؛ اطلق النسخة الأولية بأسرع وقت لتقييم ردود فعل المستخدمين وتطويرها بناءً على الواقع.<br>` +
+           `3. **التسويق وبناء الهوية:** الهوية البصرية القوية والواجهة السهلة هما نصف النجاح؛ انتبه للتفاصيل الصغيرة لأنها تصنع الانطباع الأول الفخم.<br>` +
+           `هذا الموضوع كبير وله تفاصيل عميقة جداً.. هل ترغب أن نفصل في خطة تسويق هذا المشروع أو نكتب هيكله التقني معاً؟`;
   }
-  else if (q.includes('تاريخ') || q.includes('زمان') || q.includes('قصة') || q.includes('حرب') || q.includes('ماضي')) {
-    return `📜 **الأرشيف التاريخي من TOX AI:**\nالتاريخ هو مرآة الشعوب! استفسارك عن ("${query}") يعكس أهمية الأحداث الكبرى التي صاغت حاضرنا اليوم. هل تحب أن نستعرض تفاصيل حقبة تاريخية معينة أو شخصية أثرت في التاريخ؟`;
+  else if (q.includes('ذكاء اصطناعي') || q.includes('ai') || q.includes('خوارزميات') || q.includes('تعلم آلي')) {
+    return `🤖 **تحليل شامل لعالم الذكاء الاصطناعي:**<br><br>` +
+           `موضوع الذكاء الاصطناعي يعتبر الثورة الأعظم في تاريخ البشرية الحديث! يعتمد أساساً على معالجة كميات هائلة من البيانات الضخمة (Big Data) باستخدام خوارزميات تعلم الآلة (Machine Learning) والشبكات العصبية الاصطناعية لتوقع الأنماط واتخاذ القرارات.<br>` +
+           `- **أهم تطبيقاته اليوم:** المساعدات الذكية، تحليل الأكواد البرمجية، الرؤية الحاسوبية، وتوليد المحتوى الإبداعي.<br>` +
+           `- **المستقبل:** يتجه نحو دمج النظم الذكية في كل تفاصيل حياتنا اليومية والمهنية لتسريع الإنتاجية.<br>` +
+           `هل تود أن نتعمق في كيفية بناء النماذج أو استخدام أدوات الذكاء الاصطناعي لخدمة أعمالك؟`;
   }
-  else if (q.includes('تطوير') || q.includes('نجاح') || q.includes('مهارات') || q.includes('إدارة') || q.includes('وقت')) {
-    return `🎯 **دليل الإنتاجية وتطوير الذات:**\nالوصول للقمة يتطلب استراتيجية وعمل مستمر. بخصوص ("${query}")، أهم مفاتيح النجاح هي التركيز العالي، تجنب التسويف، وتنظيم المهام بذكاء. هل تحتاج لخطط تنظيم يومية أو نصائح قيادية؟`;
+  else if (q.includes('برمجة') || q.includes('كود') || q.includes('تطوير ويب') || q.includes('موقع')) {
+    return `💻 **المرجع الهندسي والبرمجي من TOX AI:**<br><br>` +
+           `عالم البرمجة ممتع لمن يتقن أصوله وقواعده! عندما تفكر في بناء تطبيقات ويب أو أنظمة متكاملة، يجب أن تضع في اعتبارك 3 ركائز أساسية:<br>` +
+           `1. **هندسة الواجهات الأمامية (Frontend):** التركيز على تجربة المستخدم (UX) والواجهات السلسة والسريعة مثل ما نعمل عليه الآن.<br>` +
+           `2. **الخلفية ومعالجة البيانات (Backend):** تأمين السيرفرات وإدارة القواعد بكفاءة عالية ومنع أي ثغرات أمنية.<br>` +
+           `3. **النظافة والصيانة:** كتابة كود منظم وقابل للتطوير يسهل عليك تحديثه مستقبلاً دون تعقيد.<br>` +
+           `هل تحتاج إلى كتابة سكريبت برمجي معين أو تصميم هيكل صفحة HTML/JS لأساعدك في تنفيذه فوراً؟`;
   }
-  else if (q.includes('برمجة') || q.includes('كود') || q.includes('تطوير') || q.includes('بايثون') || q.includes('موقع')) {
-    return `💻 **القسم التقني الموسع:**\nالبرمجة هي أداة المستقبل وصناعة الحلول! حول ("${query}")، تذكر دائماً أن التخطيط لهيكل الكود قبل كتابته يوفر 50% من الوقت. هل تحتاج إلى سكريبت برمجي أو فكرة خوارزمية لأكتبها لك فوراً؟`;
-  }
-  else if (q.includes('رياضة') || q.includes('لياقة') || q.includes('صحة') || q.includes('تغذية')) {
-    return `💪 **الصحة واللياقة مع TOX AI:**\nالعقل السليم في الجسم السليم! بالنسبة لـ ("${query}")، الالتزام بنظام غذائي متوازن وممارسة الرياضة بانتظام يصنعان الفارق الكبير في طاقتك اليومية. هل تحتاج لنصائح تخص التمارين أو الغذاء الصحي؟`;
+  else if (q.includes('إنتاجية') || q.includes('تركيز') || q.includes('نجاح') || q.includes('تطوير ذات') || q.includes('وقت')) {
+    return `⚡ **استراتيجيات الإنتاجية الفائقة:**<br><br>` +
+           `يا أسطورة، إدارة الوقت والتركيز العالي هي العملة الصعبة لأي شخص ناجح. إليك خلاصة التجارب العالمية لزيادة إنتاجيتك:<br>` +
+           `- **قاعدة تقطيع المهام:** قسّم المشروع الضخم إلى مهام صغيرة جداً ومحددة بزمن، فهذا يكسر حاجز التسويف.<br>` +
+           `- **التركيز العميق (Deep Work):** اعزل نفسك تماماً عن المشتتات لمدة ساعة كاملة من العمل المتواصل توازي ساعات من العشوائية.<br>` +
+           `- **الاستراحة الذكية:** امنح عقلك قسطاً من الراحة لتستعيد نشاطك وطاقتك الإبداعية.<br>` +
+           `كيف هي خطتك اليومية وهل تحب أن نضع جدولاً احترافياً لإدارة مهامك القادمة؟`;
   }
   else {
-    return `🚀 **تحليل موسع من TOX AI:**\nلقد استقبلت سؤالك المميز: *"${query}"*.\nبناءً على قاعدة المعرفة الشاملة، هذا الموضوع يرتبط بعوامل متعددة تساهم في تقديم رؤية عميقة وحلول مبتكرة. هل ترغب بأن نتعمق في نقطة محددة داخل هذا الموضوع لنطورها بشكل احترافي؟`;
+    return `✨ **التحليل الموسع والمفصل من TOX AI:**<br><br>` +
+           `لقد استقبلت استفسارك القيم حول: *"${query}"*.<br>` +
+           `عندما ننظر إلى هذا الموضوع نظرة شاملة، نجد أنه يمس جوانب متعددة تتطلب منا تحليلاً دقيقاً وربطاً بين المعطيات لنصل إلى أفضل نتيجة ممكنة. الأسلوب الاحترافي في التعامل مع هذا الأمر يعتمد على الوضوح، التنظيم، والتطبيق العملي المباشر.<br><br>` +
+           `بصفتي مساعدك الذكي المطور بإشراف محمد الشمري، أنا هنا لأعطيك كل التفاصيل التي تحتاجها.. هل ترغب بأن نناقش جانباً معينة بالتفصيل أو نضع خطوات عملية واضحة لنبدأ تطبيقها فوراً؟ 🚀`;
   }
 }
 </script>
