@@ -4,107 +4,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TOX WiFi Tool</title>
+<title>TOX WiFi Security</title>
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;background:#080a0f;color:white;
- font-family:Arial,sans-serif;
- display:flex;justify-content:center;
- align-items:center;min-height:100vh;
+margin:0;background:#080a0f;color:white;
+font-family:Arial,sans-serif;
+min-height:100vh;display:flex;
+justify-content:center;align-items:center;padding:20px
 }
 .container{
- width:92%;max-width:430px;
- background:#11151e;border:1px solid #252d3b;
- border-radius:18px;padding:25px;
- box-shadow:0 0 35px #000;
+width:100%;max-width:440px;padding:25px;
+background:#11151e;border:1px solid #293244;
+border-radius:18px;box-shadow:0 0 35px #000
 }
-.logo{text-align:center;font-size:35px;
- font-weight:bold;color:#e0e0e0;letter-spacing:5px}
-.sub{text-align:center;color:#7e899b;margin:8px 0 25px}
-h3{font-size:16px;color:#cbd5e1}
+.logo{text-align:center;font-size:42px;
+font-weight:bold;letter-spacing:7px}
+.sub{text-align:center;color:#8995a8;margin:8px 0 25px}
+h3{font-size:15px;color:#dce3ed}
 input{
- width:100%;padding:15px;background:#080c14;
- border:1px solid #30394b;border-radius:9px;
- color:white;font-size:15px;outline:none;
- margin:8px 0;
+width:100%;padding:14px;margin:8px 0;
+background:#080c14;color:white;
+border:1px solid #30394b;border-radius:9px;
+outline:none
 }
 button{
- width:100%;padding:14px;border:0;
- border-radius:9px;background:#e5e7eb;
- color:#080a0f;font-weight:bold;
- cursor:pointer;margin-top:10px;font-size:15px;
+width:100%;padding:14px;margin-top:10px;
+border:0;border-radius:9px;background:#e5e7eb;
+color:#080a0f;font-weight:bold;cursor:pointer
 }
-button:hover{background:#aaa}
 .result{
- margin-top:18px;padding:15px;
- background:#080c14;border-radius:9px;
- border:1px solid #30394b;overflow-wrap:anywhere;
+margin-top:18px;padding:15px;
+background:#080c14;border:1px solid #30394b;
+border-radius:10px;overflow-wrap:anywhere
 }
 small{color:#8995a8}
-#strength{margin-top:10px;color:#9ca3af}
+#strength{margin-top:12px;color:#aab5c5}
+.footer{text-align:center;margin-top:25px}
 </style>
 </head>
 <body>
 <div class="container">
- <div class="logo">TOX</div>
- <div class="sub">WIFI PASSWORD LAB</div>
+<div class="logo">TOX</div>
+<div class="sub">WIFI SECURITY LAB</div>
 
- <h3>توليد كلمة مرور آمنة</h3>
- <input id="length" type="number" min="8" max="32"
- value="16" placeholder="طول كلمة المرور">
- <button onclick="generate()">توليد كلمة مرور</button>
+<h3>توليد كلمة مرور</h3>
+<input id="length" type="number" min="8" max="32" value="16">
+<button onclick="generate()">توليد باسورد</button>
 
- <div class="result">
-  <small>كلمة المرور الناتجة</small>
-  <h3 id="generated">TOX-********</h3>
-  <button onclick="copyPassword()">نسخ كلمة المرور</button>
- </div>
+<div class="result">
+<small>كلمة المرور</small>
+<h3 id="generated">TOX-********</h3>
+<button onclick="copyPassword()">نسخ الباسورد</button>
+</div>
 
- <h3>فحص قوة كلمة المرور</h3>
- <input id="password" type="text"
- placeholder="أدخل كلمة المرور للفحص"
- oninput="checkStrength()">
- <div id="strength">بانتظار كلمة المرور...</div>
+<h3>فحص قوة الباسورد</h3>
+<input id="password" type="text"
+placeholder="اكتب كلمة المرور"
+oninput="checkStrength()">
+<div id="strength">بانتظار كلمة المرور...</div>
 
- <div style="text-align:center;margin-top:25px">
-  <small>TOX SECURITY LAB © 2026</small>
- </div>
+<div class="footer">
+<small>TOX SECURITY LAB © 2026</small>
+</div>
 </div>
 
 <script>
 function generate(){
- const length=Math.min(32,Math.max(8,
- Number(document.getElementById("length").value)||16));
- const chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*";
- let password="";
- const random=new Uint32Array(length);
- crypto.getRandomValues(random);
- for(let n of random){
-  password+=chars[n%chars.length];
- }
- document.getElementById("generated").textContent=password;
+const length=Math.max(8,Math.min(32,
+Number(document.getElementById("length").value)||16));
+const chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*";
+const random=new Uint32Array(length);
+crypto.getRandomValues(random);
+let password="";
+for(const n of random)password+=chars[n%chars.length];
+document.getElementById("generated").textContent=password;
 }
 
 function copyPassword(){
- const password=document.getElementById("generated").textContent;
- navigator.clipboard.writeText(password);
- alert("تم نسخ كلمة المرور");
+const p=document.getElementById("generated").textContent;
+navigator.clipboard.writeText(p)
+.then(()=>alert("تم النسخ"));
 }
 
 function checkStrength(){
- const p=document.getElementById("password").value;
- let score=0;
- if(p.length>=8)score++;
- if(p.length>=12)score++;
- if(/[A-Z]/.test(p))score++;
- if(/[a-z]/.test(p))score++;
- if(/[0-9]/.test(p))score++;
- if(/[^a-zA-Z0-9]/.test(p))score++;
-
- const result=document.getElementById("strength");
- const levels=["ضعيفة جداً","ضعيفة","متوسطة","جيدة","قوية","قوية جداً","ممتازة"];
- result.textContent=p.length ? "قوة كلمة المرور: "+levels[score] : "بانتظار كلمة المرور...";
+const p=document.getElementById("password").value;
+let s=0;
+if(p.length>=8)s++;
+if(p.length>=12)s++;
+if(/[A-Z]/.test(p))s++;
+if(/[a-z]/.test(p))s++;
+if(/[0-9]/.test(p))s++;
+if(/[^a-zA-Z0-9]/.test(p))s++;
+const levels=["ضعيفة جداً","ضعيفة","متوسطة","جيدة","قوية","قوية جداً","ممتازة"];
+document.getElementById("strength").textContent=
+p.length?"قوة كلمة المرور: "+levels[s]:"بانتظار كلمة المرور...";
 }
 </script>
 </body>
