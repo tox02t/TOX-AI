@@ -1,483 +1,810 @@
-
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TOX | مختبر الأمن السيبراني</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOX NetPulse | مراقب البنق واستقرار الاتصال</title>
+    <!-- استدعاء خط تجوال والقاهرة لمظهر عربي عصري وفخم -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <!-- مكتبة Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- مكتبة Chart.js للرسوم البيانية التفاعلية -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- أيقونات Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-:root{
---bg:#080b11;
---panel:#101722;
---panel2:#151f2d;
---border:#243246;
---blue:#579cff;
---cyan:#55d8e9;
---white:#f2f6fc;
---muted:#8c9bb0;
---green:#45d6a0;
-}
-*{box-sizing:border-box}
-body{
-margin:0;background:var(--bg);color:var(--white);
-font-family:'Tajawal',sans-serif;
-min-height:100vh;
-}
-button,input,textarea{font-family:inherit}
-button{cursor:pointer}
-.header{
-height:76px;border-bottom:1px solid var(--border);
-display:flex;align-items:center;justify-content:space-between;
-padding:0 6%;background:#0b111b;
-position:sticky;top:0;z-index:10;
-}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-icon{
-width:43px;height:43px;border-radius:13px;
-background:linear-gradient(135deg,#2767bd,#54c8e6);
-display:grid;place-items:center;
-font-size:25px;font-weight:800;color:white;
-box-shadow:0 0 25px #327ed444;
-}
-.logo h2{margin:0;font-size:23px;letter-spacing:3px}
-.logo small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px}
-.online{
-color:var(--green);font-size:12px;
-background:#10291f;padding:9px 14px;border-radius:30px;
-}
-.container{max-width:1100px;margin:auto;padding:35px 20px}
-.page{display:none;animation:appear .25s ease}
-.page.active{display:block}
-@keyframes appear{
-from{opacity:0;transform:translateY(8px)}
-to{opacity:1;transform:translateY(0)}
-}
-.hero{
-background:linear-gradient(115deg,#13243a,#101722 65%,#122b3c);
-border:1px solid #2a405b;border-radius:20px;
-padding:35px 30px;margin-bottom:25px;
-position:relative;overflow:hidden;
-}
-.hero:after{
-content:"T";position:absolute;left:30px;top:-65px;
-font-size:220px;font-weight:800;color:#ffffff08;
-pointer-events:none;
-}
-.hero h1{font-size:35px;margin:0 0 8px}
-.hero h1 span{color:var(--blue)}
-.hero p{color:#aab9cb;margin:0;font-size:15px}
-.hero-tag{
-display:inline-block;margin-top:20px;
-background:#1d3855;color:#9dc9ff;
-padding:8px 14px;border-radius:8px;font-size:12px;
-}
-.stats{
-display:grid;grid-template-columns:repeat(3,1fr);
-gap:15px;margin-bottom:35px;
-}
-.stat{
-background:var(--panel);border:1px solid var(--border);
-padding:17px;border-radius:13px;
-}
-.stat small{color:var(--muted);font-size:12px}
-.stat strong{display:block;font-size:23px;margin-top:5px}
-.section-title{
-font-size:21px;margin:0 0 17px;
-}
-.tools{
-display:grid;grid-template-columns:repeat(3,1fr);gap:15px;
-}
-.tool{
-background:var(--panel);border:1px solid var(--border);
-border-radius:15px;padding:22px;
-text-align:right;color:white;width:100%;
-transition:.2s;
-}
-.tool:hover{
-transform:translateY(-4px);
-border-color:var(--blue);
-background:var(--panel2);
-}
-.tool-icon{
-width:48px;height:48px;border-radius:13px;
-background:#1b304a;display:grid;place-items:center;
-font-size:23px;margin-bottom:15px;
-}
-.tool h3{margin:0 0 7px;font-size:17px}
-.tool p{color:var(--muted);font-size:13px;margin:0;line-height:1.8}
-.tool .open{
-display:block;color:var(--blue);
-font-size:12px;margin-top:16px;
-}
-.work{
-background:var(--panel);border:1px solid var(--border);
-padding:27px;border-radius:17px;
-max-width:720px;margin:auto;
-}
-.back{
-background:#1a2637;color:#cbd8e8;
-border:1px solid var(--border);
-padding:9px 16px;border-radius:9px;
-margin-bottom:20px;
-}
-.back:hover{background:#263c59}
-.work h1{font-size:25px;margin:0 0 8px}
-.desc{color:var(--muted);font-size:13px;margin-bottom:25px}
-label{display:block;color:#cbd7e7;font-size:14px;margin:16px 0 8px}
-input,textarea{
-width:100%;padding:14px;
-background:#080e17;color:white;
-border:1px solid #2a3b51;border-radius:10px;
-outline:none;font-size:14px;
-}
-input:focus,textarea:focus{border-color:var(--blue)}
-textarea{min-height:110px;resize:vertical}
-.action{
-width:100%;padding:14px;border:0;border-radius:10px;
-background:linear-gradient(110deg,#347bd0,#54b9e9);
-color:white;font-size:15px;font-weight:700;
-margin-top:13px;transition:.2s;
-}
-.action:hover{filter:brightness(1.15)}
-.secondary{background:#202f43;border:1px solid #34465e}
-.result{
-margin-top:17px;padding:17px;
-background:#080e17;border:1px solid var(--border);
-border-radius:10px;line-height:2;
-font-size:14px;overflow-wrap:anywhere;
-}
-.result-title{color:var(--blue);font-size:12px;margin-bottom:5px}
-.note{font-size:12px;color:var(--muted);line-height:1.9;margin-top:15px}
-footer{
-text-align:center;color:#65758b;
-border-top:1px solid var(--border);
-margin-top:45px;padding:25px;font-size:12px;
-}
-@media(max-width:700px){
-.header{padding:0 17px;height:68px}
-.logo h2{font-size:20px}
-.container{padding:22px 14px}
-.hero{padding:25px 19px}
-.hero h1{font-size:27px}
-.hero:after{font-size:140px;left:5px;top:-20px}
-.stats{gap:8px}
-.stat{padding:12px}
-.stat strong{font-size:18px}
-.stat small{font-size:10px}
-.tools{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.tool{padding:15px}
-.tool h3{font-size:15px}
-.tool p{font-size:11px}
-.tool-icon{width:40px;height:40px;font-size:20px}
-.work{padding:19px}
-.online{font-size:10px;padding:8px}
-}
-</style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: '#070a12',
+                        cardDark: 'rgba(15, 23, 42, 0.65)',
+                        accentCyan: '#06b6d4',
+                        accentEmerald: '#10b981',
+                        accentPurple: '#8b5cf6',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #070a12;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* تأثير الزجاج الفاخر */
+        .glass-card {
+            background: rgba(15, 22, 38, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+            transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(6, 182, 212, 0.25);
+            box-shadow: 0 15px 35px -10px rgba(6, 182, 212, 0.12);
+        }
+
+        /* توهج ناعم للعناصر النشطة */
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+        }
+
+        .glow-emerald {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+        }
+
+        .glow-rose {
+            box-shadow: 0 0 20px rgba(244, 63, 94, 0.25);
+        }
+
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070a12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+
+        /* حركة النبض للمؤشر الحي */
+        @keyframes pulseRing {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+        .pulse-dot::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background-color: inherit;
+            animation: pulseRing 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
 
-<header class="header">
- <div class="logo">
-  <div class="logo-icon">T</div>
-  <div>
-   <h2>TOX</h2>
-   <small>SECURITY LAB</small>
-  </div>
- </div>
- <div class="online">● النظام جاهز</div>
-</header>
+    <!-- الشريط العلوي الفاخر (Header) -->
+    <header class="sticky top-0 z-40 border-b border-white/5 bg-[#070a12]/80 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- الشعار واسم الأداة -->
+            <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-cyan-500 to-purple-600 p-[1px] shadow-lg shadow-cyan-500/20">
+                    <div class="w-full h-full bg-[#090d16] rounded-2xl flex items-center justify-center">
+                        <i data-lucide="activity" class="w-6 h-6 text-cyan-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight bg-gradient-to-l from-white via-slate-200 to-cyan-300 bg-clip-text text-transparent">
+                            TOX NetPulse
+                        </h1>
+                        <span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                            PRO
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400 hidden sm:block">مراقب استقرار الاتصال والبنق وفقدان الحزم اللحظي</p>
+                </div>
+            </div>
 
-<main class="container">
+            <!-- شارة الحقوق العلوية + حالة الاتصال -->
+            <div class="flex items-center gap-3">
+                <div class="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/[0.03] border border-white/10 text-xs text-slate-300">
+                    <span class="text-slate-400">تطوير:</span>
+                    <span class="font-bold text-cyan-400">جابر | TOX</span>
+                </div>
 
-<!-- الرئيسية -->
-<section class="page active" id="home">
- <div class="hero">
-  <h1>مرحباً بك في <span>TOX</span></h1>
-  <p>منصتك الخاصة للأدوات الأمنية والتحليل الرقمي.</p>
-  <div class="hero-tag">✦ مختبر الأمن السيبراني</div>
- </div>
+                <div id="statusBadge" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-slate-900/90 border border-white/10 text-xs sm:text-sm font-semibold">
+                    <span id="statusDot" class="relative w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+                    <span id="statusText" class="text-slate-300">جاهز للفحص</span>
+                </div>
+            </div>
+        </div>
+    </header>
 
- <div class="stats">
-  <div class="stat">
-   <small>عدد الأدوات</small>
-   <strong>06</strong>
-  </div>
-  <div class="stat">
-   <small>حالة النظام</small>
-   <strong style="color:var(--green)">نشط</strong>
-  </div>
-  <div class="stat">
-   <small>الإصدار</small>
-   <strong>1.0</strong>
-  </div>
- </div>
+    <!-- المحتوى الرئيسي -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
 
- <h2 class="section-title">الأدوات المتاحة</h2>
+        <!-- لوحة التحكم واختيار السيرفر -->
+        <section class="glass-card rounded-3xl p-5 sm:p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-end">
+                
+                <!-- اختيار السيرفر -->
+                <div class="lg:col-span-5 space-y-2">
+                    <label class="text-xs font-bold text-slate-400 flex items-center gap-1.5">
+                        <i data-lucide="server" class="w-3.5 h-3.5 text-cyan-400"></i>
+                        السيرفر المستهدف للفحص
+                    </label>
+                    <div class="relative">
+                        <select id="serverSelect" class="w-full appearance-none bg-[#0b101d] border border-white/10 hover:border-cyan-500/40 focus:border-cyan-500 rounded-2xl px-4 py-3 text-sm font-semibold text-white outline-none transition cursor-pointer">
+                            <option value="https://1.1.1.1/cdn-cgi/trace" data-name="Cloudflare Global (الأسرع)">🌐 Cloudflare Edge - الأقرب لك</option>
+                            <option value="https://www.google.com/generate_204" data-name="Google Global Servers">🔍 خوادم Google العالمية</option>
+                            <option value="https://dynamodb.me-south-1.amazonaws.com/ping" data-name="AWS Middle East (البحرين)">🇸🇦 سيرفر الشرق الأوسط - البحرين (AWS)</option>
+                            <option value="https://dynamodb.eu-central-1.amazonaws.com/ping" data-name="AWS Europe (فرانكفورت)">🇩🇪 السيرفر الأوروبي - ألمانيا (Frankfurt)</option>
+                            <option value="https://dynamodb.us-east-1.amazonaws.com/ping" data-name="AWS US East (فرجينيا)">🇺🇸 سيرفر أمريكا الشمالية (US East)</option>
+                            <option value="custom" data-name="رابط مخصص">⚙️ رابط أو سيرفر مخصص (Custom URL)</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+                </div>
 
- <div class="tools">
-  <button class="tool" onclick="openTool('password')">
-   <div class="tool-icon">🔐</div>
-   <h3>مختبر كلمات المرور</h3>
-   <p>توليد كلمات مرور وفحص مستوى قوتها.</p>
-   <span class="open">فتح الأداة ←</span>
-  </button>
+                <!-- حقل الرابط المخصص (يظهر عند اختيار رابط مخصص) أو حد التنبيه -->
+                <div id="customUrlContainer" class="lg:col-span-3 space-y-2 hidden">
+                    <label class="text-xs font-bold text-slate-400">أدخل رابط السيرفر (HTTPS)</label>
+                    <input type="url" id="customUrlInput" placeholder="https://example.com" dir="ltr"
+                        class="w-full bg-[#0b101d] border border-white/10 focus:border-cyan-500 rounded-2xl px-4 py-3 text-sm font-mono text-cyan-300 outline-none transition">
+                </div>
 
-  <button class="tool" onclick="openTool('link')">
-   <div class="tool-icon">🔗</div>
-   <h3>فحص الروابط</h3>
-   <p>تحليل الروابط واكتشاف علامات التصيد.</p>
-   <span class="open">فتح الأداة ←</span>
-  </button>
+                <!-- حد التنبيه الصوتي -->
+                <div id="thresholdContainer" class="lg:col-span-3 space-y-2">
+                    <label class="text-xs font-bold text-slate-400 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5">
+                            <i data-lucide="bell-ring" class="w-3.5 h-3.5 text-purple-400"></i>
+                            تنبيه ارتفاع البنق (ms)
+                        </span>
+                        <button id="audioToggleBtn" type="button" class="text-[11px] px-2 py-0.5 rounded-lg bg-purple-500/15 text-purple-300 border border-purple-500/30 hover:bg-purple-500/25 transition">
+                            الصوت: مفعّل
+                        </button>
+                    </label>
+                    <div class="relative flex items-center">
+                        <input type="number" id="pingThreshold" value="120" min="20" max="1000" step="10"
+                            class="w-full bg-[#0b101d] border border-white/10 focus:border-purple-500 rounded-2xl px-4 py-3 text-sm font-mono font-bold text-white outline-none transition">
+                        <span class="absolute left-4 text-xs font-mono text-slate-500">ms</span>
+                    </div>
+                </div>
 
-  <button class="tool" onclick="openTool('file')">
-   <div class="tool-icon">📁</div>
-   <h3>فحص الملفات</h3>
-   <p>عرض معلومات الملفات وحساب بصمتها.</p>
-   <span class="open">فتح الأداة ←</span>
-  </button>
+                <!-- أزرار التحكم -->
+                <div class="lg:col-span-4 flex items-center gap-3">
+                    <button id="toggleMonitorBtn" class="flex-1 bg-gradient-to-l from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-extrabold py-3 px-6 rounded-2xl shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 transition transform active:scale-95 cursor-pointer">
+                        <i id="toggleIcon" data-lucide="play" class="w-5 h-5 fill-current"></i>
+                        <span id="toggleBtnText">بدء الفحص المباشر</span>
+                    </button>
 
-  <button class="tool" onclick="openTool('ip')">
-   <div class="tool-icon">🌐</div>
-   <h3>فحص IP</h3>
-   <p>عرض معلومات عنوان الإنترنت العام.</p>
-   <span class="open">فتح الأداة ←</span>
-  </button>
+                    <button id="resetBtn" title="تصفير الإحصائيات" class="p-3.5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-slate-300 hover:text-white transition active:scale-95 cursor-pointer">
+                        <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
 
-  <button class="tool" onclick="openTool('hash')">
-   <div class="tool-icon">#️⃣</div>
-   <h3>توليد البصمات</h3>
-   <p>إنشاء بصمة SHA-256 للنصوص.</p>
-   <span class="open">فتح الأداة ←</span>
-  </button>
+        <!-- بطاقات القياس الرئيسية الأربع (KPI Cards) -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            
+            <!-- 1. البنق الحالي (Current Ping) -->
+            <div id="pingCard" class="glass-card rounded-3xl p-5 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold text-slate-400">البنق الحالي (Ping)</span>
+                    <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                        <i data-lucide="zap" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span id="currentPingVal" class="text-4xl font-black font-mono tracking-tight text-white">--</span>
+                    <span class="text-sm font-mono text-slate-400">ms</span>
+                </div>
+                <div class="mt-3 flex items-center justify-between text-xs">
+                    <span id="pingQualityTag" class="px-2.5 py-0.5 rounded-lg bg-slate-800 text-slate-400 font-semibold">بانتظار البدء</span>
+                    <span class="text-slate-500 font-mono">الاستجابة</span>
+                </div>
+            </div>
 
-  <button class="tool" onclick="openTool('encoder')">
-   <div class="tool-icon">⌨️</div>
-   <h3>تشفير النصوص</h3>
-   <p>ترميز وفك ترميز Base64.</p>
-   <span class="open">فتح الأداة ←</span>
-  </button>
- </div>
-</section>
+            <!-- 2. التذبذب (Jitter) -->
+            <div class="glass-card rounded-3xl p-5 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold text-slate-400">تذبذب الاتصال (Jitter)</span>
+                    <div class="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                        <i data-lucide="activity-square" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span id="jitterVal" class="text-4xl font-black font-mono tracking-tight text-white">--</span>
+                    <span class="text-sm font-mono text-slate-400">ms</span>
+                </div>
+                <div class="mt-3 flex items-center justify-between text-xs">
+                    <span id="jitterQualityTag" class="px-2.5 py-0.5 rounded-lg bg-slate-800 text-slate-400 font-semibold">مقياس الثبات</span>
+                    <span class="text-slate-500">المثالي &lt; 15ms</span>
+                </div>
+            </div>
 
-<!-- كلمات المرور -->
-<section class="page" id="password">
- <div class="work">
-  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
-  <h1>🔐 مختبر كلمات المرور</h1>
-  <p class="desc">أنشئ كلمة مرور قوية وافحص مستوى حمايتها.</p>
+            <!-- 3. فقدان الحزم (Packet Loss) -->
+            <div id="lossCard" class="glass-card rounded-3xl p-5 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold text-slate-400">فقدان الحزم (Packet Loss)</span>
+                    <div class="w-9 h-9 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
+                        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span id="packetLossVal" class="text-4xl font-black font-mono tracking-tight text-white">0.0</span>
+                    <span class="text-sm font-mono text-slate-400">%</span>
+                </div>
+                <div class="mt-3 flex items-center justify-between text-xs">
+                    <span id="packetsCountTag" class="text-slate-400 font-mono">0 / 0 حزمة</span>
+                    <span id="lossStatusTag" class="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-400 font-semibold">لا يوجد تقطيع</span>
+                </div>
+            </div>
 
-  <label>طول كلمة المرور</label>
-  <input id="length" type="number" value="18" min="8" max="64">
-  <button class="action" onclick="generate()">إنشاء كلمة مرور</button>
+            <!-- 4. الإحصائيات الشاملة (Min / Avg / Max) -->
+            <div class="glass-card rounded-3xl p-5 relative overflow-hidden flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold text-slate-400">ملخص القراءات (ms)</span>
+                    <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-center my-1">
+                    <div class="bg-white/[0.03] rounded-2xl p-2 border border-white/5">
+                        <div class="text-[10px] text-slate-400 mb-0.5">الأقل</div>
+                        <div id="minPingVal" class="text-base font-extrabold font-mono text-emerald-400">--</div>
+                    </div>
+                    <div class="bg-white/[0.03] rounded-2xl p-2 border border-white/5">
+                        <div class="text-[10px] text-slate-400 mb-0.5">المتوسط</div>
+                        <div id="avgPingVal" class="text-base font-extrabold font-mono text-cyan-400">--</div>
+                    </div>
+                    <div class="bg-white/[0.03] rounded-2xl p-2 border border-white/5">
+                        <div class="text-[10px] text-slate-400 mb-0.5">الأعلى</div>
+                        <div id="maxPingVal" class="text-base font-extrabold font-mono text-amber-400">--</div>
+                    </div>
+                </div>
+                <div class="mt-2 text-[11px] text-slate-400 flex items-center justify-between">
+                    <span>تقييم الألعاب:</span>
+                    <span id="gamingVerdict" class="font-bold text-slate-300">في انتظار البيانات...</span>
+                </div>
+            </div>
 
-  <div class="result">
-   <div class="result-title">كلمة المرور الناتجة</div>
-   <div id="generated">ستظهر هنا النتيجة</div>
-  </div>
-  <button class="action secondary" onclick="copy('generated')">نسخ كلمة المرور</button>
+        </section>
 
-  <label>فحص كلمة المرور</label>
-  <input id="check" type="password" placeholder="أدخل كلمة المرور هنا" oninput="strength()">
-  <div class="result" id="strengthResult">بانتظار كلمة المرور...</div>
- </div>
-</section>
+        <!-- قسم الرسم البياني المباشر وسجل الأحداث -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- الرسم البياني الحي (2/3 العرض) -->
+            <div class="lg:col-span-2 glass-card rounded-3xl p-5 sm:p-6 flex flex-col">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                    <div>
+                        <h2 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2">
+                            <i data-lucide="trending-up" class="w-5 h-5 text-cyan-400"></i>
+                            المخطط البياني المباشر للاستقرار
+                        </h2>
+                        <p class="text-xs text-slate-400">يعرض آخر 40 قراءة للبنق (ms) والتذبذب لحظة بلحظة</p>
+                    </div>
+                    <div class="flex items-center gap-4 text-xs font-semibold">
+                        <span class="flex items-center gap-1.5 text-cyan-400">
+                            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> البنق (Ping)
+                        </span>
+                        <span class="flex items-center gap-1.5 text-purple-400">
+                            <span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span> التذبذب (Jitter)
+                        </span>
+                    </div>
+                </div>
 
-<!-- الروابط -->
-<section class="page" id="link">
- <div class="work">
-  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
-  <h1>🔗 فحص الروابط</h1>
-  <p class="desc">تحليل مبدئي للرابط واكتشاف العلامات المشبوهة.</p>
-  <label>أدخل الرابط</label>
-  <input id="url" placeholder="https://example.com" dir="ltr">
-  <button class="action" onclick="scan()">ابدأ الفحص</button>
-  <div class="result" id="linkResult">نتيجة الفحص ستظهر هنا.</div>
-  <p class="note">هذا فحص أولي ولا يضمن سلامة الموقع. لا تفتح روابط مجهولة.</p>
- </div>
-</section>
+                <div class="relative w-full h-64 sm:h-72 flex-grow">
+                    <canvas id="pingChart"></canvas>
+                </div>
+            </div>
 
-<!-- الملفات -->
-<section class="page" id="file">
- <div class="work">
-  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
-  <h1>📁 فحص الملفات</h1>
-  <p class="desc">اعرض معلومات الملف واحسب بصمته الرقمية.</p>
-  <label>اختر الملف</label>
-  <input type="file" id="fileInput" dir="auto">
-  <button class="action" onclick="inspect()">تحليل الملف</button>
-  <div class="result" id="fileResult">معلومات الملف ستظهر هنا.</div>
-  <p class="note">حساب البصمة لا يعني أن الملف خالٍ من البرمجيات الضارة.</p>
- </div>
-</section>
+            <!-- سجل الأحداث والتقارير (1/3 العرض) -->
+            <div class="glass-card rounded-3xl p-5 sm:p-6 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-base font-extrabold text-white flex items-center gap-2">
+                            <i data-lucide="terminal" class="w-4 h-4 text-purple-400"></i>
+                            سجل الفحص والتنبيهات
+                        </h2>
+                        <button id="copyReportBtn" class="text-xs px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/20 flex items-center gap-1.5 transition cursor-pointer">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                            <span>نسخ التقرير</span>
+                        </button>
+                    </div>
 
-<!-- IP -->
-<section class="page" id="ip">
- <div class="work">
-  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
-  <h1>🌐 فحص عنوان IP</h1>
-  <p class="desc">اعرض معلومات عنوان الإنترنت العام.</p>
-  <button class="action" onclick="getIP()">عرض معلومات IP</button>
-  <div class="result" id="ipResult">اضغط على الزر لبدء الفحص.</div>
-  <p class="note">يتطلب اتصالاً بالإنترنت ويرسل طلباً إلى خدمة خارجية.</p>
- </div>
-</section>
+                    <!-- صندوق السجل -->
+                    <div id="eventLog" class="h-56 overflow-y-auto space-y-2 pr-1 font-mono text-xs">
+                        <div class="p-2.5 rounded-xl bg-white/[0.03] border border-white/5 text-slate-400">
+                            [النظام] جاهز لبدء فحص الاتصال. اضغط على "بدء الفحص المباشر".
+                        </div>
+                    </div>
+                </div>
 
-<!-- البصمة -->
-<section class="page" id="hash">
- <div class="work">
-  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
-  <h1>#️⃣ توليد البصمات</h1>
-  <p class="desc">أنشئ بصمة رقمية SHA-256 لأي نص.</p>
-  <label>أدخل النص</label>
-  <textarea id="hashText" placeholder="اكتب النص هنا..."></textarea>
-  <button class="action" onclick="makeHash()">إنشاء البصمة</button>
-  <div class="result" id="hashResult">ستظهر البصمة هنا.</div>
-  <button class="action secondary" onclick="copy('hashResult')">نسخ البصمة</button>
- </div>
-</section>
+                <!-- شريط حالة التقييم الذكي -->
+                <div id="smartBanner" class="mt-4 p-3.5 rounded-2xl bg-gradient-to-l from-cyan-500/10 to-purple-500/10 border border-white/10 text-xs text-slate-300 leading-relaxed">
+                    💡 <strong class="text-white">نصيحة:</strong> للحصول على أدق نتيجة للألعاب، أغلق التحميلات في الخلفية ثم ابدأ الفحص لمدة 30 ثانية.
+                </div>
+            </div>
 
-<!-- ترميز -->
-<section class="page" id="encoder">
- <div class="work">
-  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
-  <h1>⌨️ ترميز النصوص</h1>
-  <p class="desc">حوّل النص إلى Base64 أو فك ترميزه.</p>
-  <label>النص</label>
-  <textarea id="encodeText" placeholder="اكتب النص هنا..."></textarea>
-  <button class="action" onclick="encode()">ترميز النص</button>
-  <button class="action secondary" onclick="decode()">فك الترميز</button>
-  <div class="result" id="encodeResult">ستظهر النتيجة هنا.</div>
-  <button class="action secondary" onclick="copy('encodeResult')">نسخ النتيجة</button>
- </div>
-</section>
+        </section>
 
-<footer>
- TOX SECURITY LAB © 2026
- <br>جميع الحقوق محفوظة
-</footer>
+    </main>
 
-</main>
+    <!-- إشعار منبثق مخصص (Toast Notification) بديل alert -->
+    <div id="toastNotification" class="fixed bottom-6 left-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="glass-card px-5 py-3.5 rounded-2xl border border-cyan-500/30 flex items-center gap-3 shadow-2xl">
+            <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400"></i>
+            <span id="toastMessage" class="text-sm font-bold text-white">تم نسخ التقرير بنجاح!</span>
+        </div>
+    </div>
 
-<script>
-function openTool(id){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- document.getElementById(id).classList.add('active');
- window.scrollTo({top:0,behavior:'smooth'});
-}
-function home(){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- document.getElementById('home').classList.add('active');
- window.scrollTo({top:0,behavior:'smooth'});
-}
-function safe(s){
- return String(s).replace(/[&<>"']/g,c=>({
- '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
- }[c]));
-}
-function random(n){
- let a=new Uint32Array(1);
- crypto.getRandomValues(a);
- return a[0]%n;
-}
-function generate(){
- let len=Math.max(8,Math.min(64,Number(document.getElementById('length').value)||18));
- let chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*";
- let p="";
- for(let i=0;i<len;i++)p+=chars[random(chars.length)];
- document.getElementById('generated').textContent=p;
-}
-function strength(){
- let p=document.getElementById('check').value,s=0;
- if(p.length>=8)s++;
- if(p.length>=12)s++;
- if(/[A-Z]/.test(p))s++;
- if(/[a-z]/.test(p))s++;
- if(/[0-9]/.test(p))s++;
- if(/[^a-zA-Z0-9]/.test(p))s++;
- let levels=['ضعيفة جداً','ضعيفة','متوسطة','جيدة','قوية','قوية جداً','ممتازة'];
- document.getElementById('strengthResult').textContent=
- p?'مستوى الحماية: '+levels[s]:'بانتظار كلمة المرور...';
-}
-function scan(){
- let v=document.getElementById('url').value.trim();
- let out=document.getElementById('linkResult');
- try{
-  let u=new URL(v),issues=[];
-  if(!['https:','http:'].includes(u.protocol))issues.push('بروتوكول غير معتاد');
-  if(u.protocol!=='https:')issues.push('الرابط لا يستخدم HTTPS');
-  if(u.username||u.password)issues.push('بيانات دخول مضمنة في الرابط');
-  if(u.hostname.split('.').length>4)issues.push('نطاقات فرعية كثيرة');
-  if(u.hostname.includes('xn--'))issues.push('نطاق بصيغة Punycode');
-  if(/login|verify|password|account|secure/i.test(u.hostname))issues.push('اسم النطاق يحتوي كلمات تستحق الانتباه');
-  out.innerHTML='<b>النطاق:</b> '+safe(u.hostname)+'<br><br>'+
-  (issues.length?
-  '<span style="color:#ffca6b">ملاحظات تحتاج الانتباه:</span><br>'+issues.map(safe).join('<br>'):
-  '<span style="color:#45d6a0">لم تظهر علامات مبدئية واضحة.</span>');
- }catch(e){out.textContent='الرابط غير صالح. أدخل رابطاً صحيحاً.';}
-}
-async function inspect(){
- let f=document.getElementById('fileInput').files[0];
- let out=document.getElementById('fileResult');
- if(!f){out.textContent='فضلاً اختر ملفاً أولاً.';return;}
- out.textContent='جارٍ تحليل الملف...';
- try{
-  let b=await f.arrayBuffer();
-  let h=await crypto.subtle.digest('SHA-256',b);
-  let hex=[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('');
-  out.innerHTML='<b>اسم الملف:</b> '+safe(f.name)+
-  '<br><b>الحجم:</b> '+(f.size/1024).toFixed(2)+' KB'+
-  '<br><b>النوع:</b> '+safe(f.type||'غير معروف')+
-  '<br><b>SHA-256:</b><br>'+hex;
- }catch(e){out.textContent='تعذر تحليل الملف.';}
-}
-async function getIP(){
- let out=document.getElementById('ipResult');
- out.textContent='جارٍ جلب المعلومات...';
- try{
-  let r=await fetch('https://ipwho.is/');
-  let d=await r.json();
-  if(!d.success)throw Error();
-  out.innerHTML='<b>عنوان IP:</b> '+safe(d.ip)+
-  '<br><b>الدولة:</b> '+safe(d.country)+
-  '<br><b>المدينة:</b> '+safe(d.city)+
-  '<br><b>مزود الخدمة:</b> '+safe(d.connection?.isp||'غير معروف');
- }catch(e){out.textContent='تعذر جلب المعلومات. تحقق من الإنترنت.';}
-}
-async function makeHash(){
- let t=document.getElementById('hashText').value;
- let b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));
- document.getElementById('hashResult').textContent=
- [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
-}
-function encode(){
- let t=document.getElementById('encodeText').value;
- let b=new TextEncoder().encode(t);
- let binary=Array.from(b,x=>String.fromCharCode(x)).join('');
- document.getElementById('encodeResult').textContent=btoa(binary);
-}
-function decode(){
- try{
-  let b=atob(document.getElementById('encodeText').value.trim());
-  let bytes=Uint8Array.from(b,c=>c.charCodeAt(0));
-  document.getElementById('encodeResult').textContent=
-  new TextDecoder('utf-8',{fatal:true}).decode(bytes);
- }catch(e){
-  document.getElementById('encodeResult').textContent='النص غير صالح لفك الترميز.';
- }
-}
-function copy(id){
- let t=document.getElementById(id).textContent;
- if(!t)return;
- if(navigator.clipboard){
-  navigator.clipboard.writeText(t)
-  .then(()=>alert('تم النسخ بنجاح'))
-  .catch(()=>alert('تعذر النسخ'));
- }else{
-  alert('انسخ النتيجة يدوياً.');
- }
-}
-</script>
+    <!-- التذييل وحقوق المطور (Footer Branding) -->
+    <footer class="border-t border-white/5 bg-[#05080f]/90 backdrop-blur-md mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center font-mono font-black text-cyan-400 text-xs">
+                    TOX
+                </div>
+                <div class="text-xs sm:text-sm text-slate-400">
+                    تم التصميم والبرمجة بكل إتقان بواسطة <span class="text-white font-extrabold">جابر</span> 
+                    <span class="text-cyan-400 font-mono font-bold mx-1">| TOX</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 text-xs font-mono text-slate-400">
+                <span class="px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/5 text-slate-300 hover:border-cyan-500/30 transition">@TOX1_1</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/5 text-slate-300 hover:border-purple-500/30 transition">TOX02</span>
+                <span class="px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/5 text-slate-300 hover:border-emerald-500/30 transition">tox.38</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- المنطق البرمجي للأداة -->
+    <script>
+        // تفعيل أيقونات Lucide
+        lucide.createIcons();
+
+        // متغيرات الحالة (State)
+        let isRunning = false;
+        let intervalId = null;
+        let audioEnabled = true;
+        let audioCtx = null;
+
+        let stats = {
+            pings: [],
+            jitters: [],
+            totalSent: 0,
+            totalLost: 0,
+            min: Infinity,
+            max: 0,
+            lastPing: null
+        };
+
+        // عناصر الواجهة
+        const toggleBtn = document.getElementById('toggleMonitorBtn');
+        const toggleBtnText = document.getElementById('toggleBtnText');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const resetBtn = document.getElementById('resetBtn');
+        const serverSelect = document.getElementById('serverSelect');
+        const customUrlContainer = document.getElementById('customUrlContainer');
+        const customUrlInput = document.getElementById('customUrlInput');
+        const pingThresholdInput = document.getElementById('pingThreshold');
+        const audioToggleBtn = document.getElementById('audioToggleBtn');
+        const copyReportBtn = document.getElementById('copyReportBtn');
+
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const currentPingVal = document.getElementById('currentPingVal');
+        const pingQualityTag = document.getElementById('pingQualityTag');
+        const jitterVal = document.getElementById('jitterVal');
+        const jitterQualityTag = document.getElementById('jitterQualityTag');
+        const packetLossVal = document.getElementById('packetLossVal');
+        const packetsCountTag = document.getElementById('packetsCountTag');
+        const lossStatusTag = document.getElementById('lossStatusTag');
+        const minPingVal = document.getElementById('minPingVal');
+        const avgPingVal = document.getElementById('avgPingVal');
+        const maxPingVal = document.getElementById('maxPingVal');
+        const gamingVerdict = document.getElementById('gamingVerdict');
+        const eventLog = document.getElementById('eventLog');
+
+        // إعداد الرسم البياني (Chart.js)
+        const ctx = document.getElementById('pingChart').getContext('2d');
+        const gradientCyan = ctx.createLinearGradient(0, 0, 0, 280);
+        gradientCyan.addColorStop(0, 'rgba(6, 182, 212, 0.35)');
+        gradientCyan.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
+
+        const pingChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'البنق (ms)',
+                        data: [],
+                        borderColor: '#06b6d4',
+                        backgroundColor: gradientCyan,
+                        borderWidth: 2.5,
+                        pointRadius: 2.5,
+                        pointHoverRadius: 5,
+                        pointBackgroundColor: '#06b6d4',
+                        fill: true,
+                        tension: 0.38
+                    },
+                    {
+                        label: 'التذبذب (ms)',
+                        data: [],
+                        borderColor: '#a855f7',
+                        borderWidth: 1.8,
+                        borderDash: [4, 4],
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0.38
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 250 },
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                        titleColor: '#94a3b8',
+                        bodyColor: '#f8fafc',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        padding: 10,
+                        cornerRadius: 12
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255, 255, 255, 0.03)' },
+                        ticks: { color: '#64748b', maxTicksLimit: 8, font: { family: 'JetBrains Mono', size: 10 } }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 11 } }
+                    }
+                }
+            }
+        });
+
+        // إظهار/إخفاء حقل الرابط المخصص
+        serverSelect.addEventListener('change', () => {
+            if (serverSelect.value === 'custom') {
+                customUrlContainer.classList.remove('hidden');
+            } else {
+                customUrlContainer.classList.add('hidden');
+            }
+            if (isRunning) {
+                addLog('تم تغيير السيرفر المستهدف إلى: ' + getTargetName(), 'info');
+            }
+        });
+
+        // تفعيل/كتم التنبيه الصوتي
+        audioToggleBtn.addEventListener('click', () => {
+            audioEnabled = !audioEnabled;
+            audioToggleBtn.textContent = audioEnabled ? 'الصوت: مفعّل' : 'الصوت: مكتوم';
+            audioToggleBtn.className = audioEnabled
+                ? 'text-[11px] px-2 py-0.5 rounded-lg bg-purple-500/15 text-purple-300 border border-purple-500/30 hover:bg-purple-500/25 transition'
+                : 'text-[11px] px-2 py-0.5 rounded-lg bg-slate-800 text-slate-400 border border-white/10 hover:bg-slate-700 transition';
+        });
+
+        // إصدار نغمة تنبيه ناعمة عبر Web Audio API
+        function playAlertBeep() {
+            if (!audioEnabled) return;
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(580, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(420, audioCtx.currentTime + 0.18);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.2);
+            } catch (e) {}
+        }
+
+        function getTargetUrl() {
+            if (serverSelect.value === 'custom') {
+                const val = customUrlInput.value.trim();
+                return val || 'https://1.1.1.1/cdn-cgi/trace';
+            }
+            return serverSelect.value;
+        }
+
+        function getTargetName() {
+            const opt = serverSelect.options[serverSelect.selectedIndex];
+            return opt ? opt.getAttribute('data-name') : 'سيرفر مخصص';
+        }
+
+        // إضافة سطر في سجل الأحداث
+        function addLog(message, type = 'normal') {
+            const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+            const div = document.createElement('div');
+            let styleClass = 'bg-white/[0.02] border-white/5 text-slate-300';
+            if (type === 'warn') styleClass = 'bg-amber-500/10 border-amber-500/20 text-amber-300';
+            if (type === 'error') styleClass = 'bg-rose-500/15 border-rose-500/30 text-rose-300';
+            if (type === 'info') styleClass = 'bg-cyan-500/10 border-cyan-500/20 text-cyan-300';
+
+            div.className = `p-2.5 rounded-xl border ${styleClass} transition-all`;
+            div.innerHTML = `<span class="text-slate-500 ml-1.5">[${time}]</span> ${message}`;
+            eventLog.prepend(div);
+
+            // الحفاظ على آخر 35 سجل فقط للأداء
+            if (eventLog.children.length > 35) {
+                eventLog.removeChild(eventLog.lastChild);
+            }
+        }
+
+        // تنفيذ نبضة فحص واحدة (Ping Probe)
+        async function performPing() {
+            const url = getTargetUrl();
+            const cacheBuster = (url.includes('?') ? '&' : '?') + '_t=' + performance.now();
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 2500); // مهلة 2.5 ثانية
+
+            stats.totalSent++;
+            const start = performance.now();
+
+            try {
+                // استخدام وضع no-cors لقياس زمن الاستجابة الفعلي للشبكة بدقة عالية دون قيود CORS
+                await fetch(url + cacheBuster, {
+                    mode: 'no-cors',
+                    cache: 'no-store',
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                const end = performance.now();
+                const ping = Math.max(1, Math.round(end - start));
+
+                // حساب التذبذب (Jitter)
+                let jitter = 0;
+                if (stats.lastPing !== null) {
+                    jitter = Math.abs(ping - stats.lastPing);
+                }
+                stats.lastPing = ping;
+
+                stats.pings.push(ping);
+                stats.jitters.push(jitter);
+                if (ping < stats.min) stats.min = ping;
+                if (ping > stats.max) stats.max = ping;
+
+                updateUI(ping, jitter, false);
+
+                // التحقق من تجاوز حد التنبيه
+                const threshold = parseInt(pingThresholdInput.value) || 120;
+                if (ping > threshold) {
+                    playAlertBeep();
+                    addLog(`ارتفاع مفاجئ في البنق: <strong class="font-bold">${ping}ms</strong> (الحد: ${threshold}ms)`, 'warn');
+                }
+
+            } catch (err) {
+                clearTimeout(timeoutId);
+                stats.totalLost++;
+                playAlertBeep();
+                addLog(`فقدان حزمة بيانات (Packet Loss / Timeout)!`, 'error');
+                updateUI(null, null, true);
+            }
+        }
+
+        // تحديث واجهة المستخدم والرسوم البيانية
+        function updateUI(ping, jitter, isLoss) {
+            // تحديث نسبة فقدان الحزم
+            const lossRate = ((stats.totalLost / stats.totalSent) * 100).toFixed(1);
+            packetLossVal.textContent = lossRate;
+            packetsCountTag.textContent = `${stats.totalLost} / ${stats.totalSent} مفقودة`;
+
+            if (parseFloat(lossRate) === 0) {
+                lossStatusTag.textContent = 'اتصال نظيف 100%';
+                lossStatusTag.className = 'px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-400 font-semibold';
+            } else if (parseFloat(lossRate) < 3) {
+                lossStatusTag.textContent = 'فقدان طفيف';
+                lossStatusTag.className = 'px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-400 font-semibold';
+            } else {
+                lossStatusTag.textContent = 'تقطيع ملحوظ!';
+                lossStatusTag.className = 'px-2 py-0.5 rounded-lg bg-rose-500/15 text-rose-400 font-semibold';
+            }
+
+            if (isLoss) {
+                currentPingVal.textContent = 'ERR';
+                currentPingVal.className = 'text-4xl font-black font-mono tracking-tight text-rose-500';
+                return;
+            }
+
+            // تحديث البنق الحالي وتلوينه حسب الجودة
+            currentPingVal.textContent = ping;
+            if (ping <= 65) {
+                currentPingVal.className = 'text-4xl font-black font-mono tracking-tight text-emerald-400';
+                pingQualityTag.textContent = 'ممتاز جداً';
+                pingQualityTag.className = 'px-2.5 py-0.5 rounded-lg bg-emerald-500/15 text-emerald-400 font-semibold';
+            } else if (ping <= 115) {
+                currentPingVal.className = 'text-4xl font-black font-mono tracking-tight text-cyan-400';
+                pingQualityTag.textContent = 'جيد ومستقر';
+                pingQualityTag.className = 'px-2.5 py-0.5 rounded-lg bg-cyan-500/15 text-cyan-400 font-semibold';
+            } else {
+                currentPingVal.className = 'text-4xl font-black font-mono tracking-tight text-rose-400';
+                pingQualityTag.textContent = 'بنق مرتفع';
+                pingQualityTag.className = 'px-2.5 py-0.5 rounded-lg bg-rose-500/15 text-rose-400 font-semibold';
+            }
+
+            // تحديث التذبذب (Jitter)
+            const avgJitter = Math.round(stats.jitters.reduce((a, b) => a + b, 0) / stats.jitters.length);
+            jitterVal.textContent = avgJitter;
+            if (avgJitter <= 12) {
+                jitterQualityTag.textContent = 'ثبات مثالي';
+                jitterQualityTag.className = 'px-2.5 py-0.5 rounded-lg bg-emerald-500/15 text-emerald-400 font-semibold';
+            } else if (avgJitter <= 30) {
+                jitterQualityTag.textContent = 'تذبذب مقبول';
+                jitterQualityTag.className = 'px-2.5 py-0.5 rounded-lg bg-amber-500/15 text-amber-400 font-semibold';
+            } else {
+                jitterQualityTag.textContent = 'غير مستقر';
+                jitterQualityTag.className = 'px-2.5 py-0.5 rounded-lg bg-rose-500/15 text-rose-400 font-semibold';
+            }
+
+            // تحديث الأقل / المتوسط / الأعلى
+            const avgPing = Math.round(stats.pings.reduce((a, b) => a + b, 0) / stats.pings.length);
+            minPingVal.textContent = stats.min === Infinity ? '--' : stats.min;
+            avgPingVal.textContent = avgPing;
+            maxPingVal.textContent = stats.max;
+
+            // تقييم الألعاب الذكي
+            if (avgPing <= 70 && avgJitter <= 15 && parseFloat(lossRate) === 0) {
+                gamingVerdict.textContent = 'مثالي للألعاب التنافسية (Ranked)';
+                gamingVerdict.className = 'font-bold text-emerald-400';
+            } else if (avgPing <= 120 && parseFloat(lossRate) < 2) {
+                gamingVerdict.textContent = 'مناسب للعب والبث المباشر';
+                gamingVerdict.className = 'font-bold text-cyan-400';
+            } else {
+                gamingVerdict.textContent = 'قد تواجه تأخير (Lag) أثناء اللعب';
+                gamingVerdict.className = 'font-bold text-rose-400';
+            }
+
+            // تحديث الرسم البياني
+            const nowLabel = new Date().toLocaleTimeString('en-GB', { minute: '2-digit', second: '2-digit' });
+            pingChart.data.labels.push(nowLabel);
+            pingChart.data.datasets[0].data.push(ping);
+            pingChart.data.datasets[1].data.push(jitter);
+
+            if (pingChart.data.labels.length > 40) {
+                pingChart.data.labels.shift();
+                pingChart.data.datasets[0].data.shift();
+                pingChart.data.datasets[1].data.shift();
+            }
+            pingChart.update();
+        }
+
+        // تشغيل / إيقاف الفحص
+        toggleBtn.addEventListener('click', () => {
+            if (!isRunning) {
+                isRunning = true;
+                toggleBtnText.textContent = 'إيقاف الفحص';
+                toggleBtn.className = 'flex-1 bg-gradient-to-l from-rose-500 to-red-600 hover:from-rose-400 hover:to-red-500 text-white font-extrabold py-3 px-6 rounded-2xl shadow-lg shadow-rose-500/25 flex items-center justify-center gap-2 transition transform active:scale-95 cursor-pointer';
+                toggleIcon.setAttribute('data-lucide', 'square');
+                
+                statusDot.className = 'relative w-2.5 h-2.5 rounded-full bg-emerald-400 pulse-dot';
+                statusText.textContent = 'جاري الفحص المباشر...';
+                statusText.className = 'text-emerald-400 font-bold';
+
+                addLog(`بدء مراقبة الاتصال على: <strong class="text-cyan-300">${getTargetName()}</strong>`, 'info');
+                performPing();
+                intervalId = setInterval(performPing, 1000);
+            } else {
+                stopMonitoring();
+            }
+            lucide.createIcons();
+        });
+
+        function stopMonitoring() {
+            isRunning = false;
+            clearInterval(intervalId);
+            toggleBtnText.textContent = 'بدء الفحص المباشر';
+            toggleBtn.className = 'flex-1 bg-gradient-to-l from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-extrabold py-3 px-6 rounded-2xl shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 transition transform active:scale-95 cursor-pointer';
+            toggleIcon.setAttribute('data-lucide', 'play');
+
+            statusDot.className = 'relative w-2.5 h-2.5 rounded-full bg-amber-400';
+            statusText.textContent = 'متوقف مؤقتاً';
+            statusText.className = 'text-amber-300';
+            addLog('تم إيقاف الفحص مؤقتاً.', 'normal');
+            lucide.createIcons();
+        }
+
+        // تصفير البيانات
+        resetBtn.addEventListener('click', () => {
+            stats = { pings: [], jitters: [], totalSent: 0, totalLost: 0, min: Infinity, max: 0, lastPing: null };
+            currentPingVal.textContent = '--';
+            currentPingVal.className = 'text-4xl font-black font-mono tracking-tight text-white';
+            pingQualityTag.textContent = 'بانتظار البدء';
+            pingQualityTag.className = 'px-2.5 py-0.5 rounded-lg bg-slate-800 text-slate-400 font-semibold';
+            jitterVal.textContent = '--';
+            packetLossVal.textContent = '0.0';
+            packetsCountTag.textContent = '0 / 0 حزمة';
+            minPingVal.textContent = '--';
+            avgPingVal.textContent = '--';
+            maxPingVal.textContent = '--';
+            gamingVerdict.textContent = 'في انتظار البيانات...';
+            gamingVerdict.className = 'font-bold text-slate-300';
+
+            pingChart.data.labels = [];
+            pingChart.data.datasets[0].data = [];
+            pingChart.data.datasets[1].data = [];
+            pingChart.update();
+
+            eventLog.innerHTML = '';
+            addLog('تم تصفير جميع القراءات والإحصائيات.', 'info');
+            showToast('تم تصفير البيانات بنجاح');
+        });
+
+        // نسخ التقرير الكامل للحافظة
+        copyReportBtn.addEventListener('click', () => {
+            const avg = stats.pings.length ? Math.round(stats.pings.reduce((a, b) => a + b, 0) / stats.pings.length) : 0;
+            const avgJit = stats.jitters.length ? Math.round(stats.jitters.reduce((a, b) => a + b, 0) / stats.jitters.length) : 0;
+            const loss = stats.totalSent ? ((stats.totalLost / stats.totalSent) * 100).toFixed(1) : '0.0';
+
+            const reportText = `📊 تقرير فحص استقرار الاتصال - TOX NetPulse
+• السيرفر: ${getTargetName()}
+• متوسط البنق (Avg Ping): ${avg} ms
+• أقل / أعلى بنق: ${stats.min === Infinity ? 0 : stats.min} ms / ${stats.max} ms
+• معدل التذبذب (Jitter): ${avgJit} ms
+• فقدان الحزم (Packet Loss): ${loss}% (${stats.totalLost}/${stats.totalSent})
+• التقييم: ${gamingVerdict.textContent}
+---
+تم الفحص بواسطة أداة جابر | TOX (@TOX1_1)`;
+
+            const tempInput = document.createElement('textarea');
+            tempInput.value = reportText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast('تم نسخ تقرير الاتصال إلى الحافظة!');
+        });
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastMessage').textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2800);
+        }
+    </script>
 </body>
 </html>
