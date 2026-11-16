@@ -3,157 +3,159 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TOX AI : محمد الشمري | المساعد الذكي الخارق</title>
+<title>TOX Brand Studio | استوديو الهوية والشعارات الملكي</title>
 
 <style>
-:root{--bg-base:#030712;--bg-card:#0b1329;--border-color:#1e3a8a;--accent-glow:#00d4ff;--text-main:#e2ecff;--text-sub:#8ab4f8}
+:root{--bg-base:#040711;--bg-card:#0b1121;--border-color:#1e293b;--gold-accent:#f59e0b;--cyan-accent:#00d4ff;--text-main:#f8fafc;--text-sub:#94a3b8}
 *{box-sizing:border-box;margin:0;padding:0}
-body{min-height:100vh;background:var(--bg-base);color:var(--text-main);font-family:system-ui,-apple-system,sans-serif;display:flex;justify-content:center;align-items:center;padding:10px}
-main{width:100%;max-width:580px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:20px;padding:16px;box-shadow:0 25px 60px rgba(0,102,255,0.25);display:flex;flex-direction:column;height:92vh}
+body{min-height:100vh;background:radial-gradient(circle at top,#0f172a,#040711);color:var(--text-main);font-family:system-ui,-apple-system,sans-serif;display:flex;justify-content:center;align-items:center;padding:15px}
+main{width:100%;max-width:620px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:24px;padding:24px;box-shadow:0 25px 70px rgba(0,0,0,0.7), 0 0 30px rgba(0,212,255,0.1)}
 
-.header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #152d56;padding-bottom:12px;margin-bottom:12px;flex-shrink:0}
-.title-area h1{color:var(--accent-glow);font-size:18px;font-weight:900;letter-spacing:.5px}
-.title-area p{color:var(--text-sub);font-size:11px;margin-top:2px;font-weight:600}
-.status-badge{background:#052248;border:1px solid #00d4ff;color:#00d4ff;font-size:10px;padding:4px 8px;border-radius:20px;display:flex;align-items:center;gap:5px}
-.status-dot{width:6px;height:6px;background:#00d4ff;border-radius:50%;box-shadow:0 0 8px #00d4ff}
+.header{text-align:center;border-bottom:1px solid #1e293b;padding-bottom:18px;margin-bottom:20px}
+.badge{display:inline-block;background:rgba(245,158,11,0.1);border:1px solid var(--gold-accent);color:var(--gold-accent);font-size:11px;padding:4px 12px;border-radius:20px;font-weight:bold;margin-bottom:8px}
+.header h1{font-size:24px;font-weight:900;background:linear-gradient(to left,#fff,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{color:var(--text-sub);font-size:13px;margin-top:4px}
 
-#chatContainer{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;margin-bottom:12px;padding:6px;scroll-behavior:smooth}
-.message{padding:14px 16px;border-radius:16px;font-size:13.5px;line-height:1.8;max-width:92%;word-break:break-word;box-shadow:0 4px 15px rgba(0,0,0,0.25)}
-.message.user{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
-.message.ai{background:#06112a;border:1px solid #1d4ed8;color:#f1f5f9;align-self:flex-start;border-bottom-left-radius:4px}
+.input-group{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.row{display:flex;gap:10px}
+input, select{width:100%;background:#020617;border:1px solid #334155;color:#fff;padding:12px 14px;border-radius:12px;font-size:14px;outline:none;transition:.3s}
+input:focus, select:focus{border-color:var(--cyan-accent);box-shadow:0 0 12px rgba(0,212,255,0.2)}
 
-.examples{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;font-size:11px;align-items:center;flex-shrink:0}
-.ex-tag{background:#081b3d;border:1px solid #1e3a8a;color:#93c5fd;padding:5px 10px;border-radius:8px;cursor:pointer;transition:.2s}
-.ex-tag:hover{background:#1d4ed8;color:#fff;border-color:#00d4ff}
+button.generate-btn{width:100%;border:0;border-radius:12px;background:linear-gradient(135deg,#0284c7,#2563eb);color:#fff;padding:14px;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 8px 20px rgba(37,99,235,0.4);transition:.3s}
+button.generate-btn:hover{transform:translateY(-2px);box-shadow:0 12px 25px rgba(37,99,235,0.6)}
 
-form{display:flex;gap:8px;flex-shrink:0;background:#020614;border:1px solid #1d4ed8;border-radius:14px;padding:6px;box-shadow:0 0 15px rgba(29,78,216,0.15)}
-input{flex:1;background:transparent;border:0;color:#fff;padding:8px 10px;font-size:13px;outline:none;text-align:right}
-input::placeholder{color:#64748b}
-button.submit-btn{border:0;border-radius:10px;background:linear-gradient(135deg,#0052D4,#4364F7);color:#fff;padding:0 18px;font-weight:bold;cursor:pointer;font-size:13px;box-shadow:0 4px 12px rgba(0,82,212,0.4);transition:.2s}
-button.submit-btn:hover{opacity:.9;transform:scale(1.02)}
+#resultArea{display:none;animation:fadeIn 0.5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-footer{color:#64748b;text-align:center;font:10px monospace;padding-top:8px;border-top:1px solid #112240;flex-shrink:0;margin-top:auto}
+.logo-showcase{background:#020617;border:1px solid #1e293b;border-radius:16px;padding:24px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+.logo-icon{width:64px;height:64px;margin:0 auto 12px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#fff;box-shadow:0 10px 25px rgba(0,0,0,0.5)}
+.brand-title{font-size:26px;font-weight:900;letter-spacing:1px}
+.brand-slogan{color:var(--text-sub);font-size:13px;margin-top:6px;font-style:italic}
+
+.grid-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.card{background:#060d1f;border:1px solid #1e293b;border-radius:14px;padding:14px}
+.card h3{font-size:12px;color:var(--cyan-accent);margin-bottom:10px;text-transform:uppercase}
+
+.colors-list{display:flex;gap:8px;justify-content:space-between}
+.color-box{flex:1;height:45px;border-radius:8px;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px;font-size:10px;font-family:monospace;color:#fff;text-shadow:0 1px 3px #000;transition:.2s;border:1px solid rgba(255,255,255,0.1)}
+.color-box:hover{transform:scale(1.05)}
+
+.strategy-text{font-size:12.5px;line-height:1.6;color:#cbd5e1}
+
+footer{color:#475569;text-align:center;font:11px monospace;padding-top:16px;border-top:1px solid #1e293b;margin-top:16px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#10b981;color:#fff;padding:8px 18px;border-radius:20px;font-size:12px;font-weight:bold;display:none;box-shadow:0 5px 15px rgba(16,185,129,0.4)}
 </style>
 </head>
 <body>
 <main>
   <div class="header">
-    <div class="title-area">
-      <h1>TOX AI 🤖</h1>
-      <p>المساعد الذكي الخارق - بإشراف محمد الشمري</p>
+    <div class="badge">✨ TOX BRAND STUDIO</div>
+    <h1>استوديو الهوية والشعارات</h1>
+    <p>صمم هوية مشروعك، ألوانك، وشعارك التسويقي بضغطة زر</p>
+  </div>
+
+  <div class="input-group">
+    <div class="row">
+      <input id="brandName" placeholder="اسم المشروع أو المتجر (مثلاً: TOX)" autocomplete="off">
+      <select id="brandField">
+        <option value="tech">تقنية وبرمجة</option>
+        <option value="gaming">ألعاب ورياضات إلكترونية</option>
+        <option value="store">متجر وتجارة إلكترونية</option>
+        <option value="luxury">علامة فاخرة وعطور</option>
+      </select>
     </div>
-    <div class="status-badge">
-      <div class="status-dot"></div>
-      محرك الذكاء الخارق نشط
+    <button class="generate-btn" onclick="generateBrand()">⚡ ابتكار الهوية البصرية الآن</button>
+  </div>
+
+  <div id="resultArea">
+    <div class="logo-showcase" id="logoBox">
+      <div class="logo-icon" id="logoIcon">T</div>
+      <div class="brand-title" id="resName">TOX</div>
+      <div class="brand-slogan" id="resSlogan">"نصنع المستقبل بأيدينا"</div>
+    </div>
+
+    <div class="grid-cards">
+      <div class="card">
+        <h3>🎨 لوحة الألوان (اضغط للنسخ)</h3>
+        <div class="colors-list" id="colorsContainer"></div>
+      </div>
+      <div class="card">
+        <h3>🚀 الرؤية والتسويق</h3>
+        <p class="strategy-text" id="resStrategy"></p>
+      </div>
     </div>
   </div>
-
-  <div id="chatContainer">
-    <div class="message ai">يا هلا والله ومية هلا يا أسطورة! أنا **TOX AI** بحلتي الخارقة والجديدة كلياً. من اللحظة هذي، أنا جاهز أجاوبك على أي شي بالكون بدقة عميقة، تفصيل ممتع، وبلغة عربية فخمة. اسألني عن الألعاب، البرمجة، الشروحات، أو أي فكرة في بالك! 🚀🔥</div>
-  </div>
-
-  <div class="examples" id="examplesBox">
-    <span style="color:#64748b">جرب:</span>
-    <span class="ex-tag" onclick="sendDirect('كيف أحمل وأثبت لعبة فايف أم (FiveM)؟')">تحميل FiveM</span>
-    <span class="ex-tag" onclick="sendDirect('كيف أتعلم البرمجة وأصير محترف؟')">احتراف البرمجة</span>
-    <span class="ex-tag" onclick="sendDirect('عطني أفكار مشاريع تقنية مبتكرة')">أفكار مشاريع</span>
-  </div>
-
-  <form id="chatForm" onsubmit="handleFormSubmit(event)">
-    <input id="targetInput" placeholder="اسأل عن أي شي في بالك وسأجيبك بذكاء..." autocomplete="off">
-    <button id="goBtn" class="submit-btn" type="submit">إرسال</button>
-  </form>
 
   <footer>
-    TOX AI Platform &copy; 2026 - Mohammed Al-Shammari
+    Engineered by Mohammed Al-Shammari &copy; 2026
   </footer>
 </main>
 
+<div class="toast" id="toastMsg">تم نسخ كود اللون بنجاح! ✅</div>
+
 <script>
-const chatContainer = document.getElementById('chatContainer');
-const targetInput = document.getElementById('targetInput');
+const palettes = {
+  tech: [
+    { colors: ['#0284c7', '#00d4ff', '#0f172a'], slogans: ['ابتكار يتجاوز الحدود', 'تقنية المستقبل بين يديك', 'ذكاء يبني الغد'], strategy: 'ركز على السرعة، الحداثة، واستخدام واجهات نظيفة تعكس الثقة والاحترافية التقنية.' },
+    { colors: ['#4f46e5', '#818cf8', '#1e1b4b'], slogans: ['حلول ذكية لعالم متسارع', 'هندسة الإبداع الرقمي', 'نحو آفاق تقنية بلا حدود'], strategy: 'استهدف رواد الأعمال والشركات الناشئة عبر إبراز الكفاءة والأمان في خدماتك.' }
+  ],
+  gaming: [
+    { colors: ['#dc2626', '#f97316', '#09090b'], slogans: ['سيطر على الساحة بلا رحمة', 'حيث يولد الأساطير', 'قوة، سرعة، وانتصار'], strategy: 'اعتمد على التصاميم الحماسية، البثوث المباشرة، وبناء مجتمع تفاعلي قوي للاعبين.' },
+    { colors: ['#9333ea', '#00f0ff', '#050505'], slogans: ['اللعبة تبدأ من هنا', 'تحدَّ المستحيل وكن الأول', 'عالمك الافتراضي بأعلى أداء'], strategy: 'استخدم مؤثرات النيون وركز على البطولات والتحديات لجذب جمهور الألعاب.' }
+  ],
+  store: [
+    { colors: ['#059669', '#34d399', '#064e3b'], slogans: ['جودة تستحق ثقتك', 'تسوق بذكاء وأناقة', 'كل ما تحتاجه في مكان واحد'], strategy: 'اهتم بتجربة العميل السلسة، سرعة التوصيل، وتقديم عروض حصرية تزيد من ولاء المشترين.' }
+  ],
+  luxury: [
+    { colors: ['#d97706', '#fbbf24', '#18181b'], slogans: ['فخامة تليق بالنخبة', 'عنوان التميز والرقي', 'تفاصيل صُنعت لتبهر'], strategy: 'اعتمد على التغليف الفاخر، التصوير السينمائي، والتسويق القائم على الحصرية والندرة.' }
+  ]
+};
 
-function sendDirect(text) {
-  targetInput.value = text;
-  processMessage();
+function generateBrand() {
+  const nameInput = document.getElementById('brandName').value.trim();
+  const field = document.getElementById('brandField').value;
+  
+  if (!nameInput) {
+    alert('اكتب اسم مشروعك أولاً يا أسطورة!');
+    return;
+  }
+
+  const fieldData = palettes[field];
+  const randomSet = fieldData[Math.floor(Math.random() * fieldData.length)];
+  const randomSlogan = randomSet.slogans[Math.floor(Math.random() * randomSet.slogans.length)];
+
+  // تحديث الشعار والنصوص
+  document.getElementById('resName').innerText = nameInput.toUpperCase();
+  document.getElementById('resSlogan').innerText = `"${randomSlogan}"`;
+  document.getElementById('resStrategy').innerText = randomSet.strategy;
+
+  // تحديث أيقونة الشعار
+  const icon = document.getElementById('logoIcon');
+  icon.innerText = nameInput.charAt(0).toUpperCase();
+  icon.style.background = `linear-gradient(135deg, ${randomSet.colors[0]}, ${randomSet.colors[1]})`;
+  document.getElementById('logoBox').style.borderColor = randomSet.colors[0];
+
+  // توليد مربعات الألوان
+  const colorsContainer = document.getElementById('colorsContainer');
+  colorsContainer.innerHTML = '';
+  randomSet.colors.forEach(hex => {
+    const box = document.createElement('div');
+    box.className = 'color-box';
+    box.style.backgroundColor = hex;
+    box.innerText = hex;
+    box.onclick = () => copyColor(hex);
+    colorsContainer.appendChild(box);
+  });
+
+  document.getElementById('resultArea').style.display = 'block';
 }
 
-function handleFormSubmit(event) {
-  event.preventDefault();
-  processMessage();
-}
-
-function processMessage() {
-  const query = targetInput.value.trim();
-  if (!query) return;
-
-  appendMessage(query, 'user');
-  targetInput.value = '';
-
-  const loadId = 'load-' + Date.now();
-  appendMessage('⚡ جاري تحليل الطلب واستخراج أفضل المعلومات بدقة...', 'ai', loadId);
-
-  setTimeout(() => {
-    const loadingElement = document.getElementById(loadId);
-    if (loadingElement) loadingElement.remove();
-    
-    const reply = generateSmartEngineReply(query);
-    appendMessage(reply, 'ai');
-  }, 1000);
-}
-
-function appendMessage(text, sender, customId = null) {
-  const msgDiv = document.createElement('div');
-  msgDiv.className = `message ${sender}`;
-  if (customId) {
-    msgDiv.id = customId;
-    msgDiv.style.opacity = '0.75';
-    msgDiv.innerHTML = text;
-  } else {
-    msgDiv.innerHTML = text.replace(/\n/g, '<br>');
-  }
-  chatContainer.appendChild(msgDiv);
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-  return customId;
-}
-
-function generateSmartEngineReply(query) {
-  const q = query.toLowerCase();
-
-  // التحقق من المواضيع المتعلقة بـ فايف أم / FiveM / الألعاب
-  if (q.includes('فايف أم') || q.includes('fivem') || q.includes('جيتا') || q.includes('gta') || q.includes('تحميل لعبة')) {
-    return `🎮 **دليل تحميل وتشغيل فايف أم (FiveM) الاحترافي:**<br><br>` +
-           `يا أسطورة، عشان تلعب FiveM وتدخل السيرفرات وتستمتع بالتجربة، اتبع الخطوات التالية بدقة:<br>` +
-           `1. **النسخة الأصلية:** تأكد أولاً أن لعبة GTA V الأصلية مثبثة عندك على جهازك (سواء من متجر Steam, Epic Games, أو Rockstar Launcher) ومحدثة لآخر إصدار.<br>` +
-           `2. **تحميل منصة FiveM:** ادخل على الموقع الرسمي لـ FiveM (fivem.net) وحمل ملف التثبيت (Client Installer).<br>` +
-           `3. **مسار التثبيت:** شغل ملف التثبيت، ويُفضل تثبيته في مجلد منفصل بعيداً عن مجلد اللعبة الأصلي لكي لا يحدث أي تعارض في الملفات.<br>` +
-           `4. **ربط الحسابات وتشغيل اللعبة:** بعد انتهاء التثبيت، افتح أيقونة FiveM، وسيطلب منك تسجيل الدخول بحساب Rockstar الخاص بك، ثم اختر السيرفر الذي تريده وستبدأ اللعبة بالتحميل التلقائي للملفات.<br><br>` +
-           `هل تواجه مشكلة معينة أثناء التثبيت أو تحتاج اسم سيرفر قوي لنلعب سوا؟`;
-  }
-  // البرمجة وتطوير المواقع
-  else if (q.includes('برمجة') || q.includes('كود') || q.includes('بايثون') || q.includes('تطوير') || q.includes('موقع')) {
-    return `💻 **التوجيه البرمجي الشامل من TOX AI:**<br><br>` +
-           `موضوع رائع جداً! عالم البرمجة يعتمد على التفكير المنطقي وحل المشكلات خطوة بخطوة. إذا كنت تريد الاحتراف بجد:<br>` +
-           `- **البداية الصحيحة:** ابدأ بتعلم أساسيات HTML و CSS و JavaScript إذا كنت تهتم بتطوير واجهات الويب والمواقع (مثل هذا الموقع الفخم الذي أنشأناه معاً).<br>` +
-           `- **التطبيق العملي:** لا تكثر من مشاهدة الشروحات النظرية، بل ابدأ فوراً بكتابة الأكواد وتعديلها بنفسك لتكتشف الأخطاء وتتعلم منها.<br>` +
-           `هل تريد أن أكتب لك كوداً معيناً أو أساعدك في بناء صفحة ويب بلغة محددة الآن؟`;
-  }
-  // الذكاء الاصطناعي والمشاريع
-  else if (q.includes('ذكاء اصطناعي') || q.includes('ai') || q.includes('مشروع') || q.includes('فكرة') || q.includes('تأسيس')) {
-    return `🚀 **تحليل وهندسة المشاريع والأفكار الذكية:**<br><br>` +
-           `يا أسطورة، المشاريع الناجحة تبدأ من فكرة تحل مشكلة حقيقية يواجهها الناس يومياً. لتأسيس مشروع قوي ومتطور:<br>` +
-           `1. **دراسة الفكرة:** حدد الهدف بدقة واعرف من هو المستهدف.<br>` +
-           `2. **النسخة التجريبية (MVP):** اطلق نسخة أولية بسيطة وسريعة للموقع أو التطبيق واختبرها على أرض الواقع.<br>` +
-           `3. **التطوير المستمر:** استمع لآراء المستخدمين وعدّل أول بأول.<br>` +
-           `ما هي فكرة مشروعك القادم؟ اطرحها علي لكي نبتكر لها خطة عمل استثنائية ونفصل تفاصيلها كاملة!`;
-  }
-  // الرد العام الذكي والموسع لأي استفسار آخر
-  else {
-    return `✨ **التحليل الذكي والشامل من TOX AI:**<br><br>` +
-           `لقد استقبلت استفسارك بعناية فائقة حول: *"${query}"*.<br>` +
-           `بصفتي مساعدك الذكي وماردك التقني المطور بإشراف محمد الشمري، أؤكد لك أن هذا الموضوع يمتلك أبعاداً شيقة ومفيدة جداً. التعامل معه يتطلب نظرة تحليلية وترتيباً دقيقاً للخطوات لضمان الوصول لأفضل نتيجة ممكنة.<br><br>` +
-           `أنا جاهز لأعطيك كل التفاصيل والحلول التي تبحث عنها.. هل ترغب أن نتعمق أكثر في نقطة محددة داخل هذا الموضوع، أو نناقش جانباً آخر منه؟ 🚀`;
-  }
+function copyColor(hex) {
+  navigator.clipboard.writeText(hex);
+  const toast = document.getElementById('toastMsg');
+  toast.innerText = `تم نسخ اللون ${hex} بنجاح! ✅`;
+  toast.style.display = 'block';
+  setTimeout(() => { toast.style.display = 'none'; }, 2000);
 }
 </script>
 </body>
