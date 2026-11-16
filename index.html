@@ -1,699 +1,770 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TOX : محمد الشمري | فاحص الروابط والبرامج</title>
-
-<!-- Microsoft Clarity Tracking Code -->
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "zegdrukhdx");
-</script>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&family=JetBrains+Mono:wght@600;800&display=swap');
-
-:root {
-  --bg-deep: #02050f;
-  --accent-cyan: #00f0ff;
-  --accent-blue: #0055ff;
-  --accent-purple: #8b5cf6;
-  --text-main: #f0f6ff;
-  --text-muted: #94b8e8;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  min-height: 100vh;
-  background-color: var(--bg-deep);
-  color: var(--text-main);
-  font-family: 'Cairo', system-ui, -apple-system, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 14px;
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* خلفية حية متغيرة الألوان (Aurora + Cyber Grid) */
-.live-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -3;
-  background: linear-gradient(125deg, #020617, #041230, #0c0628, #03192e, #020617);
-  background-size: 400% 400%;
-  animation: auroraShift 16s ease infinite;
-}
-
-@keyframes auroraShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* هالات ضوئية تسبح وتتغير ألوانها في الخلفية */
-.orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(90px);
-  z-index: -2;
-  opacity: 0.55;
-  pointer-events: none;
-  animation: floatOrb 18s ease-in-out infinite alternate, hueCycle 20s linear infinite;
-}
-
-.orb-1 {
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle, #00d4ff 0%, transparent 70%);
-  top: -100px;
-  right: -80px;
-}
-
-.orb-2 {
-  width: 480px;
-  height: 480px;
-  background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
-  bottom: -140px;
-  left: -100px;
-  animation-delay: -6s;
-}
-
-.orb-3 {
-  width: 320px;
-  height: 320px;
-  background: radial-gradient(circle, #0051ff 0%, transparent 70%);
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation-delay: -11s;
-}
-
-@keyframes floatOrb {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(40px, -30px) scale(1.15); }
-  100% { transform: translate(-30px, 40px) scale(0.95); }
-}
-
-@keyframes hueCycle {
-  0% { filter: blur(90px) hue-rotate(0deg); }
-  50% { filter: blur(100px) hue-rotate(45deg); }
-  100% { filter: blur(90px) hue-rotate(0deg); }
-}
-
-/* شبكة تقنية متحركة فوق الألوان */
-.cyber-grid {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background-image: 
-    linear-gradient(rgba(0, 240, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 240, 255, 0.045) 1px, transparent 1px);
-  background-size: 38px 38px;
-  mask-image: radial-gradient(ellipse at center, black 35%, transparent 85%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 85%);
-  animation: gridPan 30s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes gridPan {
-  0% { background-position: 0 0; }
-  100% { background-position: 38px 38px; }
-}
-
-/* البطاقة الرئيسية بإطار نيون متحرك وزجاج معتم */
-main {
-  width: 100%;
-  max-width: 510px;
-  background: rgba(6, 14, 34, 0.72);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border-radius: 26px;
-  padding: 28px 24px 22px;
-  position: relative;
-  box-shadow: 
-    0 30px 70px rgba(0, 0, 0, 0.75),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  z-index: 1;
-}
-
-/* إطار مضيء متدرج يتغير لونه بانسيابية حول البطاقة */
-main::before {
-  content: '';
-  position: absolute;
-  inset: -1.5px;
-  border-radius: 27.5px;
-  padding: 1.5px;
-  background: linear-gradient(135deg, #00f0ff, #0055ff, #8b5cf6, #00f0ff);
-  background-size: 300% 300%;
-  animation: borderGlow 8s ease infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-@keyframes borderGlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* الهيدر */
-.header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 14px;
-  margin-bottom: 22px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid rgba(148, 184, 232, 0.14);
-}
-
-.avatar-wrap {
-  position: relative;
-  width: 90px;
-  height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.avatar-wrap::before {
-  content: '';
-  position: absolute;
-  inset: -5px;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, #00f0ff, #0055ff, #8b5cf6, #00f0ff);
-  animation: spinRing 6s linear infinite;
-  opacity: 0.85;
-}
-
-.avatar-wrap::after {
-  content: '';
-  position: absolute;
-  inset: -10px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.35), transparent 70%);
-  filter: blur(8px);
-  z-index: -1;
-}
-
-@keyframes spinRing {
-  to { transform: rotate(360deg); }
-}
-
-.avatar {
-  width: 84px;
-  height: 84px;
-  border-radius: 50%;
-  border: 3px solid #050c1f;
-  object-fit: cover;
-  position: relative;
-  z-index: 1;
-  background: #050c1f;
-}
-
-.title-area h1 {
-  font-family: 'JetBrains Mono', 'Cairo', monospace;
-  font-size: 21px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
-  background: linear-gradient(90deg, #ffffff 0%, #00f0ff 50%, #a5b4fc 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: textShimmer 6s linear infinite;
-}
-
-@keyframes textShimmer {
-  to { background-position: 200% center; }
-}
-
-.title-area p {
-  color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-/* التبويبات */
-.tabs {
-  display: flex;
-  gap: 6px;
-  background: rgba(2, 7, 20, 0.7);
-  padding: 6px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  margin-bottom: 18px;
-}
-
-.tab {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  padding: 10px 8px;
-  border-radius: 10px;
-  font-family: 'Cairo', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-  text-align: center;
-  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.tab:hover:not(.active) {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.tab.active {
-  background: linear-gradient(135deg, #0055ff 0%, #00c6ff 100%);
-  color: #fff;
-  box-shadow: 0 4px 18px rgba(0, 140, 255, 0.45);
-}
-
-/* النموذج وحقل الإدخال */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.input-box {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-input {
-  width: 100%;
-  background: rgba(2, 6, 18, 0.85);
-  border: 1px solid rgba(56, 189, 248, 0.28);
-  color: #fff;
-  padding: 14px 16px 14px 78px;
-  border-radius: 14px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  outline: none;
-  direction: ltr;
-  text-align: left;
-  transition: all 0.25s ease;
-}
-
-input::placeholder {
-  color: #4b6a9b;
-}
-
-input:focus {
-  border-color: var(--accent-cyan);
-  background: rgba(3, 10, 28, 0.95);
-  box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.16), 0 0 22px rgba(0, 240, 255, 0.2);
-}
-
-.file-label {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: rgba(2, 6, 18, 0.75);
-  border: 1.5px dashed rgba(0, 240, 255, 0.4);
-  color: #bae6fd;
-  padding: 16px;
-  border-radius: 14px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.file-label:hover {
-  border-color: var(--accent-cyan);
-  background: rgba(0, 240, 255, 0.08);
-  color: #fff;
-}
-
-input[type="file"] {
-  display: none;
-}
-
-.paste-btn {
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 119, 255, 0.22);
-  border: 1px solid rgba(0, 240, 255, 0.35);
-  color: #bae6fd;
-  padding: 6px 11px;
-  border-radius: 9px;
-  font-family: 'Cairo', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.paste-btn:hover {
-  background: var(--accent-blue);
-  border-color: var(--accent-cyan);
-  color: #fff;
-}
-
-/* زر الفحص */
-button.submit-btn {
-  position: relative;
-  overflow: hidden;
-  border: none;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #0044ff 0%, #00a2ff 50%, #00f0ff 100%);
-  background-size: 200% auto;
-  color: #fff;
-  padding: 14px;
-  font-family: 'Cairo', sans-serif;
-  font-weight: 800;
-  font-size: 14px;
-  cursor: pointer;
-  width: 100%;
-  box-shadow: 0 8px 25px rgba(0, 132, 255, 0.45);
-  transition: all 0.3s ease;
-}
-
-button.submit-btn::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-  transform: skewX(-20deg);
-  transition: 0.6s;
-}
-
-button.submit-btn:hover {
-  background-position: right center;
-  transform: translateY(-1px);
-  box-shadow: 0 12px 30px rgba(0, 212, 255, 0.55);
-}
-
-button.submit-btn:hover::after {
-  left: 150%;
-}
-
-button.submit-btn:disabled {
-  opacity: 0.55;
-  cursor: wait;
-}
-
-/* الأمثلة */
-.examples {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-  font-size: 12px;
-  align-items: center;
-  color: var(--text-muted);
-}
-
-.examples > span:first-child {
-  font-weight: 700;
-}
-
-.ex-tag {
-  background: rgba(15, 35, 78, 0.65);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  color: #bae6fd;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.ex-tag:hover {
-  background: rgba(0, 140, 255, 0.35);
-  border-color: var(--accent-cyan);
-  color: #fff;
-  transform: translateY(-1px);
-}
-
-/* زر الديسكورد */
-.discord-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 6px;
-  margin-bottom: 14px;
-  background: rgba(88, 101, 242, 0.12);
-  border: 1px solid rgba(88, 101, 242, 0.38);
-  padding: 12px 14px;
-  border-radius: 14px;
-  text-decoration: none;
-  transition: all 0.25s ease;
-}
-
-.discord-box:hover {
-  background: rgba(88, 101, 242, 0.25);
-  border-color: #7289da;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 22px rgba(88, 101, 242, 0.3);
-}
-
-.discord-box svg {
-  width: 21px;
-  height: 21px;
-  flex-shrink: 0;
-}
-
-.discord-box span {
-  color: #e0e7ff;
-  font-size: 12.5px;
-  font-weight: 700;
-}
-
-/* الحالة والنتائج */
-#status {
-  color: var(--accent-cyan);
-  font-size: 12.5px;
-  min-height: 20px;
-  margin-bottom: 10px;
-  font-weight: 700;
-  text-align: center;
-}
-
-.summary-box {
-  background: rgba(4, 32, 38, 0.75);
-  border: 1px solid rgba(16, 185, 129, 0.45);
-  border-right: 4px solid #10b981;
-  border-radius: 14px;
-  padding: 15px 16px;
-  margin-bottom: 12px;
-  animation: fadeSlideUp 0.35s ease;
-}
-
-.summary-box.danger {
-  background: rgba(42, 7, 14, 0.8);
-  border-color: rgba(239, 68, 68, 0.5);
-  border-right: 4px solid #ef4444;
-}
-
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.summary-box h3 {
-  margin: 0 0 6px;
-  font-size: 14px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #6ee7b7;
-}
-
-.summary-box.danger h3 {
-  color: #fca5a5;
-}
-
-.summary-text {
-  font-size: 12.5px;
-  line-height: 1.65;
-  color: #e2e8f0;
-}
-
-footer {
-  color: #7c96bd;
-  text-align: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10.5px;
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(148, 184, 232, 0.14);
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر البلس | الاشتراكات الرقمية الرسمية</title>
+    <!-- تحميل Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- تحميل خطوط IBM Plex Sans Arabic و Cairo للوضوح والفخامة -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- تحميل أيقونات Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['IBM Plex Sans Arabic', 'Cairo', 'sans-serif'],
+                        display: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        obsidian: '#06080d',
+                        surface: '#0d111a',
+                        surfaceLight: '#141a26',
+                        emeraldAccent: '#10b981',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background-color: #06080d;
+            color: #f8fafc;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 100% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Cairo', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(13, 17, 26, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .card-hover {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.16);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+        }
+        .metallic-card {
+            background: linear-gradient(135deg, #161b26 0%, #0a0d14 50%, #131924 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 12px 30px -10px rgba(0, 0, 0, 0.8);
+        }
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #06080d; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-black">
 
-<div class="live-bg"></div>
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
-<div class="orb orb-3"></div>
-<div class="cyber-grid"></div>
+    <!-- شريط التنقل العلوي -->
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-white/[0.08]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- الهوية والشعار -->
+            <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-lg shadow-emerald-500/20 border border-emerald-400/30">
+                    <i data-lucide="sparkles" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white">متجر البلس</h1>
+                        <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            رسمي وموثق
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400 font-medium">اشتراكات تطبيقات التواصل الاجتماعي</p>
+                </div>
+            </div>
 
-<main>
-  <div class="header">
-    <div class="avatar-wrap">
-      <img src="avatar.jpg.PNG" onerror="this.src='https://raw.githubusercontent.com/tox02t/TOX/main/avatar.%20jpg.PNG'; this.onerror=function(){this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'#0043ce\'/><text x=\'50\' y=\'58\' font-size=\'35\' fill=\'white\' text-anchor=\'middle\' font-family=\'monospace\' font-weight=\'bold\'>TOX</text></svg>'}" class="avatar" alt="محمد الشمري">
-    </div>
-    <div class="title-area">
-      <h1>TOX : محمد الشمري</h1>
-      <p>أداة فحص روابط متقدمة، بتطوير مبرمجين سعوديين</p>
-    </div>
-  </div>
-
-  <div class="tabs">
-    <button type="button" class="tab active" data-mode="url">فحص رابط (URL)</button>
-    <button type="button" class="tab" data-mode="file">فحص ملف (File)</button>
-    <button type="button" class="tab" data-mode="domain">فحص نطاق (DNS)</button>
-  </div>
-
-  <form id="form">
-    <div class="input-box" id="inputContainer">
-      <input id="targetInput" placeholder="https://example.com" autocomplete="url" required>
-      <button type="button" class="paste-btn" id="pasteBtn">📋 لصق</button>
-    </div>
-    <button id="goBtn" class="submit-btn" type="submit">فحص الآن</button>
-  </form>
-
-  <div class="examples" id="examplesBox">
-    <span>أمثلة:</span>
-    <span class="ex-tag" onclick="setVal('http://testphp.vulnweb.com')">رابط ثغرات</span>
-    <span class="ex-tag" onclick="setVal('https://google.com')">رابط آمن</span>
-  </div>
-
-  <!-- زر الديسكورد الجديد تحت الأمثلة -->
-  <a href="https://discord.gg/BfwgJXUsQR" target="_blank" class="discord-box">
-    <svg viewBox="0 0 127.14 96.36" fill="#7289da"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.15c2.65-27.28-4.51-51.15-19.45-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5.18-12.72,11.45-12.72S53.9,46,53.88,53,48.71,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5.18-12.72,11.45-12.72S96.15,46,96.13,53,91,65.69,84.69,65.69Z"/></svg>
-    <span>لاستفسارات أو تبليغ عن مشكلة: تواصل ديسكورد</span>
-  </a>
-
-  <div id="status"></div>
-  <div id="resultArea"></div>
-
-  <footer>
-    TOX Platform &copy; 2026 - Developed by Mohammed Al-Shammari
-  </footer>
-</main>
-
-<script>
-const tabs = document.querySelectorAll('.tab');
-const inputContainer = document.getElementById('inputContainer');
-const form = document.getElementById('form');
-const pasteBtn = document.getElementById('pasteBtn');
-const statusDiv = document.getElementById('status');
-const resultArea = document.getElementById('resultArea');
-const examplesBox = document.getElementById('examplesBox');
-
-let currentMode = 'url';
-
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    tabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    currentMode = tab.dataset.mode;
-    
-    if(currentMode === 'file') {
-      inputContainer.innerHTML = `
-        <label class="file-label" for="fileInput">اختر ملف أو برنامج للفحص...</label>
-        <input type="file" id="fileInput">
-      `;
-      examplesBox.style.display = 'none';
-    } else {
-      inputContainer.innerHTML = `
-        <input id="targetInput" placeholder="${currentMode === 'url' ? 'https://example.com' : 'example.com'}" required>
-        <button type="button" class="paste-btn" id="pasteBtn" onclick="pasteText()">📋 لصق</button>
-      `;
-      examplesBox.style.display = 'flex';
-      if(currentMode === 'domain') {
-        examplesBox.innerHTML = '<span>أمثلة:</span><span class="ex-tag" onclick="setVal(\'vulnweb.com\')">موقع ثغرات</span><span class="ex-tag" onclick="setVal(\'google.com\')">google.com</span>';
-      } else {
-        examplesBox.innerHTML = '<span>أمثلة:</span><span class="ex-tag" onclick="setVal(\'http://testphp.vulnweb.com\')">رابط ثغرات</span><span class="ex-tag" onclick="setVal(\'https://google.com\')">رابط آمن</span>';
-      }
-    }
-  });
-});
-
-function setVal(val) {
-  const input = document.getElementById('targetInput');
-  if(input) input.value = val;
-}
-
-async function pasteText() {
-  try {
-    const text = await navigator.clipboard.readText();
-    const input = document.getElementById('targetInput');
-    if(input) input.value = text;
-  } catch (err) {
-    alert('يرجى السماح بالصلاحية أو اللصق يدوياً');
-  }
-}
-
-if(pasteBtn) {
-  pasteBtn.addEventListener('click', pasteText);
-}
-
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const inputElem = document.getElementById('targetInput');
-  const val = inputElem ? inputElem.value.toLowerCase() : '';
-  
-  statusDiv.textContent = 'جاري تحليل الأمان وبحث الثغرات في قواعد البيانات...';
-  resultArea.innerHTML = '';
-  
-  setTimeout(() => {
-    statusDiv.textContent = 'اكتمل الفحص التحليلي بنجاح!';
-    
-    const isDangerous = val.includes('vuln') || val.includes('test') || val.includes('phish') || val.includes('malware') || val.includes('hack') || val.includes('danger');
-    
-    if(isDangerous) {
-      resultArea.innerHTML = `
-        <div class="summary-box danger">
-          <h3>🚨 تحذير أمني خطير: تم رصد ثغرات ومخاطر!</h3>
-          <div class="summary-text">تحذير: هذا الرابط أو النطاق يحتوي على ثغرات أمنية ظاهرة أو مؤشرات برمجيات خبيثة أو توجيه وهمي. يُنصح بشدة عدم التعامل معه.</div>
+            <!-- زر السلة العلوي -->
+            <button onclick="toggleCart()" class="group relative flex items-center gap-3 bg-white/[0.05] hover:bg-white/[0.1] text-white px-4 sm:px-5 py-2.5 rounded-2xl border border-white/[0.1] transition-all duration-200 active:scale-95">
+                <div class="relative">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                </div>
+                <div class="text-right hidden sm:block">
+                    <span class="text-xs text-slate-400 block leading-none">سلة المشتريات</span>
+                    <span id="header-total-price" class="text-sm font-bold text-white leading-tight">0 ر.س</span>
+                </div>
+                <span id="cart-badge" class="bg-emerald-500 text-slate-950 text-xs font-black min-w-[24px] h-6 px-1.5 rounded-full flex items-center justify-center shadow-md shadow-emerald-500/30">0</span>
+            </button>
         </div>
-      `;
-    } else {
-      resultArea.innerHTML = `
-        <div class="summary-box">
-          <h3>✅ حالة الأمان: سليم وآمن</h3>
-          <div class="summary-text">لم يتم رصد أي برمجيات خبيثة أو تهديدات أو ثغرات أمنية مرتبطة بهذا العنصر.</div>
+    </header>
+
+    <!-- القسم الرئيسي -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 pb-24">
+        
+        <!-- 1. شريط الخطوات المرئي الواضح (3 خطوات فقط) -->
+        <section aria-label="طريقة الطلب" class="mb-10">
+            <div class="glass-panel rounded-3xl p-4 sm:p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                    <!-- الخطوة 1 -->
+                    <div class="flex items-center gap-4 bg-white/[0.02] border border-white/[0.06] rounded-2xl p-4">
+                        <div class="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-display font-black text-lg flex items-center justify-center shrink-0">
+                            1
+                        </div>
+                        <div>
+                            <h2 class="text-sm sm:text-base font-bold text-white">اختر التطبيق والمدة</h2>
+                            <p class="text-xs text-slate-400 mt-0.5">شهري (20 ر.س) أو سنوي (80 ر.س)</p>
+                        </div>
+                    </div>
+
+                    <!-- الخطوة 2 -->
+                    <div class="flex items-center gap-4 bg-white/[0.02] border border-white/[0.06] rounded-2xl p-4">
+                        <div class="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-display font-black text-lg flex items-center justify-center shrink-0">
+                            2
+                        </div>
+                        <div>
+                            <h2 class="text-sm sm:text-base font-bold text-white">أضف للسلة وأكمل الطلب</h2>
+                            <p class="text-xs text-slate-400 mt-0.5">راجع طلبك واضغط إكمال الدفع</p>
+                        </div>
+                    </div>
+
+                    <!-- الخطوة 3 -->
+                    <div class="flex items-center gap-4 bg-white/[0.02] border border-white/[0.06] rounded-2xl p-4">
+                        <div class="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-display font-black text-lg flex items-center justify-center shrink-0">
+                            3
+                        </div>
+                        <div>
+                            <h2 class="text-sm sm:text-base font-bold text-white">حوّل المبلغ وارفع الإيصال</h2>
+                            <p class="text-xs text-slate-400 mt-0.5">تفعيل فوري ومباشر على جهازك</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. شريط التحكم العام بالباقات (تبديل سريع وواضح للكل) -->
+        <section class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">جميع تطبيقات البلس</h2>
+                <p class="text-sm text-slate-400 mt-1">اختر الباقة المناسبة لك من الأعلى أو حدد لكل تطبيق بشكل مستقل</p>
+            </div>
+
+            <!-- زر التبديل الشامل (Global Billing Toggle) -->
+            <div class="bg-[#0d111a] p-1.5 rounded-2xl border border-white/[0.1] inline-flex items-center self-start md:self-auto shadow-xl">
+                <button type="button" id="global-monthly-btn" onclick="setGlobalPlan('monthly')" 
+                    class="px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 text-slate-400 hover:text-white">
+                    اشتراك شهري • 20 ر.س
+                </button>
+                <button type="button" id="global-yearly-btn" onclick="setGlobalPlan('yearly')" 
+                    class="px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/25 flex items-center gap-2">
+                    <span>اشتراك سنوي • 80 ر.س</span>
+                    <span class="bg-slate-950/20 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full">توفير 67%</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 3. شبكة عرض التطبيقات (8 تطبيقات متكاملة) -->
+        <section id="apps-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <!-- يتم توليد البطاقات ديناميكياً -->
+        </section>
+
+    </main>
+
+    <!-- شريط السلة العائم في الأسفل (يظهر عند إضافة منتجات لسهولة الوصول) -->
+    <div id="floating-cart-bar" class="fixed bottom-5 inset-x-4 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 z-30 transform translate-y-28 opacity-0 transition-all duration-300 pointer-events-none">
+        <button onclick="toggleCart()" class="pointer-events-auto w-full sm:w-auto min-w-[320px] bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-6 py-3.5 rounded-2xl shadow-2xl shadow-emerald-500/30 flex items-center justify-between gap-6 font-bold transition active:scale-95">
+            <div class="flex items-center gap-3">
+                <span id="floating-count" class="bg-slate-950 text-emerald-400 text-xs font-black w-7 h-7 rounded-xl flex items-center justify-center">0</span>
+                <span class="text-sm font-extrabold">عرض السلة وإكمال الطلب</span>
+            </div>
+            <div class="flex items-center gap-1.5 border-r border-slate-950/20 pr-4">
+                <span id="floating-total" class="text-base font-black">0 ر.س</span>
+                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </div>
+        </button>
+    </div>
+
+    <!-- التذييل الرسمي (Footer) -->
+    <footer class="border-t border-white/[0.08] bg-[#04060a]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2.5 text-slate-400 text-xs sm:text-sm">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i>
+                    <span>اشتراكات رسمية • بدون جلبريك • تفعيل آمن 100%</span>
+                </div>
+                <div class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white bg-white/[0.04] px-5 py-2.5 rounded-2xl border border-white/[0.08]">
+                    <span>تم التطوير والتشغيل بواسطة مطورين سعوديين</span>
+                    <span class="text-base">🇸🇦</span>
+                </div>
+            </div>
         </div>
-      `;
-    }
-  }, 1200);
-});
-</script>
+    </footer>
+
+    <!-- القائمة الجانبية للسلة (Slide-Over Cart Drawer) -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+    <aside id="cart-drawer" class="fixed top-0 left-0 h-full w-full max-w-md bg-[#0b0f17] border-r border-white/[0.08] z-50 transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+        <!-- رأس السلة -->
+        <div class="p-6 border-b border-white/[0.08] flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-black text-white">سلة المشتريات</h3>
+                    <p class="text-xs text-slate-400">راجع اشتراكاتك قبل إتمام الدفع</p>
+                </div>
+            </div>
+            <button onclick="toggleCart()" class="p-2 text-slate-400 hover:text-white rounded-xl bg-white/[0.04] hover:bg-white/[0.08] transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- قائمة المنتجات في السلة -->
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-6 space-y-3.5">
+            <!-- يتم تعبئتها تلقائياً -->
+        </div>
+
+        <!-- ملخص السلة وزر الدفع -->
+        <div id="cart-footer" class="p-6 border-t border-white/[0.08] bg-[#080b12] hidden space-y-4">
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-slate-400 font-medium">المجموع الإجمالي</span>
+                <span id="cart-total-price" class="text-2xl font-black text-emerald-400">0 ر.س</span>
+            </div>
+            <button onclick="openCheckoutModal()" class="w-full py-4 px-6 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-base rounded-2xl shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-2 active:scale-[0.98]">
+                <span>إتمام الطلب والدفع</span>
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- نافذة إتمام الطلب والدفع (Checkout Modal) -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen px-4 py-8">
+            <div onclick="closeCheckoutModal()" class="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity"></div>
+
+            <div class="relative w-full max-w-lg bg-[#0d111a] border border-white/[0.12] rounded-3xl text-right overflow-hidden shadow-2xl z-10">
+                <!-- رأس النافذة -->
+                <div class="px-6 py-5 border-b border-white/[0.08] flex items-center justify-between bg-white/[0.02]">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="lock" class="w-5 h-5 text-emerald-400"></i>
+                        <h3 class="text-lg font-black text-white">إتمام الطلب والدفع</h3>
+                    </div>
+                    <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-white p-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08]">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- محتوى النموذج -->
+                <div id="checkout-form-view" class="p-6 space-y-6">
+                    <!-- بطاقة الحساب البنكي المعدنية السوداء (IBAN) -->
+                    <div class="metallic-card rounded-2xl p-5 space-y-4 relative overflow-hidden">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="landmark" class="w-5 h-5 text-emerald-400"></i>
+                                <span class="text-xs font-bold text-slate-300">التحويل البنكي الرسمي (IBAN)</span>
+                            </div>
+                            <span class="text-xs font-black text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
+                                المطلوب: <span id="checkout-total-amount">0 ر.س</span>
+                            </span>
+                        </div>
+
+                        <div class="bg-black/50 border border-white/[0.08] rounded-xl p-3.5 flex items-center justify-between gap-2">
+                            <code id="iban-number" class="text-xs sm:text-sm font-mono font-bold text-white tracking-wider select-all">SA8480209347022222121011</code>
+                            <button type="button" onclick="copyIban()" id="copy-iban-btn" class="shrink-0 flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black px-3.5 py-2 rounded-lg transition active:scale-95">
+                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span id="copy-btn-text">نسخ الآيبان</span>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center justify-between text-[11px] text-slate-400">
+                            <span>حول المبلغ الإجمالي أعلاه ثم أرفق الإيصال بالأسفل</span>
+                            <span id="checkout-items-count" class="font-bold text-slate-300">0 اشتراكات</span>
+                        </div>
+                    </div>
+
+                    <!-- بيانات العميل وإرفاق الإيصال -->
+                    <form id="order-form" onsubmit="submitOrder(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-300 mb-1.5">الاسم الكريم</label>
+                                <input type="text" id="customer-name" required placeholder="محمد العتيبي" class="w-full bg-[#06080d] border border-white/[0.1] focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-300 mb-1.5">رقم الجوال (واتساب للتفعيل)</label>
+                                <input type="tel" id="customer-phone" required placeholder="05XXXXXXXX" dir="ltr" class="w-full bg-[#06080d] border border-white/[0.1] focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white text-right outline-none transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1.5">إرفاق صورة إيصال التحويل</label>
+                            <label class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-white/[0.12] hover:border-emerald-500/60 rounded-2xl cursor-pointer bg-[#06080d] transition group">
+                                <div class="flex flex-col items-center justify-center text-center px-4">
+                                    <i data-lucide="upload-cloud" class="w-6 h-6 text-slate-400 group-hover:text-emerald-400 transition mb-1"></i>
+                                    <p id="file-name-display" class="text-xs text-slate-400 font-medium">اضغط لاختيار صورة الإيصال من جهازك</p>
+                                </div>
+                                <input id="receipt-upload" type="file" accept="image/*,.pdf" required class="hidden" onchange="updateFileName(this)">
+                            </label>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 px-6 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-base rounded-2xl shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-2 mt-2 active:scale-[0.98]">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                            <span>تأكيد وإرسال الطلب</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- شاشة نجاح الطلب (تظهر بعد الإرسال برقم مرجعي رسمي) -->
+                <div id="checkout-success-view" class="p-8 text-center hidden space-y-5">
+                    <div class="w-16 h-16 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto">
+                        <i data-lucide="check-circle" class="w-9 h-9"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">تم استلام الطلب بنجاح</span>
+                        <h4 class="text-2xl font-black text-white mt-3">شكراً لك، <span id="success-customer-name"></span></h4>
+                        <p class="text-sm text-slate-400 mt-1">سيتم التحقق من الحوالة وتفعيل اشتراكك عبر الواتساب خلال دقائق.</p>
+                    </div>
+                    <div class="bg-[#06080d] border border-white/[0.08] rounded-2xl p-4">
+                        <span class="text-xs text-slate-400 block">رقم الطلب المرجعي</span>
+                        <span id="generated-order-number" class="text-xl font-mono font-black text-emerald-400 tracking-wider mt-1 block">#SA-0000</span>
+                    </div>
+                    <button onclick="resetAndCloseModal()" class="w-full py-3.5 bg-white/[0.08] hover:bg-white/[0.12] text-white font-bold rounded-xl transition">
+                        العودة للمتجر
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- إشعار عائم (Toast) -->
+    <div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 z-50 transform -translate-y-16 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-[#111827] border border-emerald-500/40 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+            <div class="w-6 h-6 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <span id="toast-message" class="text-xs sm:text-sm font-bold">تمت الإضافة للسلة</span>
+        </div>
+    </div>
+
+    <script>
+        // بيانات التطبيقات الكاملة (8 تطبيقات تواصل اجتماعي وترفيه)
+        const appsData = [
+            {
+                id: 'snapchat-plus',
+                name: 'سناب شات بلس',
+                tag: 'الأكثر طلباً',
+                glowColor: 'rgba(255, 252, 0, 0.15)',
+                iconBg: '#FFFC00',
+                iconColor: '#000000',
+                iconSvg: `<svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M12.166 3c2.815 0 4.864 1.884 4.864 4.79 0 .64-.08 1.258-.232 1.838.348.148.724.228 1.11.228.613 0 1.158-.348 1.158-.863 0-.41-.325-.74-.74-.74-.245 0-.467.114-.605.294-.18-.47-.225-.99-.114-1.503.24-1.12 1.245-1.928 2.4-1.928 1.356 0 2.456 1.1 2.456 2.456 0 1.16-.808 2.13-1.9 2.385-.148.034-.256.164-.256.316 0 .142.094.267.232.306 1.21.345 2.164 1.285 2.52 2.495.146.495-.142 1.015-.638 1.16-.585.172-1.22.26-1.884.26-.348 0-.69-.024-1.024-.072-.18-.026-.356.076-.422.246-.375.966-1.186 1.72-2.203 2.046-.45.144-.926.218-1.415.218-.65 0-1.28-.13-1.864-.38-.224-.096-.48-.096-.704 0-.584.25-1.214.38-1.864.38-.49 0-.965-.074-1.415-.218-1.017-.326-1.828-1.08-2.203-2.046-.066-.17-.242-.272-.422-.246-.334.048-.676.072-1.024.072-.664 0-1.3-.088-1.884-.26-.496-.145-.784-.665-.638-1.16.356-1.21 1.31-2.15 2.52-2.495.138-.039.232-.164.232-.306 0-.152-.108-.282-.256-.316-1.092-.255-1.9-1.225-1.9-2.385 0-1.356 1.1-2.456 2.456-2.456 1.155 0 2.16.808 2.4 1.928.11.513.066 1.033-.114 1.503-.138-.18-.36-.294-.605-.294-.415 0-.74.33-.74.74 0 .515.545.863 1.158.863.386 0 .762-.08 1.11-.228-.152-.58-.232-1.198-.232-1.838C7.302 4.884 9.35 3 12.166 3z"/></svg>`,
+                features: ['حفظ السنابات والخاص بدون علم الطرف الآخر', 'تخفي المشاهدة وإخفاء جاري الكتابة', 'رفع الصور والفيديو من الألبوم بجودة عالية']
+            },
+            {
+                id: 'tiktok-plus',
+                name: 'تيك توك بلس',
+                tag: 'تحديث جديد',
+                glowColor: 'rgba(255, 255, 255, 0.1)',
+                iconBg: '#12151e',
+                iconBorder: 'rgba(255,255,255,0.15)',
+                iconColor: '#ffffff',
+                iconSvg: `<svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>`,
+                features: ['تحميل جميع المقاطع بدون علامة مائية', 'تغيير الدولة ومشاهدة محتوى أي بلد', 'تخطي الإعلانات وتجاوز قيود الحفظ']
+            },
+            {
+                id: 'instagram-plus',
+                name: 'إنستغرام بلس',
+                tag: 'مميز',
+                glowColor: 'rgba(225, 48, 108, 0.2)',
+                iconBg: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+                iconColor: '#ffffff',
+                iconSvg: `<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>`,
+                features: ['تحميل الريلز والستوري والصور بضغطة زر', 'إخفاء قراءة الرسائل ومشاهدة الستوري بصمت', 'تكبير صور الحسابات ونسخ البايو']
+            },
+            {
+                id: 'youtube-plus',
+                name: 'يوتيوب بلس',
+                tag: 'بدون إعلانات',
+                glowColor: 'rgba(255, 0, 0, 0.2)',
+                iconBg: '#FF0000',
+                iconColor: '#ffffff',
+                iconSvg: `<svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`,
+                features: ['بدون إعلانات نهائياً أثناء المشاهدة', 'تشغيل بالخلفية وعند قفل شاشة الجوال', 'تحميل الفيديوهات والصوتيات بأعلى دقة']
+            },
+            {
+                id: 'whatsapp-plus',
+                name: 'واتساب بلس',
+                tag: 'خصوصية عالية',
+                glowColor: 'rgba(37, 211, 102, 0.2)',
+                iconBg: '#25D366',
+                iconColor: '#ffffff',
+                iconSvg: `<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>`,
+                features: ['إخفاء الظهور وعلامة الصحين الزرقاء', 'قراءة الرسائل والحالات المحذوفة', 'إرسال ملفات وفيديوهات بأحجام كبيرة']
+            },
+            {
+                id: 'x-plus',
+                name: 'إكس بلس / تويتر',
+                tag: 'احترافي',
+                glowColor: 'rgba(255, 255, 255, 0.1)',
+                iconBg: '#12151e',
+                iconBorder: 'rgba(255,255,255,0.15)',
+                iconColor: '#ffffff',
+                iconSvg: `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+                features: ['تحميل الفيديوهات والصور بجودة كاملة', 'تصفح بدون إعلانات أو تغريدات ممولة', 'تأكيد الإعجاب وإعادة التغريد']
+            },
+            {
+                id: 'telegram-plus',
+                name: 'تيليجرام بلس',
+                tag: 'بريميوم',
+                glowColor: 'rgba(0, 136, 204, 0.2)',
+                iconBg: '#0088cc',
+                iconColor: '#ffffff',
+                iconSvg: `<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>`,
+                features: ['مميزات البريميوم وحفظ المحتوى المقيد', 'تحميل فائق السرعة للملفات الكبيرة', 'إخفاء حالة الاتصال وجاري الكتابة']
+            },
+            {
+                id: 'spotify-plus',
+                name: 'سبوتيفاي بلس',
+                tag: 'ترفيه',
+                glowColor: 'rgba(29, 185, 84, 0.2)',
+                iconBg: '#1DB954',
+                iconColor: '#000000',
+                iconSvg: `<svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>`,
+                features: ['استماع بدون إعلانات مزعجة نهائياً', 'تخطي لا محدود للمقاطع الصوتية', 'جودة صوت فائقة النقاء']
+            }
+        ];
+
+        // الحالة العامة للتطبيق
+        let cart = [];
+        let selectedPlans = {};
+        let currentGlobalPlan = 'yearly';
+
+        // تهيئة الباقة الافتراضية لكل تطبيق (سنوي 80 ر.س)
+        appsData.forEach(app => {
+            selectedPlans[app.id] = 'yearly';
+        });
+
+        // التبديل الشامل بين الشهري والسنوي لجميع التطبيقات بضغطة واحدة
+        function setGlobalPlan(plan) {
+            currentGlobalPlan = plan;
+            const monthlyBtn = document.getElementById('global-monthly-btn');
+            const yearlyBtn = document.getElementById('global-yearly-btn');
+
+            if (plan === 'monthly') {
+                monthlyBtn.className = 'px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/25';
+                yearlyBtn.className = 'px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 text-slate-400 hover:text-white flex items-center gap-2';
+            } else {
+                yearlyBtn.className = 'px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/25 flex items-center gap-2';
+                monthlyBtn.className = 'px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 text-slate-400 hover:text-white';
+            }
+
+            // تحديث كل البطاقات لتتطابق مع الاختيار الشامل
+            appsData.forEach(app => {
+                selectedPlans[app.id] = plan;
+            });
+            renderApps();
+        }
+
+        // تبديل الباقة لتطبيق محدد فقط
+        function selectSinglePlan(appId, plan) {
+            selectedPlans[appId] = plan;
+            renderApps();
+        }
+
+        // رسم بطاقات التطبيقات بتصميم فائق الوضوح
+        function renderApps() {
+            const grid = document.getElementById('apps-grid');
+            grid.innerHTML = appsData.map(app => {
+                const plan = selectedPlans[app.id];
+                const isMonthly = plan === 'monthly';
+                const price = isMonthly ? 20 : 80;
+
+                return `
+                <article class="glass-panel card-hover rounded-3xl p-5 flex flex-col justify-between relative overflow-hidden">
+                    <!-- إضاءة محيطية خفيفة خلف الأيقونة -->
+                    <div class="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-2xl pointer-events-none" style="background: ${app.glowColor}"></div>
+
+                    <div>
+                        <!-- رأس البطاقة -->
+                        <div class="flex items-center justify-between gap-3 mb-5 relative z-10">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-13 h-13 w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-lg" 
+                                     style="background: ${app.iconBg}; color: ${app.iconColor}; ${app.iconBorder ? `border: 1px solid ${app.iconBorder}` : ''}">
+                                    ${app.iconSvg}
+                                </div>
+                                <div>
+                                    <h3 class="text-base sm:text-lg font-black text-white leading-tight">${app.name}</h3>
+                                    <span class="inline-block text-[11px] font-bold text-slate-400 mt-0.5">${app.tag}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- المميزات بوضوح تام -->
+                        <ul class="space-y-2.5 mb-6 pt-4 border-t border-white/[0.06]">
+                            ${app.features.map(feat => `
+                                <li class="flex items-start gap-2 text-xs text-slate-300 leading-relaxed">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                    <span>${feat}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- اختيار المدة وزر الإضافة المباشر -->
+                    <div class="space-y-3 pt-2 relative z-10">
+                        <div class="grid grid-cols-2 gap-1.5 p-1 bg-[#06080d] rounded-xl border border-white/[0.08]">
+                            <button type="button" onclick="selectSinglePlan('${app.id}', 'monthly')" 
+                                class="py-2 px-2 rounded-lg text-xs font-bold transition flex flex-col items-center justify-center ${isMonthly ? 'bg-white/[0.1] text-white shadow' : 'text-slate-400 hover:text-slate-200'}">
+                                <span>شهري</span>
+                                <span class="${isMonthly ? 'text-emerald-400' : 'text-slate-500'} font-black mt-0.5">20 ر.س</span>
+                            </button>
+                            <button type="button" onclick="selectSinglePlan('${app.id}', 'yearly')" 
+                                class="py-2 px-2 rounded-lg text-xs font-bold transition flex flex-col items-center justify-center ${!isMonthly ? 'bg-emerald-500/20 border border-emerald-500/40 text-white shadow' : 'text-slate-400 hover:text-slate-200'}">
+                                <span>سنوي</span>
+                                <span class="${!isMonthly ? 'text-emerald-400' : 'text-slate-500'} font-black mt-0.5">80 ر.س</span>
+                            </button>
+                        </div>
+
+                        <button type="button" onclick="addToCart('${app.id}')" 
+                            class="w-full py-3.5 px-4 bg-white/[0.06] hover:bg-emerald-500 text-white hover:text-slate-950 font-extrabold text-xs sm:text-sm rounded-xl border border-white/[0.1] hover:border-emerald-400 transition-all duration-200 flex items-center justify-center gap-2 active:scale-95">
+                            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                            <span>أضف للسلة • ${price} ر.س</span>
+                        </button>
+                    </div>
+                </article>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        // إضافة للسلة
+        function addToCart(appId) {
+            const app = appsData.find(a => a.id === appId);
+            const plan = selectedPlans[appId];
+            const price = plan === 'monthly' ? 20 : 80;
+            const planLabel = plan === 'monthly' ? 'اشتراك شهري' : 'اشتراك سنوي';
+
+            const existingIndex = cart.findIndex(item => item.appId === appId && item.plan === plan);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    uid: `${appId}-${plan}`,
+                    appId: app.id,
+                    name: app.name,
+                    plan: plan,
+                    planLabel: planLabel,
+                    price: price,
+                    quantity: 1
+                });
+            }
+
+            updateCartUI();
+            showToast(`تمت إضافة ${app.name} (${planLabel})`);
+        }
+
+        // تحديث الكمية
+        function updateQuantity(uid, delta) {
+            const index = cart.findIndex(item => item.uid === uid);
+            if (index > -1) {
+                cart[index].quantity += delta;
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+                updateCartUI();
+            }
+        }
+
+        // حذف عنصر
+        function removeFromCart(uid) {
+            cart = cart.filter(item => item.uid !== uid);
+            updateCartUI();
+        }
+
+        // تحديث واجهة السلة والشريط العائم
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const headerTotal = document.getElementById('header-total-price');
+            const container = document.getElementById('cart-items-container');
+            const footer = document.getElementById('cart-footer');
+            const totalPriceEl = document.getElementById('cart-total-price');
+            
+            const floatingBar = document.getElementById('floating-cart-bar');
+            const floatingCount = document.getElementById('floating-count');
+            const floatingTotal = document.getElementById('floating-total');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            badge.textContent = totalItems;
+            headerTotal.textContent = `${totalPrice} ر.س`;
+            floatingCount.textContent = totalItems;
+            floatingTotal.textContent = `${totalPrice} ر.س`;
+
+            // إظهار أو إخفاء الشريط العائم السفلي
+            if (totalItems > 0) {
+                floatingBar.classList.remove('translate-y-28', 'opacity-0');
+            } else {
+                floatingBar.classList.add('translate-y-28', 'opacity-0');
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center py-16">
+                        <div class="w-16 h-16 rounded-2xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-500 mb-4">
+                            <i data-lucide="shopping-bag" class="w-8 h-8"></i>
+                        </div>
+                        <p class="text-white font-bold text-base">السلة فارغة حالياً</p>
+                        <p class="text-slate-400 text-xs mt-1">اختر التطبيقات من القائمة لإضافتها هنا</p>
+                    </div>
+                `;
+                footer.classList.add('hidden');
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="bg-[#121722] border border-white/[0.08] rounded-2xl p-4 flex items-center justify-between gap-3">
+                        <div>
+                            <h4 class="text-sm font-bold text-white">${item.name}</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${item.planLabel}</span>
+                                <span class="text-xs font-bold text-slate-300">${item.price * item.quantity} ر.س</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center bg-[#06080d] border border-white/[0.1] rounded-xl">
+                                <button onclick="updateQuantity('${item.uid}', 1)" class="px-2.5 py-1 text-slate-300 hover:text-white font-bold">+</button>
+                                <span class="px-2 text-xs font-black text-white">${item.quantity}</span>
+                                <button onclick="updateQuantity('${item.uid}', -1)" class="px-2.5 py-1 text-slate-300 hover:text-white font-bold">-</button>
+                            </div>
+                            <button onclick="removeFromCart('${item.uid}')" class="p-2 text-rose-400 hover:bg-rose-500/10 rounded-xl transition" title="حذف">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                totalPriceEl.textContent = `${totalPrice} ر.س`;
+                footer.classList.remove('hidden');
+            }
+
+            lucide.createIcons();
+        }
+
+        // فتح/إغلاق السلة الجانبية
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-overlay');
+            const isClosed = drawer.classList.contains('-translate-x-full');
+
+            if (isClosed) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => drawer.classList.remove('-translate-x-full'), 10);
+            } else {
+                drawer.classList.add('-translate-x-full');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        // فتح نافذة إتمام الطلب
+        function openCheckoutModal() {
+            if (cart.length === 0) return;
+            toggleCart();
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            document.getElementById('checkout-items-count').textContent = `${totalItems} اشتراكات`;
+            document.getElementById('checkout-total-amount').textContent = `${totalPrice} ر.س`;
+            
+            document.getElementById('checkout-form-view').classList.remove('hidden');
+            document.getElementById('checkout-success-view').classList.add('hidden');
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        // إغلاق نافذة إتمام الطلب
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        // نسخ رقم الآيبان البنكي بضغطة واحدة
+        function copyIban() {
+            const ibanText = document.getElementById('iban-number').innerText;
+            const tempInput = document.createElement('input');
+            tempInput.value = ibanText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const btnText = document.getElementById('copy-btn-text');
+            btnText.textContent = 'تم النسخ ✓';
+            showToast('تم نسخ رقم الآيبان البنكي بنجاح');
+
+            setTimeout(() => {
+                btnText.textContent = 'نسخ الآيبان';
+            }, 2500);
+        }
+
+        // تحديث اسم ملف الإيصال
+        function updateFileName(input) {
+            const display = document.getElementById('file-name-display');
+            if (input.files && input.files.length > 0) {
+                display.textContent = `تم إرفاق: ${input.files[0].name}`;
+                display.classList.remove('text-slate-400');
+                display.classList.add('text-emerald-400', 'font-bold');
+            }
+        }
+
+        // تأكيد الطلب وإظهار رقم الطلب المرجعي
+        function submitOrder(e) {
+            e.preventDefault();
+            const name = document.getElementById('customer-name').value;
+            const randomOrderNum = Math.floor(1000 + Math.random() * 9000);
+
+            document.getElementById('success-customer-name').textContent = name;
+            document.getElementById('generated-order-number').textContent = `#SA-${randomOrderNum}`;
+
+            document.getElementById('checkout-form-view').classList.add('hidden');
+            document.getElementById('checkout-success-view').classList.remove('hidden');
+
+            cart = [];
+            updateCartUI();
+            document.getElementById('order-form').reset();
+            document.getElementById('file-name-display').textContent = 'اضغط لاختيار صورة الإيصال من جهازك';
+            document.getElementById('file-name-display').className = 'text-xs text-slate-400 font-medium';
+            lucide.createIcons();
+        }
+
+        // إغلاق نافذة النجاح والعودة للمتجر
+        function resetAndCloseModal() {
+            closeCheckoutModal();
+        }
+
+        // إشعار سريع
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            
+            toastMsg.textContent = message;
+            toast.classList.remove('-translate-y-16', 'opacity-0');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('-translate-y-16', 'opacity-0');
+            }, 3000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderApps();
+            updateCartUI();
+        });
+    </script>
 </body>
 </html>
