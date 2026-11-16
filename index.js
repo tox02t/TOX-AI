@@ -1,39 +1,26 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 
+// إعداد صلاحيات البوت (Intents)
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent
+  ]
 });
-
-// ضع هنا آيدي الروم الممنوع الكتابة فيه (انسخ آيدي الروم من ديسكورد وضعه بين القوسين)
-const FORBIDDEN_CHANNEL_ID = 'ضع_آيدي_روم_التحذير_هنا';
 
 client.once('ready', () => {
-    console.log(`تم تسجيل الدخول بنجاح كـ ${client.user.tag} وحماية السيرفر مفعلة! 🛡️`);
+  console.log(`تم تسجيل الدخول بنجاح! البوت شغال باسم: ${client.user.tag}`);
 });
 
-client.on('messageCreate', async message => {
-    // تجاهل رسائل البوتات لكي لا يحذفوها بأنفسهم
-    if (message.author.bot) return;
-
-    // التحقق مما إذا كانت الرسالة مرسلة في الروم الممنوع
-    if (message.channel.id === FORBIDDEN_CHANNEL_ID) {
-        try {
-            // 1. حذف الرسالة المخالفة فوراً (سواء كانت صورة أو رابط ملغم)
-            await message.delete();
-            
-            // 2. إرسال تنبيه مؤقت للعضو يختفي بعد 5 ثوانٍ
-            const warningMsg = await message.channel.send(`⚠️ **${message.author.username}**، ممنوع الكتابة أو إرسال صور في هذا الروم نهائياً! تم حذف رسالتك للحماية.`);
-            setTimeout(() => warningMsg.delete().catch(() => {}), 5000);
-
-        } catch (error) {
-            console.error('حدث خطأ أثناء محاولة حذف الرسالة:', error);
-        }
-    }
+// مثال على أمر بسيط للاختبار (يقري رسالة ping ويرد pong)
+client.on('messageCreate', message => {
+  if (message.author.bot) return;
+  
+  if (message.content === '!ping') {
+    message.reply('Pong! 🏓 البوت شغال 24 ساعة بدون توقف.');
+  }
 });
 
-// ضع التوكن الخاص بك هنا
-client.login('ضع_التوكن_هنا');
+// تسجيل الدخول باستخدام التوكن المخزن في بيئة العمل
+client.login(process.env.TOKEN);
