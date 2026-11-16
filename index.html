@@ -4,101 +4,378 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TOX WiFi Security</title>
+<title>TOX | Security Lab</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+
+:root{
+ --bg:#080b12;--panel:#101722;--line:#202d3e;
+ --text:#edf3fc;--muted:#8796aa;--blue:#62aaff;
+ --green:#42d6a0;--red:#ff6579;
+}
 *{box-sizing:border-box}
 body{
-margin:0;background:#080a0f;color:white;
-font-family:Arial,sans-serif;
-min-height:100vh;display:flex;
-justify-content:center;align-items:center;padding:20px
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:'Cairo',Arial,sans-serif;
+ min-height:100vh;
 }
-.container{
-width:100%;max-width:440px;padding:25px;
-background:#11151e;border:1px solid #293244;
-border-radius:18px;box-shadow:0 0 35px #000
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{
+ width:245px;background:#0c111b;border-left:1px solid var(--line);
+ padding:25px 16px;position:fixed;right:0;top:0;bottom:0;
+ display:flex;flex-direction:column;z-index:5;
 }
-.logo{text-align:center;font-size:42px;
-font-weight:bold;letter-spacing:7px}
-.sub{text-align:center;color:#8995a8;margin:8px 0 25px}
-h3{font-size:15px;color:#dce3ed}
-input{
-width:100%;padding:14px;margin:8px 0;
-background:#080c14;color:white;
-border:1px solid #30394b;border-radius:9px;
-outline:none
+.brand{display:flex;align-items:center;gap:12px;padding:5px 10px 27px}
+.brand-icon{
+ width:45px;height:45px;border-radius:13px;
+ display:grid;place-items:center;background:#1c3048;
+ color:#80bdff;font-size:27px;font-weight:800;
 }
-button{
-width:100%;padding:14px;margin-top:10px;
-border:0;border-radius:9px;background:#e5e7eb;
-color:#080a0f;font-weight:bold;cursor:pointer
+.brand h2{margin:0;font-size:21px;letter-spacing:3px}
+.brand small{color:var(--muted);font-size:10px;letter-spacing:2px}
+.nav-title{color:#63748a;font-size:11px;padding:12px}
+.nav button{
+ display:flex;align-items:center;gap:12px;width:100%;
+ color:#9aabc0;background:none;border:0;
+ padding:13px;border-radius:10px;text-align:right;
+ margin:3px 0;font-size:13px;transition:.2s;
 }
-.result{
-margin-top:18px;padding:15px;
-background:#080c14;border:1px solid #30394b;
-border-radius:10px;overflow-wrap:anywhere
+.nav button:hover,.nav button.active{
+ background:#172438;color:#fff;
 }
-small{color:#8995a8}
-#strength{margin-top:12px;color:#aab5c5}
-.footer{text-align:center;margin-top:25px}
+.nav button.active{border-right:3px solid var(--blue)}
+.nav-icon{font-size:18px;width:23px;text-align:center}
+.sidebar-bottom{margin-top:auto;padding:15px 10px;border-top:1px solid var(--line)}
+.sidebar-bottom small{color:var(--muted)}
+.main{margin-right:245px;width:calc(100% - 245px);padding:30px 4%}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.status{font-size:11px;color:var(--green);background:#103126;padding:8px 13px;border-radius:20px}
+.status:before{content:"●";margin-left:8px}
+.hero{
+ padding:32px;border:1px solid var(--line);border-radius:18px;
+ background:radial-gradient(ellipse at 90% 0%,#183354 0%,transparent 45%),#101722;
+ margin-bottom:25px;position:relative;overflow:hidden;
+}
+.hero h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px}
+.hero h1 span{color:var(--blue)}
+.hero p{color:var(--muted);font-size:13px;margin:0}
+.hero-tag{display:inline-block;margin-top:20px;padding:7px 12px;
+ background:#1b3049;color:#8dc3ff;border-radius:7px;font-size:11px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:28px}
+.stat,.tool,.workbox{
+ background:var(--panel);border:1px solid var(--line);
+ border-radius:14px;padding:19px;
+}
+.stat small{color:var(--muted)}
+.stat strong{display:block;font-size:23px;margin-top:7px}
+.section-title{font-size:18px;margin:28px 0 15px}
+.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.tool{cursor:pointer;transition:.2s}
+.tool:hover{border-color:#5486bd;transform:translateY(-3px)}
+.tool-icon{font-size:25px;margin-bottom:12px}
+.tool h3{font-size:15px;margin:0 0 5px}
+.tool p{font-size:12px;color:var(--muted);margin:0}
+.page{display:none}
+.page.active{display:block}
+.workbox{margin-top:18px;padding:25px}
+.workbox h2{font-size:20px;margin:0 0 8px}
+.workbox>p{color:var(--muted);font-size:12px;margin-bottom:22px}
+label{display:block;font-size:12px;color:#a9b9cc;margin:14px 0 7px}
+input,textarea{
+ width:100%;padding:13px 14px;background:#080e18;
+ color:white;border:1px solid #29384c;border-radius:9px;
+ outline:none;direction:ltr;text-align:left;
+}
+textarea{min-height:100px;resize:vertical}
+input:focus,textarea:focus{border-color:var(--blue)}
+.action{
+ border:0;background:#64aaff;color:#08111e;
+ padding:12px 20px;border-radius:9px;font-weight:800;
+ margin-top:13px;width:100%;
+}
+.action.secondary{background:#25374e;color:white}
+.output{
+ padding:14px;background:#080e18;border:1px solid var(--line);
+ border-radius:9px;margin-top:15px;overflow-wrap:anywhere;
+ font-size:13px;min-height:45px;direction:ltr;text-align:left;
+}
+.notice{font-size:11px;color:var(--muted);line-height:1.8;margin-top:15px}
+.good{color:var(--green)}
+.bad{color:var(--red)}
+.warning{color:#ffca6b}
+footer{text-align:center;color:#5f7189;font-size:11px;padding:35px 0}
+.mobile-head{display:none}
+@media(max-width:760px){
+ .sidebar{width:72px;padding:15px 8px}
+ .brand{padding:5px 3px 25px}
+ .brand-icon{width:48px;min-width:48px}
+ .brand-text,.nav-title,.nav-text,.sidebar-bottom{display:none}
+ .nav button{justify-content:center;padding:13px 5px}
+ .nav-icon{font-size:21px}
+ .main{margin-right:72px;width:calc(100% - 72px);padding:17px 13px}
+ .hero{padding:23px 18px}
+ .stats{gap:7px}
+ .stat{padding:12px}
+ .stat strong{font-size:18px}
+ .stat small{font-size:10px}
+ .tools{gap:9px}
+ .tool{padding:13px}
+ .tool p{font-size:10px}
+ .workbox{padding:17px}
+}
 </style>
 </head>
 <body>
-<div class="container">
-<div class="logo">TOX</div>
-<div class="sub">WIFI SECURITY LAB</div>
+<div class="app">
 
-<h3>توليد كلمة مرور</h3>
-<input id="length" type="number" min="8" max="32" value="16">
-<button onclick="generate()">توليد باسورد</button>
+<aside class="sidebar">
+ <div class="brand">
+  <div class="brand-icon">T</div>
+  <div class="brand-text">
+   <h2>TOX</h2><small>SECURITY LAB</small>
+  </div>
+ </div>
+ <div class="nav-title">MAIN MENU</div>
+ <nav class="nav">
+  <button class="active" onclick="showPage('home',this)"><span class="nav-icon">⌂</span><span class="nav-text">الرئيسية</span></button>
+  <button onclick="showPage('password',this)"><span class="nav-icon">🔐</span><span class="nav-text">Password Lab</span></button>
+  <button onclick="showPage('link',this)"><span class="nav-icon">🔗</span><span class="nav-text">Link Scanner</span></button>
+  <button onclick="showPage('file',this)"><span class="nav-icon">📁</span><span class="nav-text">File Inspector</span></button>
+  <button onclick="showPage('ip',this)"><span class="nav-icon">🌐</span><span class="nav-text">IP Lookup</span></button>
+  <button onclick="showPage('hash',this)"><span class="nav-icon">#</span><span class="nav-text">Hash Generator</span></button>
+  <button onclick="showPage('encoder',this)"><span class="nav-icon">⌘</span><span class="nav-text">Text Encoder</span></button>
+ </nav>
+ <div class="sidebar-bottom">
+  <small>TOX SECURITY LAB<br>Version 1.0.0</small>
+ </div>
+</aside>
 
-<div class="result">
-<small>كلمة المرور</small>
-<h3 id="generated">TOX-********</h3>
-<button onclick="copyPassword()">نسخ الباسورد</button>
-</div>
+<main class="main">
+ <div class="topbar">
+  <strong>TOX <span style="color:var(--muted)">/ SECURITY</span></strong>
+  <span class="status">LOCAL SYSTEM READY</span>
+ </div>
 
-<h3>فحص قوة الباسورد</h3>
-<input id="password" type="text"
-placeholder="اكتب كلمة المرور"
-oninput="checkStrength()">
-<div id="strength">بانتظار كلمة المرور...</div>
+<section id="home" class="page active">
+ <div class="hero">
+  <h1>WELCOME TO <span>TOX</span></h1>
+  <p>منصة أدوات الأمن السيبراني والتحليل الرقمي.</p>
+  <div class="hero-tag">⚡ SECURITY TOOLS COLLECTION</div>
+ </div>
+ <div class="stats">
+  <div class="stat"><small>AVAILABLE TOOLS</small><strong>06</strong></div>
+  <div class="stat"><small>PLATFORM</small><strong>TOX LAB</strong></div>
+  <div class="stat"><small>VERSION</small><strong>1.0.0</strong></div>
+ </div>
+ <h2 class="section-title">الأدوات المتاحة</h2>
+ <div class="tools">
+  <div class="tool" onclick="showPage('password')"><div class="tool-icon">🔐</div><h3>Password Lab</h3><p>توليد وفحص قوة كلمات المرور.</p></div>
+  <div class="tool" onclick="showPage('link')"><div class="tool-icon">🔗</div><h3>Link Scanner</h3><p>تحليل الروابط ومؤشرات الاشتباه.</p></div>
+  <div class="tool" onclick="showPage('file')"><div class="tool-icon">📁</div><h3>File Inspector</h3><p>حساب بصمة الملفات SHA-256.</p></div>
+  <div class="tool" onclick="showPage('ip')"><div class="tool-icon">🌐</div><h3>IP Lookup</h3><p>عرض معلومات عنوان IP العام.</p></div>
+  <div class="tool" onclick="showPage('hash')"><div class="tool-icon">#️⃣</div><h3>Hash Generator</h3><p>إنشاء بصمات نصية SHA-256.</p></div>
+  <div class="tool" onclick="showPage('encoder')"><div class="tool-icon">⌘</div><h3>Text Encoder</h3><p>ترميز وفك ترميز النصوص.</p></div>
+ </div>
+</section>
 
-<div class="footer">
-<small>TOX SECURITY LAB © 2026</small>
-</div>
+<section id="password" class="page">
+ <div class="workbox">
+  <h2>🔐 Password Lab</h2>
+  <p>توليد كلمات مرور عشوائية وفحص قوتها.</p>
+  <label>طول كلمة المرور</label>
+  <input id="passLength" type="number" min="8" max="64" value="20">
+  <button class="action" onclick="generatePass()">GENERATE PASSWORD</button>
+  <div class="output" id="passOutput">Your password appears here</div>
+  <button class="action secondary" onclick="copyText('passOutput')">COPY PASSWORD</button>
+  <label>فحص كلمة مرور</label>
+  <input id="checkPass" type="password" placeholder="Enter password" oninput="strength()">
+  <div class="output" id="strengthOutput">Waiting...</div>
+ </div>
+</section>
+
+<section id="link" class="page">
+ <div class="workbox">
+  <h2>🔗 Link Scanner</h2>
+  <p>تحليل أولي للرابط بحثاً عن علامات قد تشير إلى التصيد.</p>
+  <label>الرابط المراد تحليله</label>
+  <input id="urlInput" placeholder="https://example.com">
+  <button class="action" onclick="scanLink()">ANALYZE LINK</button>
+  <div class="output" id="linkOutput">Analysis results appear here</div>
+  <p class="notice">هذا فحص مبدئي يعتمد على خصائص الرابط فقط، ولا يثبت أن الموقع آمن أو خبيث.</p>
+ </div>
+</section>
+
+<section id="file" class="page">
+ <div class="workbox">
+  <h2>📁 File Inspector</h2>
+  <p>قراءة معلومات الملف وإنشاء بصمة SHA-256 محلياً.</p>
+  <label>اختر ملفاً</label>
+  <input type="file" id="fileInput">
+  <button class="action" onclick="inspectFile()">INSPECT FILE</button>
+  <div class="output" id="fileOutput">File information appears here</div>
+  <p class="notice">يتم حساب البصمة محلياً. هذا لا يعني أن الملف خالٍ من الفيروسات.</p>
+ </div>
+</section>
+
+<section id="ip" class="page">
+ <div class="workbox">
+  <h2>🌐 IP Lookup</h2>
+  <p>عرض عنوان IP العام ومعلومات الشبكة المتاحة من خدمة خارجية.</p>
+  <button class="action" onclick="lookupIP()">LOOKUP MY PUBLIC IP</button>
+  <div class="output" id="ipOutput">Waiting for lookup...</div>
+  <p class="notice">يتطلب اتصال إنترنت، ويُرسل طلباً إلى خدمة خارجية.</p>
+ </div>
+</section>
+
+<section id="hash" class="page">
+ <div class="workbox">
+  <h2>#️⃣ Hash Generator</h2>
+  <p>إنشاء بصمة SHA-256 لأي نص.</p>
+  <label>أدخل النص</label>
+  <textarea id="hashInput" placeholder="Type your text here..."></textarea>
+  <button class="action" onclick="makeHash()">GENERATE SHA-256</button>
+  <div class="output" id="hashOutput">Hash appears here</div>
+  <button class="action secondary" onclick="copyText('hashOutput')">COPY HASH</button>
+ </div>
+</section>
+
+<section id="encoder" class="page">
+ <div class="workbox">
+  <h2>⌘ Text Encoder</h2>
+  <p>ترميز النصوص وفك ترميزها باستخدام Base64.</p>
+  <label>النص</label>
+  <textarea id="encodeInput" placeholder="Enter text..."></textarea>
+  <button class="action" onclick="encodeText()">ENCODE BASE64</button>
+  <button class="action secondary" onclick="decodeText()">DECODE BASE64</button>
+  <div class="output" id="encodeOutput">Result appears here</div>
+  <button class="action secondary" onclick="copyText('encodeOutput')">COPY RESULT</button>
+ </div>
+</section>
+
+<footer>TOX SECURITY LAB © 2026 — ALL RIGHTS RESERVED</footer>
+</main>
 </div>
 
 <script>
-function generate(){
-const length=Math.max(8,Math.min(32,
-Number(document.getElementById("length").value)||16));
-const chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*";
-const random=new Uint32Array(length);
-crypto.getRandomValues(random);
-let password="";
-for(const n of random)password+=chars[n%chars.length];
-document.getElementById("generated").textContent=password;
+function showPage(id,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+ if(btn)btn.classList.add('active');
+ else{
+  const navButtons=[...document.querySelectorAll('.nav button')];
+  const index={home:0,password:1,link:2,file:3,ip:4,hash:5,encoder:6}[id];
+  navButtons[index].classList.add('active');
+ }
+ window.scrollTo(0,0);
 }
 
-function copyPassword(){
-const p=document.getElementById("generated").textContent;
-navigator.clipboard.writeText(p)
-.then(()=>alert("تم النسخ"));
+function randomIndex(max){
+ const a=new Uint32Array(1);
+ crypto.getRandomValues(a);
+ return a[0]%max;
 }
-
-function checkStrength(){
-const p=document.getElementById("password").value;
-let s=0;
-if(p.length>=8)s++;
-if(p.length>=12)s++;
-if(/[A-Z]/.test(p))s++;
-if(/[a-z]/.test(p))s++;
-if(/[0-9]/.test(p))s++;
-if(/[^a-zA-Z0-9]/.test(p))s++;
-const levels=["ضعيفة جداً","ضعيفة","متوسطة","جيدة","قوية","قوية جداً","ممتازة"];
-document.getElementById("strength").textContent=
-p.length?"قوة كلمة المرور: "+levels[s]:"بانتظار كلمة المرور...";
+function generatePass(){
+ const len=Math.max(8,Math.min(64,Number(document.getElementById('passLength').value)||20));
+ const chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*";
+ let result="";
+ for(let i=0;i<len;i++)result+=chars[randomIndex(chars.length)];
+ document.getElementById('passOutput').textContent=result;
+}
+function strength(){
+ const p=document.getElementById('checkPass').value;
+ let score=0;
+ if(p.length>=8)score++;
+ if(p.length>=12)score++;
+ if(/[A-Z]/.test(p))score++;
+ if(/[a-z]/.test(p))score++;
+ if(/[0-9]/.test(p))score++;
+ if(/[^a-zA-Z0-9]/.test(p))score++;
+ const names=['ضعيفة جداً','ضعيفة','متوسطة','جيدة','قوية','قوية جداً','ممتازة'];
+ document.getElementById('strengthOutput').textContent=
+ p.length?'قوة كلمة المرور: '+names[score]:'Waiting...';
+}
+async function makeHash(){
+ const text=document.getElementById('hashInput').value;
+ const bytes=new TextEncoder().encode(text);
+ const hash=await crypto.subtle.digest('SHA-256',bytes);
+ document.getElementById('hashOutput').textContent=
+ [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function scanLink(){
+ const value=document.getElementById('urlInput').value.trim();
+ const out=document.getElementById('linkOutput');
+ try{
+  const u=new URL(value);
+  let flags=[];
+  if(u.protocol!=='https:')flags.push('الرابط لا يستخدم HTTPS');
+  if(u.username||u.password)flags.push('يحتوي بيانات دخول داخل الرابط');
+  if(u.hostname.startsWith('xn--')||u.hostname.includes('.xn--'))flags.push('يحتوي نطاقاً بصيغة Punycode');
+  if(u.hostname.split('.').length>4)flags.push('عدد النطاقات الفرعية مرتفع');
+  if(/login|verify|secure|account|password|update/i.test(u.hostname))flags.push('اسم النطاق يحتوي كلمات تستحق الانتباه');
+  if(/@|%40/.test(value))flags.push('يحتوي رمز @');
+  out.innerHTML='<b>Hostname:</b> '+escapeHTML(u.hostname)+
+   '<br><b>Protocol:</b> '+escapeHTML(u.protocol)+
+   '<br><br>'+(flags.length?
+   '<span class="warning">⚠ ملاحظات:</span><br>'+flags.map(escapeHTML).join('<br>'):
+   '<span class="good">لم يتم رصد مؤشرات واضحة في الفحص الأولي.</span>');
+ }catch(e){out.textContent='الرابط غير صالح. تأكد من كتابة https:// أو http://';}
+}
+function escapeHTML(s){
+ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+async function inspectFile(){
+ const file=document.getElementById('fileInput').files[0];
+ const out=document.getElementById('fileOutput');
+ if(!file){out.textContent='اختر ملفاً أولاً';return;}
+ out.textContent='جارٍ تحليل الملف...';
+ try{
+  const buffer=await file.arrayBuffer();
+  const hash=await crypto.subtle.digest('SHA-256',buffer);
+  const hex=[...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');
+  out.innerHTML='<b>Name:</b> '+escapeHTML(file.name)+
+   '<br><b>Size:</b> '+(file.size/1024).toFixed(2)+' KB'+
+   '<br><b>Type:</b> '+escapeHTML(file.type||'Unknown')+
+   '<br><b>SHA-256:</b><br>'+hex;
+ }catch(e){out.textContent='تعذر قراءة الملف أو حساب البصمة.';}
+}
+async function lookupIP(){
+ const out=document.getElementById('ipOutput');
+ out.textContent='Connecting...';
+ try{
+  const r=await fetch('https://ipwho.is/');
+  const d=await r.json();
+  if(!d.success)throw Error('Lookup failed');
+  out.innerHTML='<b>IP:</b> '+escapeHTML(d.ip)+
+   '<br><b>Country:</b> '+escapeHTML(d.country)+
+   '<br><b>City:</b> '+escapeHTML(d.city)+
+   '<br><b>ISP:</b> '+escapeHTML(d.connection?.isp||'Unknown');
+ }catch(e){out.textContent='تعذر الحصول على المعلومات. تحقق من اتصال الإنترنت.';}
+}
+async function encodeText(){
+ const text=document.getElementById('encodeInput').value;
+ const bytes=new TextEncoder().encode(text);
+ let binary='';
+ bytes.forEach(b=>binary+=String.fromCharCode(b));
+ document.getElementById('encodeOutput').textContent=btoa(binary);
+}
+function decodeText(){
+ try{
+  const binary=atob(document.getElementById('encodeInput').value.trim());
+  const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));
+  document.getElementById('encodeOutput').textContent=new TextDecoder('utf-8',{fatal:true}).decode(bytes);
+ }catch(e){
+  document.getElementById('encodeOutput').textContent='Invalid Base64 input';
+ }
+}
+function copyText(id){
+ const text=document.getElementById(id).textContent;
+ if(!text)return;
+ navigator.clipboard.writeText(text)
+ .then(()=>alert('تم النسخ بنجاح'))
+ .catch(()=>alert('تعذر النسخ، انسخ النص يدوياً'));
 }
 </script>
 </body>
