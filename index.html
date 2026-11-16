@@ -1,382 +1,482 @@
 
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TOX | Security Lab</title>
+<title>TOX | مختبر الأمن السيبراني</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap');
 
 :root{
- --bg:#080b12;--panel:#101722;--line:#202d3e;
- --text:#edf3fc;--muted:#8796aa;--blue:#62aaff;
- --green:#42d6a0;--red:#ff6579;
+--bg:#080b11;
+--panel:#101722;
+--panel2:#151f2d;
+--border:#243246;
+--blue:#579cff;
+--cyan:#55d8e9;
+--white:#f2f6fc;
+--muted:#8c9bb0;
+--green:#45d6a0;
 }
 *{box-sizing:border-box}
 body{
- margin:0;background:var(--bg);color:var(--text);
- font-family:'Cairo',Arial,sans-serif;
- min-height:100vh;
+margin:0;background:var(--bg);color:var(--white);
+font-family:'Tajawal',sans-serif;
+min-height:100vh;
 }
-button,input,textarea{font:inherit}
+button,input,textarea{font-family:inherit}
 button{cursor:pointer}
-.app{display:flex;min-height:100vh}
-.sidebar{
- width:245px;background:#0c111b;border-left:1px solid var(--line);
- padding:25px 16px;position:fixed;right:0;top:0;bottom:0;
- display:flex;flex-direction:column;z-index:5;
+.header{
+height:76px;border-bottom:1px solid var(--border);
+display:flex;align-items:center;justify-content:space-between;
+padding:0 6%;background:#0b111b;
+position:sticky;top:0;z-index:10;
 }
-.brand{display:flex;align-items:center;gap:12px;padding:5px 10px 27px}
-.brand-icon{
- width:45px;height:45px;border-radius:13px;
- display:grid;place-items:center;background:#1c3048;
- color:#80bdff;font-size:27px;font-weight:800;
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{
+width:43px;height:43px;border-radius:13px;
+background:linear-gradient(135deg,#2767bd,#54c8e6);
+display:grid;place-items:center;
+font-size:25px;font-weight:800;color:white;
+box-shadow:0 0 25px #327ed444;
 }
-.brand h2{margin:0;font-size:21px;letter-spacing:3px}
-.brand small{color:var(--muted);font-size:10px;letter-spacing:2px}
-.nav-title{color:#63748a;font-size:11px;padding:12px}
-.nav button{
- display:flex;align-items:center;gap:12px;width:100%;
- color:#9aabc0;background:none;border:0;
- padding:13px;border-radius:10px;text-align:right;
- margin:3px 0;font-size:13px;transition:.2s;
+.logo h2{margin:0;font-size:23px;letter-spacing:3px}
+.logo small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px}
+.online{
+color:var(--green);font-size:12px;
+background:#10291f;padding:9px 14px;border-radius:30px;
 }
-.nav button:hover,.nav button.active{
- background:#172438;color:#fff;
-}
-.nav button.active{border-right:3px solid var(--blue)}
-.nav-icon{font-size:18px;width:23px;text-align:center}
-.sidebar-bottom{margin-top:auto;padding:15px 10px;border-top:1px solid var(--line)}
-.sidebar-bottom small{color:var(--muted)}
-.main{margin-right:245px;width:calc(100% - 245px);padding:30px 4%}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
-.status{font-size:11px;color:var(--green);background:#103126;padding:8px 13px;border-radius:20px}
-.status:before{content:"●";margin-left:8px}
-.hero{
- padding:32px;border:1px solid var(--line);border-radius:18px;
- background:radial-gradient(ellipse at 90% 0%,#183354 0%,transparent 45%),#101722;
- margin-bottom:25px;position:relative;overflow:hidden;
-}
-.hero h1{font-size:clamp(26px,4vw,38px);margin:0 0 8px}
-.hero h1 span{color:var(--blue)}
-.hero p{color:var(--muted);font-size:13px;margin:0}
-.hero-tag{display:inline-block;margin-top:20px;padding:7px 12px;
- background:#1b3049;color:#8dc3ff;border-radius:7px;font-size:11px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:28px}
-.stat,.tool,.workbox{
- background:var(--panel);border:1px solid var(--line);
- border-radius:14px;padding:19px;
-}
-.stat small{color:var(--muted)}
-.stat strong{display:block;font-size:23px;margin-top:7px}
-.section-title{font-size:18px;margin:28px 0 15px}
-.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-.tool{cursor:pointer;transition:.2s}
-.tool:hover{border-color:#5486bd;transform:translateY(-3px)}
-.tool-icon{font-size:25px;margin-bottom:12px}
-.tool h3{font-size:15px;margin:0 0 5px}
-.tool p{font-size:12px;color:var(--muted);margin:0}
-.page{display:none}
+.container{max-width:1100px;margin:auto;padding:35px 20px}
+.page{display:none;animation:appear .25s ease}
 .page.active{display:block}
-.workbox{margin-top:18px;padding:25px}
-.workbox h2{font-size:20px;margin:0 0 8px}
-.workbox>p{color:var(--muted);font-size:12px;margin-bottom:22px}
-label{display:block;font-size:12px;color:#a9b9cc;margin:14px 0 7px}
+@keyframes appear{
+from{opacity:0;transform:translateY(8px)}
+to{opacity:1;transform:translateY(0)}
+}
+.hero{
+background:linear-gradient(115deg,#13243a,#101722 65%,#122b3c);
+border:1px solid #2a405b;border-radius:20px;
+padding:35px 30px;margin-bottom:25px;
+position:relative;overflow:hidden;
+}
+.hero:after{
+content:"T";position:absolute;left:30px;top:-65px;
+font-size:220px;font-weight:800;color:#ffffff08;
+pointer-events:none;
+}
+.hero h1{font-size:35px;margin:0 0 8px}
+.hero h1 span{color:var(--blue)}
+.hero p{color:#aab9cb;margin:0;font-size:15px}
+.hero-tag{
+display:inline-block;margin-top:20px;
+background:#1d3855;color:#9dc9ff;
+padding:8px 14px;border-radius:8px;font-size:12px;
+}
+.stats{
+display:grid;grid-template-columns:repeat(3,1fr);
+gap:15px;margin-bottom:35px;
+}
+.stat{
+background:var(--panel);border:1px solid var(--border);
+padding:17px;border-radius:13px;
+}
+.stat small{color:var(--muted);font-size:12px}
+.stat strong{display:block;font-size:23px;margin-top:5px}
+.section-title{
+font-size:21px;margin:0 0 17px;
+}
+.tools{
+display:grid;grid-template-columns:repeat(3,1fr);gap:15px;
+}
+.tool{
+background:var(--panel);border:1px solid var(--border);
+border-radius:15px;padding:22px;
+text-align:right;color:white;width:100%;
+transition:.2s;
+}
+.tool:hover{
+transform:translateY(-4px);
+border-color:var(--blue);
+background:var(--panel2);
+}
+.tool-icon{
+width:48px;height:48px;border-radius:13px;
+background:#1b304a;display:grid;place-items:center;
+font-size:23px;margin-bottom:15px;
+}
+.tool h3{margin:0 0 7px;font-size:17px}
+.tool p{color:var(--muted);font-size:13px;margin:0;line-height:1.8}
+.tool .open{
+display:block;color:var(--blue);
+font-size:12px;margin-top:16px;
+}
+.work{
+background:var(--panel);border:1px solid var(--border);
+padding:27px;border-radius:17px;
+max-width:720px;margin:auto;
+}
+.back{
+background:#1a2637;color:#cbd8e8;
+border:1px solid var(--border);
+padding:9px 16px;border-radius:9px;
+margin-bottom:20px;
+}
+.back:hover{background:#263c59}
+.work h1{font-size:25px;margin:0 0 8px}
+.desc{color:var(--muted);font-size:13px;margin-bottom:25px}
+label{display:block;color:#cbd7e7;font-size:14px;margin:16px 0 8px}
 input,textarea{
- width:100%;padding:13px 14px;background:#080e18;
- color:white;border:1px solid #29384c;border-radius:9px;
- outline:none;direction:ltr;text-align:left;
+width:100%;padding:14px;
+background:#080e17;color:white;
+border:1px solid #2a3b51;border-radius:10px;
+outline:none;font-size:14px;
 }
-textarea{min-height:100px;resize:vertical}
 input:focus,textarea:focus{border-color:var(--blue)}
+textarea{min-height:110px;resize:vertical}
 .action{
- border:0;background:#64aaff;color:#08111e;
- padding:12px 20px;border-radius:9px;font-weight:800;
- margin-top:13px;width:100%;
+width:100%;padding:14px;border:0;border-radius:10px;
+background:linear-gradient(110deg,#347bd0,#54b9e9);
+color:white;font-size:15px;font-weight:700;
+margin-top:13px;transition:.2s;
 }
-.action.secondary{background:#25374e;color:white}
-.output{
- padding:14px;background:#080e18;border:1px solid var(--line);
- border-radius:9px;margin-top:15px;overflow-wrap:anywhere;
- font-size:13px;min-height:45px;direction:ltr;text-align:left;
+.action:hover{filter:brightness(1.15)}
+.secondary{background:#202f43;border:1px solid #34465e}
+.result{
+margin-top:17px;padding:17px;
+background:#080e17;border:1px solid var(--border);
+border-radius:10px;line-height:2;
+font-size:14px;overflow-wrap:anywhere;
 }
-.notice{font-size:11px;color:var(--muted);line-height:1.8;margin-top:15px}
-.good{color:var(--green)}
-.bad{color:var(--red)}
-.warning{color:#ffca6b}
-footer{text-align:center;color:#5f7189;font-size:11px;padding:35px 0}
-.mobile-head{display:none}
-@media(max-width:760px){
- .sidebar{width:72px;padding:15px 8px}
- .brand{padding:5px 3px 25px}
- .brand-icon{width:48px;min-width:48px}
- .brand-text,.nav-title,.nav-text,.sidebar-bottom{display:none}
- .nav button{justify-content:center;padding:13px 5px}
- .nav-icon{font-size:21px}
- .main{margin-right:72px;width:calc(100% - 72px);padding:17px 13px}
- .hero{padding:23px 18px}
- .stats{gap:7px}
- .stat{padding:12px}
- .stat strong{font-size:18px}
- .stat small{font-size:10px}
- .tools{gap:9px}
- .tool{padding:13px}
- .tool p{font-size:10px}
- .workbox{padding:17px}
+.result-title{color:var(--blue);font-size:12px;margin-bottom:5px}
+.note{font-size:12px;color:var(--muted);line-height:1.9;margin-top:15px}
+footer{
+text-align:center;color:#65758b;
+border-top:1px solid var(--border);
+margin-top:45px;padding:25px;font-size:12px;
+}
+@media(max-width:700px){
+.header{padding:0 17px;height:68px}
+.logo h2{font-size:20px}
+.container{padding:22px 14px}
+.hero{padding:25px 19px}
+.hero h1{font-size:27px}
+.hero:after{font-size:140px;left:5px;top:-20px}
+.stats{gap:8px}
+.stat{padding:12px}
+.stat strong{font-size:18px}
+.stat small{font-size:10px}
+.tools{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tool{padding:15px}
+.tool h3{font-size:15px}
+.tool p{font-size:11px}
+.tool-icon{width:40px;height:40px;font-size:20px}
+.work{padding:19px}
+.online{font-size:10px;padding:8px}
 }
 </style>
 </head>
 <body>
-<div class="app">
 
-<aside class="sidebar">
- <div class="brand">
-  <div class="brand-icon">T</div>
-  <div class="brand-text">
-   <h2>TOX</h2><small>SECURITY LAB</small>
+<header class="header">
+ <div class="logo">
+  <div class="logo-icon">T</div>
+  <div>
+   <h2>TOX</h2>
+   <small>SECURITY LAB</small>
   </div>
  </div>
- <div class="nav-title">MAIN MENU</div>
- <nav class="nav">
-  <button class="active" onclick="showPage('home',this)"><span class="nav-icon">⌂</span><span class="nav-text">الرئيسية</span></button>
-  <button onclick="showPage('password',this)"><span class="nav-icon">🔐</span><span class="nav-text">Password Lab</span></button>
-  <button onclick="showPage('link',this)"><span class="nav-icon">🔗</span><span class="nav-text">Link Scanner</span></button>
-  <button onclick="showPage('file',this)"><span class="nav-icon">📁</span><span class="nav-text">File Inspector</span></button>
-  <button onclick="showPage('ip',this)"><span class="nav-icon">🌐</span><span class="nav-text">IP Lookup</span></button>
-  <button onclick="showPage('hash',this)"><span class="nav-icon">#</span><span class="nav-text">Hash Generator</span></button>
-  <button onclick="showPage('encoder',this)"><span class="nav-icon">⌘</span><span class="nav-text">Text Encoder</span></button>
- </nav>
- <div class="sidebar-bottom">
-  <small>TOX SECURITY LAB<br>Version 1.0.0</small>
- </div>
-</aside>
+ <div class="online">● النظام جاهز</div>
+</header>
 
-<main class="main">
- <div class="topbar">
-  <strong>TOX <span style="color:var(--muted)">/ SECURITY</span></strong>
-  <span class="status">LOCAL SYSTEM READY</span>
- </div>
+<main class="container">
 
-<section id="home" class="page active">
+<!-- الرئيسية -->
+<section class="page active" id="home">
  <div class="hero">
-  <h1>WELCOME TO <span>TOX</span></h1>
-  <p>منصة أدوات الأمن السيبراني والتحليل الرقمي.</p>
-  <div class="hero-tag">⚡ SECURITY TOOLS COLLECTION</div>
+  <h1>مرحباً بك في <span>TOX</span></h1>
+  <p>منصتك الخاصة للأدوات الأمنية والتحليل الرقمي.</p>
+  <div class="hero-tag">✦ مختبر الأمن السيبراني</div>
  </div>
+
  <div class="stats">
-  <div class="stat"><small>AVAILABLE TOOLS</small><strong>06</strong></div>
-  <div class="stat"><small>PLATFORM</small><strong>TOX LAB</strong></div>
-  <div class="stat"><small>VERSION</small><strong>1.0.0</strong></div>
+  <div class="stat">
+   <small>عدد الأدوات</small>
+   <strong>06</strong>
+  </div>
+  <div class="stat">
+   <small>حالة النظام</small>
+   <strong style="color:var(--green)">نشط</strong>
+  </div>
+  <div class="stat">
+   <small>الإصدار</small>
+   <strong>1.0</strong>
+  </div>
  </div>
+
  <h2 class="section-title">الأدوات المتاحة</h2>
+
  <div class="tools">
-  <div class="tool" onclick="showPage('password')"><div class="tool-icon">🔐</div><h3>Password Lab</h3><p>توليد وفحص قوة كلمات المرور.</p></div>
-  <div class="tool" onclick="showPage('link')"><div class="tool-icon">🔗</div><h3>Link Scanner</h3><p>تحليل الروابط ومؤشرات الاشتباه.</p></div>
-  <div class="tool" onclick="showPage('file')"><div class="tool-icon">📁</div><h3>File Inspector</h3><p>حساب بصمة الملفات SHA-256.</p></div>
-  <div class="tool" onclick="showPage('ip')"><div class="tool-icon">🌐</div><h3>IP Lookup</h3><p>عرض معلومات عنوان IP العام.</p></div>
-  <div class="tool" onclick="showPage('hash')"><div class="tool-icon">#️⃣</div><h3>Hash Generator</h3><p>إنشاء بصمات نصية SHA-256.</p></div>
-  <div class="tool" onclick="showPage('encoder')"><div class="tool-icon">⌘</div><h3>Text Encoder</h3><p>ترميز وفك ترميز النصوص.</p></div>
+  <button class="tool" onclick="openTool('password')">
+   <div class="tool-icon">🔐</div>
+   <h3>مختبر كلمات المرور</h3>
+   <p>توليد كلمات مرور وفحص مستوى قوتها.</p>
+   <span class="open">فتح الأداة ←</span>
+  </button>
+
+  <button class="tool" onclick="openTool('link')">
+   <div class="tool-icon">🔗</div>
+   <h3>فحص الروابط</h3>
+   <p>تحليل الروابط واكتشاف علامات التصيد.</p>
+   <span class="open">فتح الأداة ←</span>
+  </button>
+
+  <button class="tool" onclick="openTool('file')">
+   <div class="tool-icon">📁</div>
+   <h3>فحص الملفات</h3>
+   <p>عرض معلومات الملفات وحساب بصمتها.</p>
+   <span class="open">فتح الأداة ←</span>
+  </button>
+
+  <button class="tool" onclick="openTool('ip')">
+   <div class="tool-icon">🌐</div>
+   <h3>فحص IP</h3>
+   <p>عرض معلومات عنوان الإنترنت العام.</p>
+   <span class="open">فتح الأداة ←</span>
+  </button>
+
+  <button class="tool" onclick="openTool('hash')">
+   <div class="tool-icon">#️⃣</div>
+   <h3>توليد البصمات</h3>
+   <p>إنشاء بصمة SHA-256 للنصوص.</p>
+   <span class="open">فتح الأداة ←</span>
+  </button>
+
+  <button class="tool" onclick="openTool('encoder')">
+   <div class="tool-icon">⌨️</div>
+   <h3>تشفير النصوص</h3>
+   <p>ترميز وفك ترميز Base64.</p>
+   <span class="open">فتح الأداة ←</span>
+  </button>
  </div>
 </section>
 
-<section id="password" class="page">
- <div class="workbox">
-  <h2>🔐 Password Lab</h2>
-  <p>توليد كلمات مرور عشوائية وفحص قوتها.</p>
+<!-- كلمات المرور -->
+<section class="page" id="password">
+ <div class="work">
+  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
+  <h1>🔐 مختبر كلمات المرور</h1>
+  <p class="desc">أنشئ كلمة مرور قوية وافحص مستوى حمايتها.</p>
+
   <label>طول كلمة المرور</label>
-  <input id="passLength" type="number" min="8" max="64" value="20">
-  <button class="action" onclick="generatePass()">GENERATE PASSWORD</button>
-  <div class="output" id="passOutput">Your password appears here</div>
-  <button class="action secondary" onclick="copyText('passOutput')">COPY PASSWORD</button>
-  <label>فحص كلمة مرور</label>
-  <input id="checkPass" type="password" placeholder="Enter password" oninput="strength()">
-  <div class="output" id="strengthOutput">Waiting...</div>
+  <input id="length" type="number" value="18" min="8" max="64">
+  <button class="action" onclick="generate()">إنشاء كلمة مرور</button>
+
+  <div class="result">
+   <div class="result-title">كلمة المرور الناتجة</div>
+   <div id="generated">ستظهر هنا النتيجة</div>
+  </div>
+  <button class="action secondary" onclick="copy('generated')">نسخ كلمة المرور</button>
+
+  <label>فحص كلمة المرور</label>
+  <input id="check" type="password" placeholder="أدخل كلمة المرور هنا" oninput="strength()">
+  <div class="result" id="strengthResult">بانتظار كلمة المرور...</div>
  </div>
 </section>
 
-<section id="link" class="page">
- <div class="workbox">
-  <h2>🔗 Link Scanner</h2>
-  <p>تحليل أولي للرابط بحثاً عن علامات قد تشير إلى التصيد.</p>
-  <label>الرابط المراد تحليله</label>
-  <input id="urlInput" placeholder="https://example.com">
-  <button class="action" onclick="scanLink()">ANALYZE LINK</button>
-  <div class="output" id="linkOutput">Analysis results appear here</div>
-  <p class="notice">هذا فحص مبدئي يعتمد على خصائص الرابط فقط، ولا يثبت أن الموقع آمن أو خبيث.</p>
+<!-- الروابط -->
+<section class="page" id="link">
+ <div class="work">
+  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
+  <h1>🔗 فحص الروابط</h1>
+  <p class="desc">تحليل مبدئي للرابط واكتشاف العلامات المشبوهة.</p>
+  <label>أدخل الرابط</label>
+  <input id="url" placeholder="https://example.com" dir="ltr">
+  <button class="action" onclick="scan()">ابدأ الفحص</button>
+  <div class="result" id="linkResult">نتيجة الفحص ستظهر هنا.</div>
+  <p class="note">هذا فحص أولي ولا يضمن سلامة الموقع. لا تفتح روابط مجهولة.</p>
  </div>
 </section>
 
-<section id="file" class="page">
- <div class="workbox">
-  <h2>📁 File Inspector</h2>
-  <p>قراءة معلومات الملف وإنشاء بصمة SHA-256 محلياً.</p>
-  <label>اختر ملفاً</label>
-  <input type="file" id="fileInput">
-  <button class="action" onclick="inspectFile()">INSPECT FILE</button>
-  <div class="output" id="fileOutput">File information appears here</div>
-  <p class="notice">يتم حساب البصمة محلياً. هذا لا يعني أن الملف خالٍ من الفيروسات.</p>
+<!-- الملفات -->
+<section class="page" id="file">
+ <div class="work">
+  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
+  <h1>📁 فحص الملفات</h1>
+  <p class="desc">اعرض معلومات الملف واحسب بصمته الرقمية.</p>
+  <label>اختر الملف</label>
+  <input type="file" id="fileInput" dir="auto">
+  <button class="action" onclick="inspect()">تحليل الملف</button>
+  <div class="result" id="fileResult">معلومات الملف ستظهر هنا.</div>
+  <p class="note">حساب البصمة لا يعني أن الملف خالٍ من البرمجيات الضارة.</p>
  </div>
 </section>
 
-<section id="ip" class="page">
- <div class="workbox">
-  <h2>🌐 IP Lookup</h2>
-  <p>عرض عنوان IP العام ومعلومات الشبكة المتاحة من خدمة خارجية.</p>
-  <button class="action" onclick="lookupIP()">LOOKUP MY PUBLIC IP</button>
-  <div class="output" id="ipOutput">Waiting for lookup...</div>
-  <p class="notice">يتطلب اتصال إنترنت، ويُرسل طلباً إلى خدمة خارجية.</p>
+<!-- IP -->
+<section class="page" id="ip">
+ <div class="work">
+  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
+  <h1>🌐 فحص عنوان IP</h1>
+  <p class="desc">اعرض معلومات عنوان الإنترنت العام.</p>
+  <button class="action" onclick="getIP()">عرض معلومات IP</button>
+  <div class="result" id="ipResult">اضغط على الزر لبدء الفحص.</div>
+  <p class="note">يتطلب اتصالاً بالإنترنت ويرسل طلباً إلى خدمة خارجية.</p>
  </div>
 </section>
 
-<section id="hash" class="page">
- <div class="workbox">
-  <h2>#️⃣ Hash Generator</h2>
-  <p>إنشاء بصمة SHA-256 لأي نص.</p>
+<!-- البصمة -->
+<section class="page" id="hash">
+ <div class="work">
+  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
+  <h1>#️⃣ توليد البصمات</h1>
+  <p class="desc">أنشئ بصمة رقمية SHA-256 لأي نص.</p>
   <label>أدخل النص</label>
-  <textarea id="hashInput" placeholder="Type your text here..."></textarea>
-  <button class="action" onclick="makeHash()">GENERATE SHA-256</button>
-  <div class="output" id="hashOutput">Hash appears here</div>
-  <button class="action secondary" onclick="copyText('hashOutput')">COPY HASH</button>
+  <textarea id="hashText" placeholder="اكتب النص هنا..."></textarea>
+  <button class="action" onclick="makeHash()">إنشاء البصمة</button>
+  <div class="result" id="hashResult">ستظهر البصمة هنا.</div>
+  <button class="action secondary" onclick="copy('hashResult')">نسخ البصمة</button>
  </div>
 </section>
 
-<section id="encoder" class="page">
- <div class="workbox">
-  <h2>⌘ Text Encoder</h2>
-  <p>ترميز النصوص وفك ترميزها باستخدام Base64.</p>
+<!-- ترميز -->
+<section class="page" id="encoder">
+ <div class="work">
+  <button class="back" onclick="home()">← الرجوع للرئيسية</button>
+  <h1>⌨️ ترميز النصوص</h1>
+  <p class="desc">حوّل النص إلى Base64 أو فك ترميزه.</p>
   <label>النص</label>
-  <textarea id="encodeInput" placeholder="Enter text..."></textarea>
-  <button class="action" onclick="encodeText()">ENCODE BASE64</button>
-  <button class="action secondary" onclick="decodeText()">DECODE BASE64</button>
-  <div class="output" id="encodeOutput">Result appears here</div>
-  <button class="action secondary" onclick="copyText('encodeOutput')">COPY RESULT</button>
+  <textarea id="encodeText" placeholder="اكتب النص هنا..."></textarea>
+  <button class="action" onclick="encode()">ترميز النص</button>
+  <button class="action secondary" onclick="decode()">فك الترميز</button>
+  <div class="result" id="encodeResult">ستظهر النتيجة هنا.</div>
+  <button class="action secondary" onclick="copy('encodeResult')">نسخ النتيجة</button>
  </div>
 </section>
 
-<footer>TOX SECURITY LAB © 2026 — ALL RIGHTS RESERVED</footer>
+<footer>
+ TOX SECURITY LAB © 2026
+ <br>جميع الحقوق محفوظة
+</footer>
+
 </main>
-</div>
 
 <script>
-function showPage(id,btn){
+function openTool(id){
  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
  document.getElementById(id).classList.add('active');
- document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
- if(btn)btn.classList.add('active');
- else{
-  const navButtons=[...document.querySelectorAll('.nav button')];
-  const index={home:0,password:1,link:2,file:3,ip:4,hash:5,encoder:6}[id];
-  navButtons[index].classList.add('active');
- }
- window.scrollTo(0,0);
+ window.scrollTo({top:0,behavior:'smooth'});
 }
-
-function randomIndex(max){
- const a=new Uint32Array(1);
+function home(){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById('home').classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function safe(s){
+ return String(s).replace(/[&<>"']/g,c=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ }[c]));
+}
+function random(n){
+ let a=new Uint32Array(1);
  crypto.getRandomValues(a);
- return a[0]%max;
+ return a[0]%n;
 }
-function generatePass(){
- const len=Math.max(8,Math.min(64,Number(document.getElementById('passLength').value)||20));
- const chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*";
- let result="";
- for(let i=0;i<len;i++)result+=chars[randomIndex(chars.length)];
- document.getElementById('passOutput').textContent=result;
+function generate(){
+ let len=Math.max(8,Math.min(64,Number(document.getElementById('length').value)||18));
+ let chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*";
+ let p="";
+ for(let i=0;i<len;i++)p+=chars[random(chars.length)];
+ document.getElementById('generated').textContent=p;
 }
 function strength(){
- const p=document.getElementById('checkPass').value;
- let score=0;
- if(p.length>=8)score++;
- if(p.length>=12)score++;
- if(/[A-Z]/.test(p))score++;
- if(/[a-z]/.test(p))score++;
- if(/[0-9]/.test(p))score++;
- if(/[^a-zA-Z0-9]/.test(p))score++;
- const names=['ضعيفة جداً','ضعيفة','متوسطة','جيدة','قوية','قوية جداً','ممتازة'];
- document.getElementById('strengthOutput').textContent=
- p.length?'قوة كلمة المرور: '+names[score]:'Waiting...';
+ let p=document.getElementById('check').value,s=0;
+ if(p.length>=8)s++;
+ if(p.length>=12)s++;
+ if(/[A-Z]/.test(p))s++;
+ if(/[a-z]/.test(p))s++;
+ if(/[0-9]/.test(p))s++;
+ if(/[^a-zA-Z0-9]/.test(p))s++;
+ let levels=['ضعيفة جداً','ضعيفة','متوسطة','جيدة','قوية','قوية جداً','ممتازة'];
+ document.getElementById('strengthResult').textContent=
+ p?'مستوى الحماية: '+levels[s]:'بانتظار كلمة المرور...';
 }
-async function makeHash(){
- const text=document.getElementById('hashInput').value;
- const bytes=new TextEncoder().encode(text);
- const hash=await crypto.subtle.digest('SHA-256',bytes);
- document.getElementById('hashOutput').textContent=
- [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');
-}
-function scanLink(){
- const value=document.getElementById('urlInput').value.trim();
- const out=document.getElementById('linkOutput');
+function scan(){
+ let v=document.getElementById('url').value.trim();
+ let out=document.getElementById('linkResult');
  try{
-  const u=new URL(value);
-  let flags=[];
-  if(u.protocol!=='https:')flags.push('الرابط لا يستخدم HTTPS');
-  if(u.username||u.password)flags.push('يحتوي بيانات دخول داخل الرابط');
-  if(u.hostname.startsWith('xn--')||u.hostname.includes('.xn--'))flags.push('يحتوي نطاقاً بصيغة Punycode');
-  if(u.hostname.split('.').length>4)flags.push('عدد النطاقات الفرعية مرتفع');
-  if(/login|verify|secure|account|password|update/i.test(u.hostname))flags.push('اسم النطاق يحتوي كلمات تستحق الانتباه');
-  if(/@|%40/.test(value))flags.push('يحتوي رمز @');
-  out.innerHTML='<b>Hostname:</b> '+escapeHTML(u.hostname)+
-   '<br><b>Protocol:</b> '+escapeHTML(u.protocol)+
-   '<br><br>'+(flags.length?
-   '<span class="warning">⚠ ملاحظات:</span><br>'+flags.map(escapeHTML).join('<br>'):
-   '<span class="good">لم يتم رصد مؤشرات واضحة في الفحص الأولي.</span>');
- }catch(e){out.textContent='الرابط غير صالح. تأكد من كتابة https:// أو http://';}
+  let u=new URL(v),issues=[];
+  if(!['https:','http:'].includes(u.protocol))issues.push('بروتوكول غير معتاد');
+  if(u.protocol!=='https:')issues.push('الرابط لا يستخدم HTTPS');
+  if(u.username||u.password)issues.push('بيانات دخول مضمنة في الرابط');
+  if(u.hostname.split('.').length>4)issues.push('نطاقات فرعية كثيرة');
+  if(u.hostname.includes('xn--'))issues.push('نطاق بصيغة Punycode');
+  if(/login|verify|password|account|secure/i.test(u.hostname))issues.push('اسم النطاق يحتوي كلمات تستحق الانتباه');
+  out.innerHTML='<b>النطاق:</b> '+safe(u.hostname)+'<br><br>'+
+  (issues.length?
+  '<span style="color:#ffca6b">ملاحظات تحتاج الانتباه:</span><br>'+issues.map(safe).join('<br>'):
+  '<span style="color:#45d6a0">لم تظهر علامات مبدئية واضحة.</span>');
+ }catch(e){out.textContent='الرابط غير صالح. أدخل رابطاً صحيحاً.';}
 }
-function escapeHTML(s){
- return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-async function inspectFile(){
- const file=document.getElementById('fileInput').files[0];
- const out=document.getElementById('fileOutput');
- if(!file){out.textContent='اختر ملفاً أولاً';return;}
+async function inspect(){
+ let f=document.getElementById('fileInput').files[0];
+ let out=document.getElementById('fileResult');
+ if(!f){out.textContent='فضلاً اختر ملفاً أولاً.';return;}
  out.textContent='جارٍ تحليل الملف...';
  try{
-  const buffer=await file.arrayBuffer();
-  const hash=await crypto.subtle.digest('SHA-256',buffer);
-  const hex=[...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');
-  out.innerHTML='<b>Name:</b> '+escapeHTML(file.name)+
-   '<br><b>Size:</b> '+(file.size/1024).toFixed(2)+' KB'+
-   '<br><b>Type:</b> '+escapeHTML(file.type||'Unknown')+
-   '<br><b>SHA-256:</b><br>'+hex;
- }catch(e){out.textContent='تعذر قراءة الملف أو حساب البصمة.';}
+  let b=await f.arrayBuffer();
+  let h=await crypto.subtle.digest('SHA-256',b);
+  let hex=[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('');
+  out.innerHTML='<b>اسم الملف:</b> '+safe(f.name)+
+  '<br><b>الحجم:</b> '+(f.size/1024).toFixed(2)+' KB'+
+  '<br><b>النوع:</b> '+safe(f.type||'غير معروف')+
+  '<br><b>SHA-256:</b><br>'+hex;
+ }catch(e){out.textContent='تعذر تحليل الملف.';}
 }
-async function lookupIP(){
- const out=document.getElementById('ipOutput');
- out.textContent='Connecting...';
+async function getIP(){
+ let out=document.getElementById('ipResult');
+ out.textContent='جارٍ جلب المعلومات...';
  try{
-  const r=await fetch('https://ipwho.is/');
-  const d=await r.json();
-  if(!d.success)throw Error('Lookup failed');
-  out.innerHTML='<b>IP:</b> '+escapeHTML(d.ip)+
-   '<br><b>Country:</b> '+escapeHTML(d.country)+
-   '<br><b>City:</b> '+escapeHTML(d.city)+
-   '<br><b>ISP:</b> '+escapeHTML(d.connection?.isp||'Unknown');
- }catch(e){out.textContent='تعذر الحصول على المعلومات. تحقق من اتصال الإنترنت.';}
+  let r=await fetch('https://ipwho.is/');
+  let d=await r.json();
+  if(!d.success)throw Error();
+  out.innerHTML='<b>عنوان IP:</b> '+safe(d.ip)+
+  '<br><b>الدولة:</b> '+safe(d.country)+
+  '<br><b>المدينة:</b> '+safe(d.city)+
+  '<br><b>مزود الخدمة:</b> '+safe(d.connection?.isp||'غير معروف');
+ }catch(e){out.textContent='تعذر جلب المعلومات. تحقق من الإنترنت.';}
 }
-async function encodeText(){
- const text=document.getElementById('encodeInput').value;
- const bytes=new TextEncoder().encode(text);
- let binary='';
- bytes.forEach(b=>binary+=String.fromCharCode(b));
- document.getElementById('encodeOutput').textContent=btoa(binary);
+async function makeHash(){
+ let t=document.getElementById('hashText').value;
+ let b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));
+ document.getElementById('hashResult').textContent=
+ [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
 }
-function decodeText(){
+function encode(){
+ let t=document.getElementById('encodeText').value;
+ let b=new TextEncoder().encode(t);
+ let binary=Array.from(b,x=>String.fromCharCode(x)).join('');
+ document.getElementById('encodeResult').textContent=btoa(binary);
+}
+function decode(){
  try{
-  const binary=atob(document.getElementById('encodeInput').value.trim());
-  const bytes=Uint8Array.from(binary,c=>c.charCodeAt(0));
-  document.getElementById('encodeOutput').textContent=new TextDecoder('utf-8',{fatal:true}).decode(bytes);
+  let b=atob(document.getElementById('encodeText').value.trim());
+  let bytes=Uint8Array.from(b,c=>c.charCodeAt(0));
+  document.getElementById('encodeResult').textContent=
+  new TextDecoder('utf-8',{fatal:true}).decode(bytes);
  }catch(e){
-  document.getElementById('encodeOutput').textContent='Invalid Base64 input';
+  document.getElementById('encodeResult').textContent='النص غير صالح لفك الترميز.';
  }
 }
-function copyText(id){
- const text=document.getElementById(id).textContent;
- if(!text)return;
- navigator.clipboard.writeText(text)
- .then(()=>alert('تم النسخ بنجاح'))
- .catch(()=>alert('تعذر النسخ، انسخ النص يدوياً'));
+function copy(id){
+ let t=document.getElementById(id).textContent;
+ if(!t)return;
+ if(navigator.clipboard){
+  navigator.clipboard.writeText(t)
+  .then(()=>alert('تم النسخ بنجاح'))
+  .catch(()=>alert('تعذر النسخ'));
+ }else{
+  alert('انسخ النتيجة يدوياً.');
+ }
 }
 </script>
 </body>
