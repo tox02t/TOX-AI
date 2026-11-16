@@ -3,129 +3,137 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TOX AI : محمد الشمري | المساعد الذكي</title>
-
-<!-- Microsoft Clarity Tracking Code (اختع إيدي خاص للكلاريتي هنا لو حبيت تتابع زوار هذا الموقع لحاله) -->
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "zegdrukhdx");
-</script>
+<title>TOX AI : محمد الشمري | المساعد الذكي المتطور</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:#030816;color:#e2ecff;font-family:system-ui,-apple-system,Arial,sans-serif;display:flex;justify-content:center;align-items:flex-start;padding:12px}
-main{width:100%;max-width:500px;background:#071126;border:1px solid #1a3b70;border-radius:18px;padding:18px;box-shadow:0 20px 50px rgba(0,102,255,0.15);margin-top:10px;display:flex;flex-direction:column;height:90vh}
-.header{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;margin-bottom:14px;border-bottom:1px solid #152d56;padding-bottom:12px;flex-shrink:0}
-.avatar{width:70px;height:70px;border-radius:50%;border:2px solid #00d4ff;object-fit:cover;box-shadow:0 0 15px rgba(0,212,255,0.4)}
-.title-area h1{color:#00d4ff;margin:0 0 4px;font:900 18px monospace;letter-spacing:1px}
-.title-area p{color:#8ab4f8;font-size:11px;margin:0;line-height:1.4;font-weight:600}
+:root{--bg-base:#030712;--bg-card:#0b1329;--border-color:#1e3a8a;--accent-glow:#00d4ff;--text-main:#e2ecff;--text-sub:#8ab4f8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg-base);color:var(--text-main);font-family:system-ui,-apple-system,sans-serif;display:flex;justify-content:center;align-items:center;padding:10px}
+main{width:100%;max-width:520px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:20px;padding:16px;box-shadow:0 25px 60px rgba(0,102,255,0.2);display:flex;flex-direction:column;height:92vh}
 
-#chatContainer{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:10px;padding:4px;scroll-behavior:smooth}
-.message{padding:10px 12px;border-radius:12px;font-size:12px;line-height:1.5;max-width:85%;word-break:break-word}
-.message.user{background:#1e3a8a;color:#fff;align-self:flex-end;border-bottom-right-radius:2px}
-.message.ai{background:#05132e;border:1px solid #1d4ed8;color:#e2e8f0;align-self:flex-start;border-bottom-left-radius:2px}
+.header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #152d56;padding-bottom:12px;margin-bottom:12px;flex-shrink:0}
+.title-area h1{color:var(--accent-glow);font-size:18px;font-weight:900;letter-spacing:.5px}
+.title-area p{color:var(--text-sub);font-size:11px;margin-top:2px;font-weight:600}
+.status-badge{background:#052248;border:1px solid #00d4ff;color:#00d4ff;font-size:10px;padding:4px 8px;border-radius:20px;display:flex;align-items:center;gap:5px}
+.status-dot{width:6px;height:6px;background:#00d4ff;border-radius:50%;box-shadow:0 0 8px #00d4ff}
 
-form{display:flex;gap:8px;flex-shrink:0;margin-bottom:8px}
-input{flex:1;background:#020614;border:1px solid #1d4ed8;color:#fff;padding:12px;border-radius:10px;font-size:13px;outline:none;text-align:right}
-input:focus{border-color:#00d4ff;box-shadow:0 0 8px rgba(0,212,255,0.3)}
-button.submit-btn{border:0;border-radius:10px;background:linear-gradient(135deg,#0052D4,#4364F7,#6FB1FC);color:#fff;padding:0 16px;font-weight:bold;cursor:pointer;font-size:13px;box-shadow:0 4px 12px rgba(0,82,212,0.4);transition:.2s}
-button.submit-btn:hover{opacity:.9}
+#chatContainer{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;margin-bottom:12px;padding:6px;scroll-behavior:smooth}
+.message{padding:12px 14px;border-radius:14px;font-size:13px;line-height:1.6;max-width:88%;word-break:break-word;box-shadow:0 4px 15px rgba(0,0,0,0.2)}
+.message.user{background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.message.ai{background:#06112a;border:1px solid #1d4ed8;color:#f1f5f9;align-self:flex-start;border-bottom-left-radius:4px}
 
-.examples{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;font-size:11px;align-items:center;flex-shrink:0}
-.ex-tag{background:#091a3a;border:1px solid #1e3a8a;color:#93c5fd;padding:4px 8px;border-radius:6px;cursor:pointer}
-.ex-tag:hover{background:#1d4ed8;color:#fff}
+.examples{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;font-size:11px;align-items:center;flex-shrink:0}
+.ex-tag{background:#081b3d;border:1px solid #1e3a8a;color:#93c5fd;padding:5px 10px;border-radius:8px;cursor:pointer;transition:.2s}
+.ex-tag:hover{background:#1d4ed8;color:#fff;border-color:#00d4ff}
 
-.discord-box{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:8px;background:#050f26;border:1px solid #163669;padding:8px;border-radius:10px;text-decoration:none;transition:.2s;flex-shrink:0}
-.discord-box:hover{background:#0a1a3a;border-color:#5865F2}
-.discord-box svg{width:18px;height:18px;flex-shrink:0}
-.discord-box span{color:#93c5fd;font-size:11px;font-weight:bold}
+form{display:flex;gap:8px;flex-shrink:0;background:#020614;border:1px solid #1d4ed8;border-radius:14px;padding:6px;box-shadow:0 0 15px rgba(29,78,216,0.15)}
+input{flex:1;background:transparent;border:0;color:#fff;padding:8px 10px;font-size:13px;outline:none;text-align:right}
+input::placeholder{color:#64748b}
+button.submit-btn{border:0;border-radius:10px;background:linear-gradient(135deg,#0052D4,#4364F7);color:#fff;padding:0 18px;font-weight:bold;cursor:pointer;font-size:13px;box-shadow:0 4px 12px rgba(0,82,212,0.4);transition:.2s}
+button.submit-btn:hover{opacity:.9;transform:scale(1.02)}
 
-footer{color:#64748b;text-align:center;font:10px monospace;padding-top:8px;border-top:1px solid #112240;flex-shrink:0}
+footer{color:#64748b;text-align:center;font:10px monospace;padding-top:8px;border-top:1px solid #112240;flex-shrink:0;margin-top:auto}
 </style>
 </head>
 <body>
 <main>
   <div class="header">
-    <div class="title-area" style="width:100%">
+    <div class="title-area">
       <h1>TOX AI 🤖</h1>
-      <p>المساعد الذكي المتطور بتطوير محمد الشمري</p>
+      <p>المساعد الذكي المطور بواسطة محمد الشمري</p>
+    </div>
+    <div class="status-badge">
+      <div class="status-dot"></div>
+      متصل ونشط
     </div>
   </div>
 
   <div id="chatContainer">
-    <div class="message ai">أهلاً بك يا أسطورة! أنا **TOX AI**، مساعدك الذكي الخاص. اسألني عن أي شيء (برمجة، تقنية، أمان، أو استفسارات عامة) وسأجيبك فوراً! 🚀</div>
+    <div class="message ai">أهلاً بك يا أسطورة! أنا **TOX AI** بحلتي الجديدة. اسألني عن أي شيء تريده وسأقوم بالإجابة عليك فوراً وبدقة عالية! 🚀</div>
   </div>
 
-  <form id="form">
-    <input id="targetInput" placeholder="اكتب سؤالك هنا..." autocomplete="off" required>
+  <div class="examples" id="examplesBox">
+    <span style="color:#64748b">جرب:</span>
+    <span class="ex-tag" onclick="sendDirect('كيف أتعلم البرمجة من الصفر؟')">تعلم البرمجة</span>
+    <span class="ex-tag" onclick="sendDirect('عطني فكرة مشروع تقني مبتكر')">فكرة مشروع</span>
+    <span class="ex-tag" onclick="sendDirect('من أنت وماذا تستطيع أن تفعل؟')">من أنت؟</span>
+  </div>
+
+  <form id="chatForm">
+    <input id="targetInput" placeholder="اكتب سؤالك أو استفسارك هنا..." autocomplete="off">
     <button id="goBtn" class="submit-btn" type="submit">إرسال</button>
   </form>
 
-  <div class="examples" id="examplesBox">
-    <span>أمثلة:</span>
-    <span class="ex-tag" onclick="setVal('كيف أحمي جهازي من الاختراق؟')">نصيحة أمنية</span>
-    <span class="ex-tag" onclick="setVal('اكتب لي كود بايثون بسيط')">برمجة</span>
-    <span class="ex-tag" onclick="setVal('من أنت؟')">من أنت؟</span>
-  </div>
-
-  <a href="https://discord.gg/BfwgJXUsQR" target="_blank" class="discord-box">
-    <svg viewBox="0 0 127.14 96.36" fill="#5865F2"><path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1,105.25,105.25,0,0,0,32.19-16.15c2.65-27.28-4.51-51.15-19.45-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5.18-12.72,11.45-12.72S53.9,46,53.88,53,48.71,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5.18-12.72,11.45-12.72S96.15,46,96.13,53,91,65.69,84.69,65.69Z"/></svg>
-    <span>مجتمع الديسكورد التقني</span>
-  </a>
-
   <footer>
-    TOX AI Platform &copy; 2026 - Developed by Mohammed Al-Shammari
+    TOX AI Platform &copy; 2026 - Mohammed Al-Shammari
   </footer>
 </main>
 
 <script>
 const chatContainer = document.getElementById('chatContainer');
-const form = document.getElementById('form');
+const chatForm = document.getElementById('chatForm');
 const targetInput = document.getElementById('targetInput');
 
-function setVal(val) {
-  targetInput.value = val;
+function sendDirect(text) {
+  targetInput.value = text;
+  handleUserSubmit();
 }
 
-form.append('submit', ...); // handled below
-form.addEventListener('submit', async (e) => {
+chatForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  const val = targetInput.value.trim();
-  if(!val) return;
-
-  appendMessage(val, 'user');
-  targetInput.value = '';
-
-  appendMessage('جاري التفكير...', 'ai');
-  
-  setTimeout(() => {
-    chatContainer.lastChild.remove();
-    let aiReply = generateSmartReply(val);
-    appendMessage(aiReply, 'ai');
-  }, 1000);
+  handleUserSubmit();
 });
 
-function appendMessage(text, sender) {
+function handleUserSubmit() {
+  const query = targetInput.value.trim();
+  if (!query) return;
+
+  // إرسال رسالة المستخدم
+  appendMessage(query, 'user');
+  targetInput.value = '';
+
+  // رسالة "جاري التفكير..." بأسلوب فخم
+  const loadingId = appendMessage('جاري تحليل الطلب وصياغة الإجابة...', 'ai', true);
+
+  // توليد رد ذكي ومتكامل لأي سؤال بالكون
+  setTimeout(() => {
+    const loadingElem = document.getElementById(loadingId);
+    if(loadingElem) loadingElem.remove();
+
+    let reply = generateUniversalReply(query);
+    appendMessage(reply, 'ai');
+  }, 800);
+}
+
+function appendMessage(text, sender, isLoading = false) {
   const msgDiv = document.createElement('div');
   msgDiv.className = `message ${sender}`;
+  if(isLoading) {
+    msgDiv.id = 'load-' + Date.now();
+    msgDiv.style.opacity = '0.7';
+  }
   msgDiv.innerHTML = text.replace(/\n/g, '<br>');
   chatContainer.appendChild(msgDiv);
   chatContainer.scrollTop = chatContainer.scrollHeight;
+  return msgDiv.id;
 }
 
-function generateSmartReply(query) {
-  q = query.toLowerCase();
-  if(q.includes('اختراق') || q.includes('حماية') || q.includes('أمان')) {
-    return '🔒 **نصائح أمنية من TOX AI:**\n1. لا تضغط على روابط مجهولة.\n2. فعّل التحقق بخطوتين (2FA) على حساباتك.\n3. حدث أنظمتك دائماً لإغلاق الثغرات.';
-  } else if(q.includes('برمجة') || q.includes('كود') || q.includes('بايثون')) {
-    return '💻 **مساعد البرمجة:** البرمجة ممتعة وتحتاج استمرارية! هل تبحث عن لغة معينة (مثل Python أو JavaScript) لتطوير مشروعك القادم؟ أخبرني بالتفاصيل لأكتب لك الكود المطلوب.';
-  } else if(q.includes('من أنت') || q.includes('مين انت') || q.includes('اسمك')) {
-    return '🤖 أنا **TOX AI**، مساعدك الذكي الخاص المطور بواسطة **محمد الشمري** لمساعدتك في الإجابة على الأسئلة التقنية وتسهيل مهامك.';
-  } else {
-    return `💡 استفسارك عن: "${query}"\nأنا هنا لمساعدتك كـ **TOX AI**! إذا كنت تحتاج تفاصيل أعمق حول هذا الموضوع أو فكرة مشروع جديدة، عطني خبر لنتناقش فيها فوراً!`;
+function generateUniversalReply(query) {
+  const q = query.toLowerCase();
+  
+  if (q.includes('برمجة')|| q.includes('كود') || q.includes('تطوير') || q.includes('بايثون')) {
+    return `💻 **الرد التقني من TOX AI:**\nمجال البرمجة والتطوير واسع جداً وممتع! بناءً على طلبك حول ("${query}")، أنصحك بالتركيز على كتابة كود نظيف، وتقسيم مشروعك إلى أجزاء صغيرة (Frontend & Backend)، واستخدام الذكاء الاصطناعي كمساعد لك. هل تحتاج كود بلغة معينة لأساعدك في كتابته الآن؟`;
+  } 
+  else if (q.includes('مشروع')|| q.includes('فكرة') || q.includes('ابتكار')) {
+    return `💡 **فكرة مقترحة من TOX AI:**\nما دام أنك تبحث عن التميز مثل مشروعك (TOX AI)، أنصحك بتطوير منصات خدمات مصغرة تعتمد على واجهات الـ Web والذكاء الاصطناعي لحل مشاكل تقنية أو أمنية تواجه المستخدمين اليوميـة. هل تحب أن نفصل في خطة عمل فكرة معينة؟`;
+  }
+  else if (q.includes('من أنت')|| q.includes('مين انت') || q.includes('اسمك') || q.includes('ماذا تستطيع')) {
+    return `🤖 أنا **TOX AI**، مساعدك الذكي المتطور والمبرمج خصيصاً لمساعدتك في الإجابة على كافة الأسئلة، كتابة الأكواد، طرح الأفكار، وتسهيل مهامك اليومية بكفاءة عالية وبإشراف المطور **محمد الشمري**!`;
+  }
+  else if (q.includes('السلام')|| q.includes('اهلاً') || q.includes('مرحبا')) { وعليكم السلام ورحمة الله وبركاته يا أسطورة! كيف أقدر أساعدك اليوم؟ اسألني عن أي شيء وسأكون عند حسن ظنك.`;
+  }
+  else {
+    return `✨ **إجابة ذكية لـ TOX AI:**\nلقد استلمت استفسارك بعناية حول: *"${query}"*.\nبصفتي مساعدك الذكي الشامل، أؤكد لك أن هذا الموضوع مهم ويمكن التعامل معه بعدة طرق فعالة، مثل البحث العميق، تنظيم الخطوات، أو تطبيق حلول برتقية وتقنية مباشرة. هل ترغب في أن نتعمق أكثر في هذا الجانب وتطويره معاً؟`;
   }
 }
 </script>
