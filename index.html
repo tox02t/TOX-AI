@@ -49,7 +49,7 @@ footer{color:#64748b;text-align:center;font:10px monospace;padding-top:8px;borde
   </div>
 
   <div id="chatContainer">
-    <div class="message ai">أهلاً بك يا أسطورة! أنا **TOX AI** بحلتي الجديدة. اسألني عن أي شيء تريده وسأقوم بالإجابة عليك فوراً وبدقة عالية! 🚀</div>
+    <div class="message ai">أهلاً بك يا أسطورة! أنا **TOX AI** بحلتي الكاملة والمحدثة. اسألني عن أي شيء تريده وسأقوم بالإجابة عليك فوراً وبدقة عالية! 🚀</div>
   </div>
 
   <div class="examples" id="examplesBox">
@@ -59,7 +59,7 @@ footer{color:#64748b;text-align:center;font:10px monospace;padding-top:8px;borde
     <span class="ex-tag" onclick="sendDirect('من أنت وماذا تستطيع أن تفعل؟')">من أنت؟</span>
   </div>
 
-  <form id="chatForm">
+  <form id="chatForm" onsubmit="handleFormSubmit(event)">
     <input id="targetInput" placeholder="اكتب سؤالك أو استفسارك هنا..." autocomplete="off">
     <button id="goBtn" class="submit-btn" type="submit">إرسال</button>
   </form>
@@ -71,69 +71,77 @@ footer{color:#64748b;text-align:center;font:10px monospace;padding-top:8px;borde
 
 <script>
 const chatContainer = document.getElementById('chatContainer');
-const chatForm = document.getElementById('chatForm');
 const targetInput = document.getElementById('targetInput');
 
 function sendDirect(text) {
   targetInput.value = text;
-  handleUserSubmit();
+  processMessage();
 }
 
-chatForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  handleUserSubmit();
-});
+function handleFormSubmit(event) {
+  event.preventDefault();
+  processMessage();
+}
 
-function handleUserSubmit() {
+function processMessage() {
   const query = targetInput.value.trim();
   if (!query) return;
 
-  // إرسال رسالة المستخدم
+  // 1. عرض رسالة المستخدم في الشات فوراً
   appendMessage(query, 'user');
   targetInput.value = '';
 
-  // رسالة "جاري التفكير..." بأسلوب فخم
-  const loadingId = appendMessage('جاري تحليل الطلب وصياغة الإجابة...', 'ai', true);
+  // 2. إظهار مؤشر "جاري التحليل..."
+  const loadId = 'load-' + Date.now();
+  appendMessage(getLoadingHtml(), 'ai', loadId);
 
-  // توليد رد ذكي ومتكامل لأي سؤال بالكون
+  // 3. محاكاة الرد الذكي بعد ثانية واحدة لضمان سلاسة التجربة
   setTimeout(() => {
-    const loadingElem = document.getElementById(loadingId);
-    if(loadingElem) loadingElem.remove();
-
-    let reply = generateUniversalReply(query);
+    const loadingElement = document.getElementById(loadId);
+    if (loadingElement) {
+      loadingElement.remove();
+    }
+    const reply = generateUniversalReply(query);
     appendMessage(reply, 'ai');
-  }, 800);
+  }, 1000);
 }
 
-function appendMessage(text, sender, isLoading = false) {
+function appendMessage(text, sender, customId = null) {
   const msgDiv = document.createElement('div');
   msgDiv.className = `message ${sender}`;
-  if(isLoading) {
-    msgDiv.id = 'load-' + Date.now();
-    msgDiv.style.opacity = '0.7';
+  if (customId) {
+    msgDiv.id = customId;
+    msgDiv.style.opacity = '0.75';
+    msgDiv.innerHTML = text;
+  } else {
+    msgDiv.innerHTML = text.replace(/\n/g, '<br>');
   }
-  msgDiv.innerHTML = text.replace(/\n/g, '<br>');
   chatContainer.appendChild(msgDiv);
   chatContainer.scrollTop = chatContainer.scrollHeight;
-  return msgDiv.id;
+  return customId;
+}
+
+function getLoadingHtml() {
+  return '<span style="display:flex; align-items:center; gap:6px;">⚡ جاري تحليل الطلب وصياغة الرد...</span>';
 }
 
 function generateUniversalReply(query) {
   const q = query.toLowerCase();
   
-  if (q.includes('برمجة')|| q.includes('كود') || q.includes('تطوير') || q.includes('بايثون')) {
-    return `💻 **الرد التقني من TOX AI:**\nمجال البرمجة والتطوير واسع جداً وممتع! بناءً على طلبك حول ("${query}")، أنصحك بالتركيز على كتابة كود نظيف، وتقسيم مشروعك إلى أجزاء صغيرة (Frontend & Backend)، واستخدام الذكاء الاصطناعي كمساعد لك. هل تحتاج كود بلغة معينة لأساعدك في كتابته الآن؟`;
+  if (q.includes('برمجة') || q.includes('كود') || q.includes('تطوير') || q.includes('بايثون') || q.includes('جافا')) {
+    return `💻 **الرد التقني من TOX AI:**\nمجال البرمجة والتطوير واسع جداً وممتع! بناءً على طلبك حول ("${query}")، أنصحك بالتركيز على كتابة كود نظيف، وتقسيم مشروعك، واستخدام التقنيات الحديثة. هل تحتاج كود بلغة معينة لأساعدك في كتابته الآن؟`;
   } 
-  else if (q.includes('مشروع')|| q.includes('فكرة') || q.includes('ابتكار')) {
-    return `💡 **فكرة مقترحة من TOX AI:**\nما دام أنك تبحث عن التميز مثل مشروعك (TOX AI)، أنصحك بتطوير منصات خدمات مصغرة تعتمد على واجهات الـ Web والذكاء الاصطناعي لحل مشاكل تقنية أو أمنية تواجه المستخدمين اليوميـة. هل تحب أن نفصل في خطة عمل فكرة معينة؟`;
+  else if (q.includes('مشروع') || q.includes('فكرة') || q.includes('ابتكار')) {
+    return `💡 **فكرة مقترحة من TOX AI:**\nما دام أنك تبحث عن التميز، أنصحك بتطوير منصات رقمية وأدوات ذكية تعتمد على الـ Web لحل المشاكل اليومية للمستخدمين. هل تحب أن نفصل في خطة عمل فكرة معينة؟`;
   }
-  else if (q.includes('من أنت')|| q.includes('مين انت') || q.includes('اسمك') || q.includes('ماذا تستطيع')) {
-    return `🤖 أنا **TOX AI**، مساعدك الذكي المتطور والمبرمج خصيصاً لمساعدتك في الإجابة على كافة الأسئلة، كتابة الأكواد، طرح الأفكار، وتسهيل مهامك اليومية بكفاءة عالية وبإشراف المطور **محمد الشمري**!`;
+  else if (q.includes('من أنت') || q.includes('مين انت') || q.includes('اسمك') || q.includes('ماذا تستطيع')) {
+    return `🤖 أنا **TOX AI**، مساعدك الذكي المتطور والمبرمج خصيصاً لمساعدتك في الإجابة على كافة الأسئلة، كتابة الأكواد، وطرح الأفكار، بإشراف المطور الإستثنائي **محمد الشمري**!`;
   }
-  else if (q.includes('السلام')|| q.includes('اهلاً') || q.includes('مرحبا')) { وعليكم السلام ورحمة الله وبركاته يا أسطورة! كيف أقدر أساعدك اليوم؟ اسألني عن أي شيء وسأكون عند حسن ظنك.`;
+  else if (q.includes('السلام') || q.includes('أهلاً') || q.includes('مرحبا') || q.includes('هلا')) {
+    return `وعليكم السلام ورحمة الله وبركاته يا أسطورة! كيف أقدر أساعدك اليوم؟ اسألني عن أي شيء وسأكون عند حسن ظنك.`;
   }
   else {
-    return `✨ **إجابة ذكية لـ TOX AI:**\nلقد استلمت استفسارك بعناية حول: *"${query}"*.\nبصفتي مساعدك الذكي الشامل، أؤكد لك أن هذا الموضوع مهم ويمكن التعامل معه بعدة طرق فعالة، مثل البحث العميق، تنظيم الخطوات، أو تطبيق حلول برتقية وتقنية مباشرة. هل ترغب في أن نتعمق أكثر في هذا الجانب وتطويره معاً؟`;
+    return `✨ **إجابة ذكية لـ TOX AI:**\nلقد استلمت استفسارك بعناية حول: *"${query}"*.\nبصفتي مساعدك الذكي الشامل، أؤكد لك أن هذا الموضوع مهم ويمكن التعامل معه بأفضل الطرق التقنية والعملية. هل ترغب في تفاصيل أكثر أو إضافة فكرة جديدة لنطورها معاً؟`;
   }
 }
 </script>
