@@ -1,608 +1,111 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TOX CYBER VAULT | نظام التشفير العسكري</title>
+<title>TOX WiFi Tool</title>
 <style>
-  :root {
-    --bg-main: #030712;
-    --bg-panel: #0a101f;
-    --bg-input: #050914;
-    --border: #1e293b;
-    --cyan: #00f0ff;
-    --emerald: #10b981;
-    --danger: #ef4444;
-    --text: #f8fafc;
-    --muted: #94a3b8;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    min-height: 100vh;
-    background-color: var(--bg-main);
-    background-image: 
-      radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
-      linear-gradient(rgba(30, 41, 59, 0.25) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(30, 41, 59, 0.25) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
-    color: var(--text);
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 16px;
-  }
-
-  .vault-container {
-    width: 100%;
-    max-width: 640px;
-    background: rgba(10, 16, 31, 0.92);
-    backdrop-filter: blur(12px);
-    border: 1px solid #1e3a5f;
-    border-radius: 24px;
-    padding: 26px;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 240, 255, 0.12);
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 18px;
-    margin-bottom: 22px;
-  }
-
-  .brand h1 {
-    font-size: 22px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    background: linear-gradient(90deg, #fff, var(--cyan));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .brand p {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 3px;
-  }
-
-  .security-badge {
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid var(--emerald);
-    color: var(--emerald);
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
-  }
-
-  .pulse-dot {
-    width: 7px;
-    height: 7px;
-    background: var(--emerald);
-    border-radius: 50%;
-    animation: pulse 1.5s infinite;
-  }
-
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-    70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-  }
-
-  /* التبويبات الرئيسية */
-  .tabs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    background: var(--bg-input);
-    padding: 6px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    margin-bottom: 22px;
-  }
-
-  .tab-btn {
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.25s ease;
-  }
-
-  .tab-btn.active {
-    background: linear-gradient(135deg, #0284c7, #0369a1);
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
-  }
-
-  .section { display: none; animation: fadeIn 0.3s ease; }
-  .section.active { display: block; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* منطقة رفع الملفات */
-  .drop-zone {
-    border: 2px dashed #2a4365;
-    background: rgba(5, 9, 20, 0.7);
-    border-radius: 16px;
-    padding: 32px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 18px;
-  }
-
-  .drop-zone:hover, .drop-zone.dragover {
-    border-color: var(--cyan);
-    background: rgba(0, 240, 255, 0.04);
-    box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.08);
-  }
-
-  .drop-icon { font-size: 36px; margin-bottom: 10px; }
-  .drop-title { font-size: 15px; font-weight: 700; color: #fff; }
-  .drop-sub { font-size: 12px; color: var(--muted); margin-top: 5px; }
-
-  .file-info-box {
-    display: none;
-    background: #061326;
-    border: 1px solid var(--cyan);
-    border-radius: 12px;
-    padding: 12px 16px;
-    margin-bottom: 18px;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .file-name { font-size: 13px; font-weight: bold; color: var(--cyan); word-break: break-all; }
-  .file-size { font-size: 11px; color: var(--muted); font-family: monospace; }
-
-  /* حقول الإدخال وكلمات المرور */
-  .input-group { margin-bottom: 16px; }
-  .input-group label {
-    display: block;
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-
-  .pass-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-
-  input[type="password"], input[type="text"], textarea {
-    width: 100%;
-    background: var(--bg-input);
-    border: 1px solid #283548;
-    color: #fff;
-    padding: 13px 15px;
-    border-radius: 12px;
-    font-size: 14px;
-    outline: none;
-    transition: 0.25s;
-  }
-
-  input:focus, textarea:focus {
-    border-color: var(--cyan);
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
-  }
-
-  .toggle-pass {
-    position: absolute;
-    left: 12px;
-    background: none;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 16px;
-  }
-
-  /* أزرار العمليات */
-  .action-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 10px;
-  }
-
-  .btn {
-    border: none;
-    border-radius: 12px;
-    padding: 14px;
-    font-size: 14px;
-    font-weight: 800;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: all 0.25s ease;
-  }
-
-  .btn-encrypt {
-    background: linear-gradient(135deg, #059669, #10b981);
-    color: #fff;
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
-  }
-  .btn-encrypt:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.5); }
-
-  .btn-decrypt {
-    background: linear-gradient(135deg, #0284c7, #3b82f6);
-    color: #fff;
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
-  }
-  .btn-decrypt:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.5); }
-
-  /* شاشة الحالة والسجل */
-  .terminal-status {
-    margin-top: 18px;
-    background: #02050c;
-    border: 1px solid #1e293b;
-    border-radius: 12px;
-    padding: 12px 14px;
-    font-family: monospace;
-    font-size: 12px;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .status-success { border-color: var(--emerald); color: var(--emerald); }
-  .status-error { border-color: var(--danger); color: var(--danger); }
-
-  .copy-btn {
-    margin-top: 8px;
-    background: #1e293b;
-    color: var(--cyan);
-    border: 1px solid #334155;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 100%;
-  }
-  .copy-btn:hover { background: #334155; }
-
-  footer {
-    text-align: center;
-    margin-top: 22px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border);
-    font-size: 11px;
-    color: #64748b;
-    font-family: monospace;
-  }
+*{box-sizing:border-box}
+body{
+ margin:0;background:#080a0f;color:white;
+ font-family:Arial,sans-serif;
+ display:flex;justify-content:center;
+ align-items:center;min-height:100vh;
+}
+.container{
+ width:92%;max-width:430px;
+ background:#11151e;border:1px solid #252d3b;
+ border-radius:18px;padding:25px;
+ box-shadow:0 0 35px #000;
+}
+.logo{text-align:center;font-size:35px;
+ font-weight:bold;color:#e0e0e0;letter-spacing:5px}
+.sub{text-align:center;color:#7e899b;margin:8px 0 25px}
+h3{font-size:16px;color:#cbd5e1}
+input{
+ width:100%;padding:15px;background:#080c14;
+ border:1px solid #30394b;border-radius:9px;
+ color:white;font-size:15px;outline:none;
+ margin:8px 0;
+}
+button{
+ width:100%;padding:14px;border:0;
+ border-radius:9px;background:#e5e7eb;
+ color:#080a0f;font-weight:bold;
+ cursor:pointer;margin-top:10px;font-size:15px;
+}
+button:hover{background:#aaa}
+.result{
+ margin-top:18px;padding:15px;
+ background:#080c14;border-radius:9px;
+ border:1px solid #30394b;overflow-wrap:anywhere;
+}
+small{color:#8995a8}
+#strength{margin-top:10px;color:#9ca3af}
 </style>
 </head>
 <body>
+<div class="container">
+ <div class="logo">TOX</div>
+ <div class="sub">WIFI PASSWORD LAB</div>
 
-<div class="vault-container">
-  <div class="header">
-    <div class="brand">
-      <h1>TOX CYBER VAULT 🛡️</h1>
-      <p>منظومة التشفير العسكري وحماية الملفات - محمد الشمري</p>
-    </div>
-    <div class="security-badge">
-      <div class="pulse-dot"></div>
-      AES-256-GCM
-    </div>
-  </div>
+ <h3>توليد كلمة مرور آمنة</h3>
+ <input id="length" type="number" min="8" max="32"
+ value="16" placeholder="طول كلمة المرور">
+ <button onclick="generate()">توليد كلمة مرور</button>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('fileTab', this)">📁 تشفير الملفات (.tox)</button>
-    <button class="tab-btn" onclick="switchTab('textTab', this)">💬 تشفير الرسائل السرية</button>
-  </div>
+ <div class="result">
+  <small>كلمة المرور الناتجة</small>
+  <h3 id="generated">TOX-********</h3>
+  <button onclick="copyPassword()">نسخ كلمة المرور</button>
+ </div>
 
-  <!-- قسم تشفير الملفات -->
-  <div id="fileTab" class="section active">
-    <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-      <div class="drop-icon">🔐</div>
-      <div class="drop-title">اضغط لاختيار ملف أو اسحبه وأفلته هنا</div>
-      <div class="drop-sub">يدعم جميع الصيغ (صور، PDF، فيديو، مستندات، أو ملفات .tox مشفرة)</div>
-      <input type="file" id="fileInput" hidden onchange="handleFileSelect(this.files[0])">
-    </div>
+ <h3>فحص قوة كلمة المرور</h3>
+ <input id="password" type="text"
+ placeholder="أدخل كلمة المرور للفحص"
+ oninput="checkStrength()">
+ <div id="strength">بانتظار كلمة المرور...</div>
 
-    <div class="file-info-box" id="fileInfoBox">
-      <div>
-        <div class="file-name" id="selectedFileName">file.png</div>
-        <div class="file-size" id="selectedFileSize">0 KB</div>
-      </div>
-      <button onclick="clearFile()" style="background:none;border:none;color:#ef4444;cursor:pointer;font-weight:bold;font-size:13px;">✕ إزالة</button>
-    </div>
-
-    <div class="input-group">
-      <label>🔑 مفتاح التشفير (كلمة المرور السرية للملف):</label>
-      <div class="pass-wrapper">
-        <input type="password" id="filePassword" placeholder="أدخل كلمة سر قوية لقفل أو فتح الملف...">
-        <button type="button" class="toggle-pass" onclick="togglePass('filePassword')">👁️</button>
-      </div>
-    </div>
-
-    <div class="action-grid">
-      <button class="btn btn-encrypt" onclick="processFile('encrypt')">🔒 تشفير وقفل الملف</button>
-      <button class="btn btn-decrypt" onclick="processFile('decrypt')">🔓 فك تشفير الملف</button>
-    </div>
-
-    <div class="terminal-status" id="fileStatus">
-      <span>></span>
-      <span id="fileStatusText">النظام جاهز. التشفير يتم محلياً في متصفحك بنسبة أمان 100%.</span>
-    </div>
-  </div>
-
-  <!-- قسم تشفير النصوص -->
-  <div id="textTab" class="section">
-    <div class="input-group">
-      <label>📝 النص الأصلي أو الشفرة المراد فكها:</label>
-      <textarea id="textInput" rows="4" placeholder="اكتب رسالتك السرية هنا لتشفيرها، أو الصق الشفرة لفكها..."></textarea>
-    </div>
-
-    <div class="input-group">
-      <label>🔑 المفتاح السري المشترك:</label>
-      <div class="pass-wrapper">
-        <input type="password" id="textPassword" placeholder="كلمة السر المتفق عليها...">
-        <button type="button" class="toggle-pass" onclick="togglePass('textPassword')">👁️</button>
-      </div>
-    </div>
-
-    <div class="action-grid">
-      <button class="btn btn-encrypt" onclick="processText('encrypt')">🔒 تشفير النص</button>
-      <button class="btn btn-decrypt" onclick="processText('decrypt')">🔓 فك التشفير</button>
-    </div>
-
-    <div class="input-group" style="margin-top: 16px;">
-      <label>📤 النتيجة النهائية:</label>
-      <textarea id="textOutput" rows="3" readonly placeholder="ستظهر النتيجة المشفرة أو المفكوكة هنا..."></textarea>
-      <button class="copy-btn" onclick="copyOutput()">📋 نسخ النتيجة بضغطة زر</button>
-    </div>
-
-    <div class="terminal-status" id="textStatus">
-      <span>></span>
-      <span id="textStatusText">بانتظار إدخال النص والمفتاح السري...</span>
-    </div>
-  </div>
-
-  <footer>
-    TOX CYBER SECURITY LAB &copy; 2026 | LOCAL ZERO-KNOWLEDGE ENCRYPTION
-  </footer>
+ <div style="text-align:center;margin-top:25px">
+  <small>TOX SECURITY LAB © 2026</small>
+ </div>
 </div>
 
 <script>
-  let currentFile = null;
+function generate(){
+ const length=Math.min(32,Math.max(8,
+ Number(document.getElementById("length").value)||16));
+ const chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*";
+ let password="";
+ const random=new Uint32Array(length);
+ crypto.getRandomValues(random);
+ for(let n of random){
+  password+=chars[n%chars.length];
+ }
+ document.getElementById("generated").textContent=password;
+}
 
-  // التنقل بين التبويبات
-  function switchTab(tabId, btn) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    btn.classList.add('active');
-  }
+function copyPassword(){
+ const password=document.getElementById("generated").textContent;
+ navigator.clipboard.writeText(password);
+ alert("تم نسخ كلمة المرور");
+}
 
-  // إظهار وإخفاء كلمة المرور
-  function togglePass(id) {
-    const input = document.getElementById(id);
-    input.type = input.type === 'password' ? 'text' : 'password';
-  }
+function checkStrength(){
+ const p=document.getElementById("password").value;
+ let score=0;
+ if(p.length>=8)score++;
+ if(p.length>=12)score++;
+ if(/[A-Z]/.test(p))score++;
+ if(/[a-z]/.test(p))score++;
+ if(/[0-9]/.test(p))score++;
+ if(/[^a-zA-Z0-9]/.test(p))score++;
 
-  // دعم السحب والإفلات للملفات
-  const dropZone = document.getElementById('dropZone');
-  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
-  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-  dropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropZone.classList.remove('dragover');
-    if (e.dataTransfer.files.length) handleFileSelect(e.dataTransfer.files[0]);
-  });
-
-  function handleFileSelect(file) {
-    if (!file) return;
-    currentFile = file;
-    document.getElementById('selectedFileName').innerText = file.name;
-    document.getElementById('selectedFileSize').innerText = formatBytes(file.size);
-    document.getElementById('fileInfoBox').style.display = 'flex';
-    setStatus('fileStatus', 'fileStatusText', `تم تحميل الملف: ${file.name}`, 'normal');
-  }
-
-  function clearFile() {
-    currentFile = null;
-    document.getElementById('fileInput').value = '';
-    document.getElementById('fileInfoBox').style.display = 'none';
-    setStatus('fileStatus', 'fileStatusText', 'تمت إزالة الملف. اختر ملفاً جديداً.', 'normal');
-  }
-
-  function formatBytes(bytes) {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  }
-
-  function setStatus(boxId, textId, msg, type) {
-    const box = document.getElementById(boxId);
-    const txt = document.getElementById(textId);
-    box.className = 'terminal-status';
-    if (type === 'success') box.classList.add('status-success');
-    if (type === 'error') box.classList.add('status-error');
-    txt.innerText = msg;
-  }
-
-  // اشتقاق مفتاح AES-256 من كلمة المرور باستخدام PBKDF2
-  async function deriveKey(password, salt) {
-    const enc = new TextEncoder();
-    const keyMaterial = await window.crypto.subtle.importKey(
-      'raw', enc.encode(password), { name: 'PBKDF2' }, false, ['deriveKey']
-    );
-    return window.crypto.subtle.deriveKey(
-      { name: 'PBKDF2', salt: salt, iterations: 100000, hash: 'SHA-256' },
-      keyMaterial,
-      { name: 'AES-GCM', length: 256 },
-      false,
-      ['encrypt', 'decrypt']
-    );
-  }
-
-  // تشفير وفك تشفير الملفات
-  async function processFile(mode) {
-    if (!currentFile) {
-      setStatus('fileStatus', 'fileStatusText', 'خطأ: الرجاء اختيار ملف أولاً!', 'error');
-      return;
-    }
-    const password = document.getElementById('filePassword').value;
-    if (!password) {
-      setStatus('fileStatus', 'fileStatusText', 'خطأ: الرجاء إدخال كلمة المرور السرية!', 'error');
-      return;
-    }
-
-    try {
-      setStatus('fileStatus', 'fileStatusText', 'جاري المعالجة بتشفير AES-256 العسكري...', 'normal');
-      const fileBuffer = await currentFile.arrayBuffer();
-
-      if (mode === 'encrypt') {
-        const salt = window.crypto.getRandomValues(new Uint8Array(16));
-        const iv = window.crypto.getRandomValues(new Uint8Array(12));
-        const key = await deriveKey(password, salt);
-
-        // حفظ اسم الملف الأصلي داخل البيانات المشفرة لاسترجاعه بدقة
-        const enc = new TextEncoder();
-        const nameBytes = enc.encode(currentFile.name);
-        const nameLenBuffer = new Uint32Array([nameBytes.length]);
-
-        const combinedData = new Uint8Array(4 + nameBytes.length + fileBuffer.byteLength);
-        combinedData.set(new Uint8Array(nameLenBuffer.buffer), 0);
-        combinedData.set(nameBytes, 4);
-        combinedData.set(new Uint8Array(fileBuffer), 4 + nameBytes.length);
-
-        const encryptedContent = await window.crypto.subtle.encrypt(
-          { name: 'AES-GCM', iv: iv }, key, combinedData
-        );
-
-        // دمج الترويسة (TOX1) + Salt + IV + البيانات المشفرة
-        const magic = enc.encode('TOX1');
-        const finalBlob = new Blob([magic, salt, iv, encryptedContent], { type: 'application/octet-stream' });
-        downloadBlob(finalBlob, currentFile.name + '.tox');
-
-        setStatus('fileStatus', 'fileStatusText', `تم تشفير وقفل الملف بنجاح! (${currentFile.name}.tox)`, 'success');
-      } 
-      else if (mode === 'decrypt') {
-        const dataView = new Uint8Array(fileBuffer);
-        const dec = new TextDecoder();
-        const magic = dec.decode(dataView.slice(0, 4));
-
-        if (magic !== 'TOX1') {
-          throw new Error('هذا الملف غير مشفر بصيغة TOX المعتمدة!');
-        }
-
-        const salt = dataView.slice(4, 20);
-        const iv = dataView.slice(20, 32);
-        const encryptedBytes = dataView.slice(32);
-
-        const key = await deriveKey(password, salt);
-        const decryptedBuffer = await window.crypto.subtle.decrypt(
-          { name: 'AES-GCM', iv: iv }, key, encryptedBytes
-        );
-
-        const decryptedArray = new Uint8Array(decryptedBuffer);
-        const nameLen = new Uint32Array(decryptedArray.slice(0, 4).buffer)[0];
-        const originalName = dec.decode(decryptedArray.slice(4, 4 + nameLen));
-        const originalFileBytes = decryptedArray.slice(4 + nameLen);
-
-        const finalBlob = new Blob([originalFileBytes]);
-        downloadBlob(finalBlob, originalName);
-
-        setStatus('fileStatus', 'fileStatusText', `تم فك القفل واستعادة الملف الأصلي: ${originalName}`, 'success');
-      }
-    } catch (err) {
-      setStatus('fileStatus', 'fileStatusText', 'فشل العملية: كلمة المرور خاطئة أو الملف تالف!', 'error');
-    }
-  }
-
-  function downloadBlob(blob, filename) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
-  // تشفير وفك تشفير النصوص السريعة
-  async function processText(mode) {
-    const text = document.getElementById('textInput').value.trim();
-    const password = document.getElementById('textPassword').value;
-    const output = document.getElementById('textOutput');
-
-    if (!text || !password) {
-      setStatus('textStatus', 'textStatusText', 'خطأ: أدخل النص وكلمة المرور أولاً!', 'error');
-      return;
-    }
-
-    try {
-      const enc = new TextEncoder();
-      const dec = new TextDecoder();
-
-      if (mode === 'encrypt') {
-        const salt = window.crypto.getRandomValues(new Uint8Array(16));
-        const iv = window.crypto.getRandomValues(new Uint8Array(12));
-        const key = await deriveKey(password, salt);
-        const encrypted = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, enc.encode(text));
-
-        const combined = new Uint8Array(16 + 12 + encrypted.byteLength);
-        combined.set(salt, 0);
-        combined.set(iv, 16);
-        combined.set(new Uint8Array(encrypted), 28);
-
-        // تحويل لـ Base64 آمن للنسخ
-        const base64 = btoa(String.fromCharCode(...combined));
-        output.value = 'TOX_MSG::' + base64;
-        setStatus('textStatus', 'textStatusText', 'تم تشفير الرسالة بنجاح! يمكنك نسخها وإرسالها بأمان.', 'success');
-      } else {
-        const cleanBase64 = text.replace('TOX_MSG::', '').trim();
-        const combined = Uint8Array.from(atob(cleanBase64), c => c.charCodeAt(0));
-
-        const salt = combined.slice(0, 16);
-        const iv = combined.slice(16, 28);
-        const data = combined.slice(28);
-
-        const key = await deriveKey(password, salt);
-        const decrypted = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, data);
-
-        output.value = dec.decode(decrypted);
-        setStatus('textStatus', 'textStatusText', 'تم فك تشفير الرسالة بنجاح!', 'success');
-      }
-    } catch (e) {
-      setStatus('textStatus', 'textStatusText', 'فشل فك التشفير: تأكد من صحة الشفرة وكلمة المرور!', 'error');
-    }
-  }
-
-  function copyOutput() {
-    const output = document.getElementById('textOutput');
-    if (!output.value) return;
-    navigator.clipboard.writeText(output.value);
-    setStatus('textStatus', 'textStatusText', 'تم نسخ النتيجة إلى الحافظة بنجاح! 📋', 'success');
-  }
+ const result=document.getElementById("strength");
+ const levels=["ضعيفة جداً","ضعيفة","متوسطة","جيدة","قوية","قوية جداً","ممتازة"];
+ result.textContent=p.length ? "قوة كلمة المرور: "+levels[score] : "بانتظار كلمة المرور...";
+}
 </script>
 </body>
 </html>
